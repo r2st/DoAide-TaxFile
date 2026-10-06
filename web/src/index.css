@@ -1,0 +1,39 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--doaide-bg);
+  color: var(--doaide-text);
+  font-family: var(--doaide-font);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--doaide-gold);
+  text-decoration: none;
+  transition: color var(--doaide-transition);
+}
+
+a:hover {
+  color: var(--doaide-gold-hover);
+}
+
+input, select, textarea, button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; color: black; }
+  .doaide-card { border-color: #ccc; }
+}

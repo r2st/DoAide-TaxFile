@@ -647,3 +647,366 @@ def generate_recommendations(
         "regime_savings": savings,
         "suggestions": sorted(suggestions, key=lambda s: s["potential_saving"], reverse=True),
     }
+
+
+def calculate_take_home_salary(
+    ctc: float,
+    is_metro: bool = False,
+    pf_contribution_rate: float = 0.12,
+) -> dict:
+    basic = round(ctc * 0.40)
+    hra = round(basic * (0.50 if is_metro else 0.40))
+    employer_pf = round(min(basic, 180_000) * pf_contribution_rate)
+    employee_pf = employer_pf
+    gratuity = round(basic * 0.0481)
+    professional_tax = 2_400
+    special_allowance = max(ctc - basic - hra - employer_pf - gratuity, 0)
+    gross_salary = basic + hra + round(special_allowance)
+    total_deductions = employee_pf + professional_tax
+    annual_in_hand = gross_salary - total_deductions
+    new_regime = calculate_new_regime(gross_salary)
+    monthly_tax = round(new_regime["total_tax"] / 12)
+    monthly_in_hand = round((annual_in_hand - new_regime["total_tax"]) / 12)
+
+    return {
+        "ctc": round(ctc),
+        "basic": basic,
+        "hra": hra,
+        "special_allowance": round(special_allowance),
+        "employer_pf": employer_pf,
+        "employee_pf": employee_pf,
+        "gratuity": gratuity,
+        "professional_tax": professional_tax,
+        "gross_salary": round(gross_salary),
+        "total_deductions": round(total_deductions),
+        "annual_in_hand": round(annual_in_hand),
+        "estimated_tax": new_regime["total_tax"],
+        "monthly_gross": round(gross_salary / 12),
+        "monthly_deductions": round(total_deductions / 12),
+        "monthly_tax": monthly_tax,
+        "monthly_in_hand": max(monthly_in_hand, 0),
+        "annual_take_home": max(annual_in_hand - new_regime["total_tax"], 0),
+    }
+
+
+def calculate_gratuity(
+    last_drawn_salary: float,
+    years_of_service: float,
+    is_government: bool = False,
+) -> dict:
+    capped_years = max(years_of_service, 0)
+    if is_government:
+        gratuity_amount = round((last_drawn_salary * capped_years * 15) / 30)
+    else:
+        gratuity_amount = round((last_drawn_salary * capped_years * 15) / 26)
+    exemption_limit = 2_000_000
+    exempt_amount = min(gratuity_amount, exemption_limit)
+    taxable_amount = max(gratuity_amount - exemption_limit, 0)
+    eligible = capped_years >= 5
+
+    return {
+        "last_drawn_salary": round(last_drawn_salary),
+        "years_of_service": capped_years,
+        "is_government": is_government,
+        "gratuity_amount": gratuity_amount,
+        "exemption_limit": exemption_limit,
+        "exempt_amount": exempt_amount,
+        "taxable_amount": taxable_amount,
+        "eligible": eligible,
+    }
+
+
+def calculate_ppf(
+    annual_investment: float,
+    existing_balance: float = 0,
+    years_remaining: int = 15,
+    interest_rate: float = 7.1,
+) -> dict:
+    rate = interest_rate / 100
+    balance = existing_balance
+    total_invested = existing_balance
+    total_interest = 0
+    schedule = []
+
+    for year in range(1, years_remaining + 1):
+        interest = round((balance + annual_investment) * rate)
+        balance = balance + annual_investment + interest
+        total_invested += annual_investment
+        total_interest += interest
+        schedule.append({
+            "year": year,
+            "investment": round(annual_investment),
+            "interest": interest,
+            "balance": round(balance),
+            "total_invested": round(total_invested),
+        })
+
+    return {
+        "annual_investment": round(annual_investment),
+        "interest_rate": interest_rate,
+        "years_remaining": years_remaining,
+        "existing_balance": round(existing_balance),
+        "maturity_amount": round(balance),
+        "total_invested": round(total_invested),
+        "total_interest": round(total_interest),
+        "schedule": schedule,
+    }
+
+
+def calculate_sip(
+    monthly_amount: float,
+    annual_return_rate: float,
+    years: int,
+    step_up_percent: float = 0,
+) -> dict:
+    monthly_rate = annual_return_rate / 100 / 12
+    months = years * 12
+    total_invested = 0
+    future_value = 0.0
+    current_sip = monthly_amount
+
+    for month in range(1, months + 1):
+        if step_up_percent > 0 and month > 1 and (month - 1) % 12 == 0:
+            current_sip = round(current_sip * (1 + step_up_percent / 100))
+        total_invested += current_sip
+        future_value = (future_value + current_sip) * (1 + monthly_rate)
+
+    future_value = round(future_value)
+    total_invested = round(total_invested)
+    wealth_gained = future_value - total_invested
+
+    return {
+        "monthly_amount": round(monthly_amount),
+        "annual_return_rate": annual_return_rate,
+        "years": years,
+        "step_up_percent": step_up_percent,
+        "total_invested": total_invested,
+        "future_value": future_value,
+        "wealth_gained": wealth_gained,
+    }
+
+
+def calculate_fd(
+    principal: float,
+    annual_rate: float,
+    tenure_years: float,
+    compounding_frequency: int = 4,
+    is_senior: bool = False,
+) -> dict:
+    n = compounding_frequency
+    r = annual_rate / 100
+    maturity_amount = round(principal * (1 + r / n) ** (n * tenure_years))
+    total_interest = maturity_amount - round(principal)
+    tds_threshold = 50_000 if is_senior else 40_000
+    tds_applicable = total_interest > tds_threshold
+    tds_amount = round(total_interest * 0.10) if tds_applicable else 0
+    interest_after_tds = total_interest - tds_amount
+
+    return {
+        "principal": round(principal),
+        "annual_rate": annual_rate,
+        "tenure_years": tenure_years,
+        "compounding_frequency": n,
+        "maturity_amount": maturity_amount,
+        "total_interest": total_interest,
+        "tds_threshold": tds_threshold,
+        "tds_applicable": tds_applicable,
+        "tds_amount": tds_amount,
+        "interest_after_tds": interest_after_tds,
+        "is_senior": is_senior,
+    }
+
+
+def calculate_mutual_fund(
+    investment_type: str,
+    amount: float,
+    annual_return_rate: float,
+    years: int,
+) -> dict:
+    if investment_type == "sip":
+        result = calculate_sip(amount, annual_return_rate, years)
+        return {**result, "investment_type": "sip"}
+
+    future_value = round(amount * (1 + annual_return_rate / 100) ** years)
+    total_invested = round(amount)
+    wealth_gained = future_value - total_invested
+    absolute_return = ((future_value - total_invested) / total_invested * 100) if total_invested > 0 else 0
+    cagr = ((future_value / total_invested) ** (1 / years) - 1) * 100 if total_invested > 0 and years > 0 else 0
+
+    return {
+        "investment_type": "lumpsum",
+        "amount": total_invested,
+        "annual_return_rate": annual_return_rate,
+        "years": years,
+        "total_invested": total_invested,
+        "future_value": future_value,
+        "wealth_gained": wealth_gained,
+        "absolute_return": round(absolute_return, 2),
+        "cagr": round(cagr, 2),
+    }
+
+
+def calculate_emi(
+    loan_amount: float,
+    annual_rate: float,
+    tenure_years: int,
+) -> dict:
+    monthly_rate = annual_rate / 100 / 12
+    months = tenure_years * 12
+
+    if monthly_rate == 0:
+        emi = round(loan_amount / months)
+    else:
+        emi = round(
+            loan_amount * monthly_rate * (1 + monthly_rate) ** months
+            / ((1 + monthly_rate) ** months - 1)
+        )
+
+    total_payment = emi * months
+    total_interest = total_payment - round(loan_amount)
+    schedule = []
+    balance = loan_amount
+
+    for year in range(1, tenure_years + 1):
+        year_principal = 0
+        year_interest = 0
+        for _ in range(12):
+            interest_component = round(balance * monthly_rate)
+            principal_component = emi - interest_component
+            year_principal += principal_component
+            year_interest += interest_component
+            balance = max(balance - principal_component, 0)
+        schedule.append({
+            "year": year,
+            "principal_paid": round(year_principal),
+            "interest_paid": round(year_interest),
+            "balance": round(balance),
+        })
+
+    return {
+        "loan_amount": round(loan_amount),
+        "annual_rate": annual_rate,
+        "tenure_years": tenure_years,
+        "emi": emi,
+        "total_payment": round(total_payment),
+        "total_interest": round(total_interest),
+        "schedule": schedule,
+    }
+
+
+def calculate_compound_interest(
+    principal: float,
+    annual_rate: float,
+    years: int,
+    compounding_frequency: int = 1,
+) -> dict:
+    n = compounding_frequency
+    r = annual_rate / 100
+    amount = round(principal * (1 + r / n) ** (n * years))
+    total_interest = amount - round(principal)
+    simple_interest = round(principal * r * years)
+    compounding_benefit = total_interest - simple_interest
+
+    yearly_breakdown = []
+    for y in range(1, years + 1):
+        bal = round(principal * (1 + r / n) ** (n * y))
+        yearly_breakdown.append({
+            "year": y,
+            "balance": bal,
+            "interest": bal - round(principal),
+        })
+
+    return {
+        "principal": round(principal),
+        "annual_rate": annual_rate,
+        "years": years,
+        "compounding_frequency": n,
+        "total_amount": amount,
+        "total_interest": total_interest,
+        "simple_interest": simple_interest,
+        "compounding_benefit": compounding_benefit,
+        "yearly_breakdown": yearly_breakdown,
+    }
+
+
+def calculate_section_80d(
+    self_premium: float = 0,
+    spouse_premium: float = 0,
+    children_premium: float = 0,
+    parents_premium: float = 0,
+    is_self_senior: bool = False,
+    is_parents_senior: bool = False,
+    preventive_checkup: float = 0,
+) -> dict:
+    self_family_premium = self_premium + spouse_premium + children_premium
+    self_limit = 50_000 if is_self_senior else 25_000
+    parents_limit = 50_000 if is_parents_senior else 25_000
+    preventive = min(preventive_checkup, 5_000)
+    self_deduction = min(self_family_premium + preventive, self_limit)
+    parents_deduction = min(parents_premium, parents_limit)
+    total_deduction = self_deduction + parents_deduction
+    tax_saving_30 = round(total_deduction * 0.312)
+    tax_saving_20 = round(total_deduction * 0.208)
+
+    return {
+        "self_family_premium": round(self_family_premium),
+        "parents_premium": round(parents_premium),
+        "preventive_checkup": round(preventive),
+        "self_limit": self_limit,
+        "parents_limit": parents_limit,
+        "self_deduction": round(self_deduction),
+        "parents_deduction": round(parents_deduction),
+        "total_deduction": round(total_deduction),
+        "self_remaining": max(self_limit - round(self_family_premium) - round(preventive), 0),
+        "parents_remaining": max(parents_limit - round(parents_premium), 0),
+        "tax_saving_high_slab": tax_saving_30,
+        "tax_saving_mid_slab": tax_saving_20,
+        "is_self_senior": is_self_senior,
+        "is_parents_senior": is_parents_senior,
+    }
+
+
+def calculate_salary_optimizer(ctc: float) -> dict:
+    def build_structure(basic: float, label: str) -> dict:
+        hra = round(basic * 0.50)
+        lta = round(min(ctc * 0.05, 50_000))
+        food_coupons = round(min(26_400, ctc * 0.03))
+        nps_80ccd2 = round(basic * 0.10)
+        epf_employer = round(min(basic, 180_000) * 0.12)
+        epf_employee = epf_employer
+        gratuity = round(basic * 0.0481)
+        special = max(ctc - basic - hra - lta - food_coupons - nps_80ccd2 - epf_employer - gratuity, 0)
+        gross_salary = basic + hra + round(special) + lta + food_coupons
+        new_r = calculate_new_regime(gross_salary)
+        monthly_in_hand = round((gross_salary - epf_employee - 2_400 - new_r["total_tax"]) / 12)
+
+        return {
+            "label": label,
+            "basic": basic,
+            "hra": hra,
+            "lta": lta,
+            "food_coupons": food_coupons,
+            "nps_80ccd2": nps_80ccd2,
+            "epf_employer": epf_employer,
+            "epf_employee": epf_employee,
+            "gratuity": gratuity,
+            "special_allowance": round(special),
+            "gross_salary": round(gross_salary),
+            "estimated_tax_new": new_r["total_tax"],
+            "monthly_in_hand_estimate": monthly_in_hand,
+        }
+
+    structures = [
+        build_structure(round(ctc * 0.30), "Low Basic (30%)"),
+        build_structure(round(ctc * 0.40), "Standard Basic (40%)"),
+        build_structure(round(ctc * 0.50), "High Basic (50%)"),
+    ]
+
+    best = max(structures, key=lambda s: s["monthly_in_hand_estimate"])
+
+    return {
+        "ctc": round(ctc),
+        "structures": structures,
+        "recommended": best["label"],
+        "best_monthly_in_hand": best["monthly_in_hand_estimate"],
+    }

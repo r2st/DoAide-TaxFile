@@ -14,6 +14,16 @@ import {
   calculateSeniorCitizenTax,
   calculateStandardDeductions,
   generateRentReceipt,
+  calculateTakeHomeSalary,
+  calculateGratuity,
+  calculatePPF,
+  calculateSIP,
+  calculateFD,
+  calculateMutualFund,
+  calculateEMI,
+  calculateCompoundInterest,
+  calculateSection80D,
+  calculateSalaryOptimizer,
 } from './taxEngine'
 
 describe('formatINR', () => {
@@ -300,5 +310,222 @@ describe('generateRentReceipt', () => {
     expect(r.receipts[0].amount).toBe(15000)
     expect(r.receipts[0].tenantName).toBe('Test')
     expect(r.receipts[0].month).toBe('April')
+  })
+})
+
+describe('calculateTakeHomeSalary', () => {
+  it('computes basic as 40% of CTC', () => {
+    const r = calculateTakeHomeSalary(1200000)
+    expect(r.basic).toBe(480000)
+  })
+
+  it('returns positive monthly in-hand', () => {
+    const r = calculateTakeHomeSalary(1000000)
+    expect(r.monthlyInHand).toBeGreaterThan(0)
+  })
+
+  it('CTC components sum roughly to CTC', () => {
+    const r = calculateTakeHomeSalary(1500000)
+    const components = r.basic + r.hra + r.specialAllowance + r.employerPF + r.gratuity
+    expect(Math.abs(components - 1500000)).toBeLessThan(2)
+  })
+
+  it('applies metro HRA rate', () => {
+    const metro = calculateTakeHomeSalary(1200000, true)
+    const nonMetro = calculateTakeHomeSalary(1200000, false)
+    expect(metro.hra).toBeGreaterThan(nonMetro.hra)
+  })
+})
+
+describe('calculateGratuity', () => {
+  it('calculates private employee gratuity', () => {
+    const r = calculateGratuity(50000, 10)
+    expect(r.gratuityAmount).toBe(Math.round((50000 * 10 * 15) / 26))
+  })
+
+  it('calculates government employee gratuity', () => {
+    const r = calculateGratuity(50000, 10, true)
+    expect(r.gratuityAmount).toBe(Math.round((50000 * 10 * 15) / 30))
+  })
+
+  it('marks ineligible under 5 years', () => {
+    const r = calculateGratuity(50000, 3)
+    expect(r.eligible).toBe(false)
+  })
+
+  it('caps exemption at ₹20L', () => {
+    const r = calculateGratuity(200000, 30)
+    expect(r.exemptAmount).toBeLessThanOrEqual(2000000)
+    expect(r.taxableAmount).toBeGreaterThan(0)
+  })
+})
+
+describe('calculatePPF', () => {
+  it('generates schedule for all years', () => {
+    const r = calculatePPF(150000, 0, 15)
+    expect(r.schedule).toHaveLength(15)
+  })
+
+  it('maturity exceeds total invested', () => {
+    const r = calculatePPF(150000, 0, 15)
+    expect(r.maturityAmount).toBeGreaterThan(r.totalInvested)
+  })
+
+  it('includes existing balance', () => {
+    const r = calculatePPF(100000, 500000, 5)
+    expect(r.maturityAmount).toBeGreaterThan(500000 + 100000 * 5)
+  })
+})
+
+describe('calculateSIP', () => {
+  it('calculates basic SIP', () => {
+    const r = calculateSIP(10000, 12, 10)
+    expect(r.totalInvested).toBe(1200000)
+    expect(r.futureValue).toBeGreaterThan(1200000)
+  })
+
+  it('step-up increases total invested', () => {
+    const noStep = calculateSIP(10000, 12, 10, 0)
+    const withStep = calculateSIP(10000, 12, 10, 10)
+    expect(withStep.totalInvested).toBeGreaterThan(noStep.totalInvested)
+    expect(withStep.futureValue).toBeGreaterThan(noStep.futureValue)
+  })
+
+  it('zero return returns invested amount', () => {
+    const r = calculateSIP(10000, 0, 5)
+    expect(r.futureValue).toBe(r.totalInvested)
+  })
+})
+
+describe('calculateFD', () => {
+  it('calculates maturity with quarterly compounding', () => {
+    const r = calculateFD(1000000, 7, 5, 4)
+    expect(r.maturityAmount).toBeGreaterThan(1000000)
+    expect(r.totalInterest).toBeGreaterThan(0)
+  })
+
+  it('applies TDS above threshold', () => {
+    const r = calculateFD(1000000, 8, 5, 4)
+    expect(r.tdsApplicable).toBe(true)
+    expect(r.tdsAmount).toBeGreaterThan(0)
+  })
+
+  it('higher threshold for seniors', () => {
+    const regular = calculateFD(500000, 7, 1, 4)
+    const senior = calculateFD(500000, 7, 1, 4, true)
+    expect(senior.tdsThreshold).toBeGreaterThan(regular.tdsThreshold)
+  })
+})
+
+describe('calculateMutualFund', () => {
+  it('calculates lumpsum returns', () => {
+    const r = calculateMutualFund('lumpsum', 100000, 12, 10)
+    expect(r.investmentType).toBe('lumpsum')
+    expect(r.futureValue).toBeGreaterThan(100000)
+    expect(r.cagr).toBeCloseTo(12, 0)
+  })
+
+  it('calculates SIP returns', () => {
+    const r = calculateMutualFund('sip', 10000, 12, 10)
+    expect(r.investmentType).toBe('sip')
+    expect(r.totalInvested).toBe(1200000)
+  })
+
+  it('returns positive absolute return', () => {
+    const r = calculateMutualFund('lumpsum', 100000, 10, 5)
+    expect(r.absoluteReturn).toBeGreaterThan(0)
+  })
+})
+
+describe('calculateEMI', () => {
+  it('calculates monthly EMI', () => {
+    const r = calculateEMI(5000000, 8.5, 20)
+    expect(r.emi).toBeGreaterThan(0)
+    expect(r.totalInterest).toBeGreaterThan(0)
+  })
+
+  it('total payment = principal + interest', () => {
+    const r = calculateEMI(3000000, 9, 15)
+    expect(r.totalPayment).toBe(r.loanAmount + r.totalInterest)
+  })
+
+  it('generates amortization schedule', () => {
+    const r = calculateEMI(1000000, 10, 10)
+    expect(r.schedule).toHaveLength(10)
+    expect(r.schedule[0].principalPaid).toBeGreaterThan(0)
+    expect(r.schedule[0].interestPaid).toBeGreaterThan(0)
+  })
+
+  it('balance reaches near zero at end', () => {
+    const r = calculateEMI(1000000, 8, 5)
+    expect(r.schedule[r.schedule.length - 1].balance).toBeLessThan(100)
+  })
+})
+
+describe('calculateCompoundInterest', () => {
+  it('compound > simple interest', () => {
+    const r = calculateCompoundInterest(100000, 10, 5)
+    expect(r.totalInterest).toBeGreaterThan(r.simpleInterest)
+    expect(r.compoundingBenefit).toBeGreaterThan(0)
+  })
+
+  it('more frequent compounding gives higher returns', () => {
+    const annual = calculateCompoundInterest(100000, 10, 5, 1)
+    const monthly = calculateCompoundInterest(100000, 10, 5, 12)
+    expect(monthly.totalAmount).toBeGreaterThan(annual.totalAmount)
+  })
+
+  it('generates yearly breakdown', () => {
+    const r = calculateCompoundInterest(100000, 8, 10, 4)
+    expect(r.yearlyBreakdown).toHaveLength(10)
+    expect(r.yearlyBreakdown[0].balance).toBeGreaterThan(100000)
+  })
+})
+
+describe('calculateSection80D', () => {
+  it('caps self+family at ₹25K for non-senior', () => {
+    const r = calculateSection80D(30000, 0, 0, 0, false)
+    expect(r.selfDeduction).toBe(25000)
+  })
+
+  it('caps self+family at ₹50K for senior', () => {
+    const r = calculateSection80D(60000, 0, 0, 0, true)
+    expect(r.selfDeduction).toBe(50000)
+  })
+
+  it('adds parents deduction separately', () => {
+    const r = calculateSection80D(20000, 0, 0, 30000, false, true)
+    expect(r.parentsDeduction).toBe(30000)
+    expect(r.totalDeduction).toBe(20000 + 30000)
+  })
+
+  it('includes preventive checkup in limit', () => {
+    const r = calculateSection80D(22000, 0, 0, 0, false, false, 5000)
+    expect(r.selfDeduction).toBe(25000)
+  })
+
+  it('calculates tax savings', () => {
+    const r = calculateSection80D(25000, 0, 0, 25000, false, false, 0)
+    expect(r.taxSavingHighSlab).toBeGreaterThan(0)
+  })
+})
+
+describe('calculateSalaryOptimizer', () => {
+  it('returns 3 structures', () => {
+    const r = calculateSalaryOptimizer(1200000)
+    expect(r.structures).toHaveLength(3)
+  })
+
+  it('identifies best structure', () => {
+    const r = calculateSalaryOptimizer(1500000)
+    expect(r.recommended).toBeTruthy()
+    expect(r.bestMonthlyInHand).toBeGreaterThan(0)
+  })
+
+  it('all structures have positive monthly in-hand', () => {
+    const r = calculateSalaryOptimizer(2000000)
+    r.structures.forEach(s => {
+      expect(s.monthlyInHandEstimate).toBeGreaterThan(0)
+    })
   })
 })

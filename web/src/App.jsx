@@ -15,6 +15,16 @@ import StandardDeductionCalculator from './pages/StandardDeductionCalculator'
 import NPSCalculator from './pages/NPSCalculator'
 import HomeLoanCalculator from './pages/HomeLoanCalculator'
 import SeniorCitizenCalculator from './pages/SeniorCitizenCalculator'
+import TakeHomeSalaryCalculator from './pages/TakeHomeSalaryCalculator'
+import GratuityCalculator from './pages/GratuityCalculator'
+import PPFCalculator from './pages/PPFCalculator'
+import SIPCalculator from './pages/SIPCalculator'
+import FDCalculator from './pages/FDCalculator'
+import MutualFundCalculator from './pages/MutualFundCalculator'
+import EMICalculator from './pages/EMICalculator'
+import CompoundInterestCalculator from './pages/CompoundInterestCalculator'
+import Section80DCalculator from './pages/Section80DCalculator'
+import SalaryTaxOptimizer from './pages/SalaryTaxOptimizer'
 
 export default function App() {
   return (
@@ -35,6 +45,16 @@ export default function App() {
         <Route path="/nps-calculator" element={<NPSCalculator />} />
         <Route path="/home-loan-calculator" element={<HomeLoanCalculator />} />
         <Route path="/senior-citizen-calculator" element={<SeniorCitizenCalculator />} />
+        <Route path="/take-home-salary-calculator" element={<TakeHomeSalaryCalculator />} />
+        <Route path="/gratuity-calculator" element={<GratuityCalculator />} />
+        <Route path="/ppf-calculator" element={<PPFCalculator />} />
+        <Route path="/sip-calculator" element={<SIPCalculator />} />
+        <Route path="/fd-calculator" element={<FDCalculator />} />
+        <Route path="/mutual-fund-calculator" element={<MutualFundCalculator />} />
+        <Route path="/emi-calculator" element={<EMICalculator />} />
+        <Route path="/compound-interest-calculator" element={<CompoundInterestCalculator />} />
+        <Route path="/80d-calculator" element={<Section80DCalculator />} />
+        <Route path="/salary-tax-optimizer" element={<SalaryTaxOptimizer />} />
       </Routes>
     </Layout>
   )

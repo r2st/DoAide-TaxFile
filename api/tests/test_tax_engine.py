@@ -1,12 +1,22 @@
 from app.services.tax_engine import (
     calculate_advance_tax,
     calculate_capital_gains,
+    calculate_compound_interest,
+    calculate_emi,
+    calculate_fd,
+    calculate_gratuity,
     calculate_home_loan_benefit,
     calculate_hra_exemption,
+    calculate_mutual_fund,
     calculate_new_regime,
     calculate_nps_benefit,
     calculate_old_regime,
+    calculate_ppf,
+    calculate_salary_optimizer,
+    calculate_section_80d,
     calculate_senior_citizen_tax,
+    calculate_sip,
+    calculate_take_home_salary,
     calculate_tds,
     plan_80c,
     select_itr_form,
@@ -278,3 +288,166 @@ class TestSeniorCitizenTax:
         senior = calculate_senior_citizen_tax(1_500_000, 65)
         super_senior = calculate_senior_citizen_tax(1_500_000, 85)
         assert senior["total_tax_new"] == super_senior["total_tax_new"]
+
+
+class TestTakeHomeSalary:
+    def test_basic_is_40_percent(self):
+        result = calculate_take_home_salary(1_200_000)
+        assert result["basic"] == 480_000
+
+    def test_positive_monthly_in_hand(self):
+        result = calculate_take_home_salary(1_000_000)
+        assert result["monthly_in_hand"] > 0
+
+    def test_metro_hra_higher(self):
+        metro = calculate_take_home_salary(1_200_000, is_metro=True)
+        non_metro = calculate_take_home_salary(1_200_000, is_metro=False)
+        assert metro["hra"] > non_metro["hra"]
+
+
+class TestGratuity:
+    def test_private_employee(self):
+        result = calculate_gratuity(50_000, 10)
+        assert result["gratuity_amount"] == round((50_000 * 10 * 15) / 26)
+
+    def test_government_employee(self):
+        result = calculate_gratuity(50_000, 10, is_government=True)
+        assert result["gratuity_amount"] == round((50_000 * 10 * 15) / 30)
+
+    def test_ineligible_under_5_years(self):
+        result = calculate_gratuity(50_000, 3)
+        assert result["eligible"] is False
+
+    def test_exemption_cap(self):
+        result = calculate_gratuity(200_000, 30)
+        assert result["exempt_amount"] <= 2_000_000
+        assert result["taxable_amount"] > 0
+
+
+class TestPPF:
+    def test_schedule_length(self):
+        result = calculate_ppf(150_000, 0, 15)
+        assert len(result["schedule"]) == 15
+
+    def test_maturity_exceeds_invested(self):
+        result = calculate_ppf(150_000, 0, 15)
+        assert result["maturity_amount"] > result["total_invested"]
+
+    def test_existing_balance(self):
+        result = calculate_ppf(100_000, 500_000, 5)
+        assert result["maturity_amount"] > 500_000 + 100_000 * 5
+
+
+class TestSIP:
+    def test_basic_sip(self):
+        result = calculate_sip(10_000, 12, 10)
+        assert result["total_invested"] == 1_200_000
+        assert result["future_value"] > 1_200_000
+
+    def test_step_up_increases_value(self):
+        no_step = calculate_sip(10_000, 12, 10, 0)
+        with_step = calculate_sip(10_000, 12, 10, 10)
+        assert with_step["total_invested"] > no_step["total_invested"]
+        assert with_step["future_value"] > no_step["future_value"]
+
+    def test_zero_return(self):
+        result = calculate_sip(10_000, 0, 5)
+        assert result["future_value"] == result["total_invested"]
+
+
+class TestFD:
+    def test_maturity_greater_than_principal(self):
+        result = calculate_fd(1_000_000, 7, 5)
+        assert result["maturity_amount"] > 1_000_000
+
+    def test_tds_applied(self):
+        result = calculate_fd(1_000_000, 8, 5)
+        assert result["tds_applicable"] is True
+        assert result["tds_amount"] > 0
+
+    def test_senior_higher_threshold(self):
+        regular = calculate_fd(500_000, 7, 1)
+        senior = calculate_fd(500_000, 7, 1, is_senior=True)
+        assert senior["tds_threshold"] > regular["tds_threshold"]
+
+
+class TestMutualFund:
+    def test_lumpsum(self):
+        result = calculate_mutual_fund("lumpsum", 100_000, 12, 10)
+        assert result["investment_type"] == "lumpsum"
+        assert result["future_value"] > 100_000
+
+    def test_sip_mode(self):
+        result = calculate_mutual_fund("sip", 10_000, 12, 10)
+        assert result["investment_type"] == "sip"
+        assert result["total_invested"] == 1_200_000
+
+
+class TestEMI:
+    def test_emi_positive(self):
+        result = calculate_emi(5_000_000, 8.5, 20)
+        assert result["emi"] > 0
+
+    def test_total_equals_principal_plus_interest(self):
+        result = calculate_emi(3_000_000, 9, 15)
+        assert result["total_payment"] == result["loan_amount"] + result["total_interest"]
+
+    def test_schedule_length(self):
+        result = calculate_emi(1_000_000, 10, 10)
+        assert len(result["schedule"]) == 10
+
+    def test_balance_near_zero(self):
+        result = calculate_emi(1_000_000, 8, 5)
+        assert result["schedule"][-1]["balance"] < 100
+
+
+class TestCompoundInterest:
+    def test_compound_exceeds_simple(self):
+        result = calculate_compound_interest(100_000, 10, 5)
+        assert result["total_interest"] > result["simple_interest"]
+        assert result["compounding_benefit"] > 0
+
+    def test_frequent_compounding_better(self):
+        annual = calculate_compound_interest(100_000, 10, 5, 1)
+        monthly = calculate_compound_interest(100_000, 10, 5, 12)
+        assert monthly["total_amount"] > annual["total_amount"]
+
+    def test_yearly_breakdown(self):
+        result = calculate_compound_interest(100_000, 8, 10, 4)
+        assert len(result["yearly_breakdown"]) == 10
+        assert result["yearly_breakdown"][0]["balance"] > 100_000
+
+
+class TestSection80D:
+    def test_self_cap_non_senior(self):
+        result = calculate_section_80d(self_premium=30_000)
+        assert result["self_deduction"] == 25_000
+
+    def test_self_cap_senior(self):
+        result = calculate_section_80d(self_premium=60_000, is_self_senior=True)
+        assert result["self_deduction"] == 50_000
+
+    def test_parents_separate(self):
+        result = calculate_section_80d(self_premium=20_000, parents_premium=30_000, is_parents_senior=True)
+        assert result["parents_deduction"] == 30_000
+        assert result["total_deduction"] == 20_000 + 30_000
+
+    def test_tax_savings(self):
+        result = calculate_section_80d(self_premium=25_000, parents_premium=25_000)
+        assert result["tax_saving_high_slab"] > 0
+
+
+class TestSalaryOptimizer:
+    def test_three_structures(self):
+        result = calculate_salary_optimizer(1_200_000)
+        assert len(result["structures"]) == 3
+
+    def test_recommends_best(self):
+        result = calculate_salary_optimizer(1_500_000)
+        assert result["recommended"]
+        assert result["best_monthly_in_hand"] > 0
+
+    def test_all_positive_in_hand(self):
+        result = calculate_salary_optimizer(2_000_000)
+        for s in result["structures"]:
+            assert s["monthly_in_hand_estimate"] > 0

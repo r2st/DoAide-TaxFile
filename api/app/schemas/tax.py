@@ -107,3 +107,71 @@ class SeniorCitizenRequest(BaseModel):
     home_loan_interest: float = Field(default=0, ge=0)
     nps_80ccd_1b: float = Field(default=0, ge=0)
     other_deductions: float = Field(default=0, ge=0)
+
+
+class TakeHomeSalaryRequest(BaseModel):
+    ctc: float = Field(ge=0)
+    is_metro: bool = False
+    pf_contribution_rate: float = Field(default=0.12, ge=0, le=1)
+
+
+class GratuityRequest(BaseModel):
+    last_drawn_salary: float = Field(ge=0)
+    years_of_service: float = Field(ge=0)
+    is_government: bool = False
+
+
+class PPFRequest(BaseModel):
+    annual_investment: float = Field(ge=0, le=150000)
+    existing_balance: float = Field(default=0, ge=0)
+    years_remaining: int = Field(default=15, ge=1, le=50)
+    interest_rate: float = Field(default=7.1, ge=0, le=20)
+
+
+class SIPRequest(BaseModel):
+    monthly_amount: float = Field(ge=0)
+    annual_return_rate: float = Field(ge=0, le=50)
+    years: int = Field(ge=1, le=50)
+    step_up_percent: float = Field(default=0, ge=0, le=100)
+
+
+class FDRequest(BaseModel):
+    principal: float = Field(ge=0)
+    annual_rate: float = Field(ge=0, le=20)
+    tenure_years: float = Field(ge=0)
+    compounding_frequency: int = Field(default=4, ge=1, le=365)
+    is_senior: bool = False
+
+
+class MutualFundRequest(BaseModel):
+    investment_type: str = Field(pattern="^(sip|lumpsum)$")
+    amount: float = Field(ge=0)
+    annual_return_rate: float = Field(ge=0, le=50)
+    years: int = Field(ge=1, le=50)
+
+
+class EMIRequest(BaseModel):
+    loan_amount: float = Field(ge=0)
+    annual_rate: float = Field(ge=0, le=50)
+    tenure_years: int = Field(ge=1, le=50)
+
+
+class CompoundInterestRequest(BaseModel):
+    principal: float = Field(ge=0)
+    annual_rate: float = Field(ge=0, le=100)
+    years: int = Field(ge=1, le=100)
+    compounding_frequency: int = Field(default=1, ge=1, le=365)
+
+
+class Section80DRequest(BaseModel):
+    self_premium: float = Field(default=0, ge=0)
+    spouse_premium: float = Field(default=0, ge=0)
+    children_premium: float = Field(default=0, ge=0)
+    parents_premium: float = Field(default=0, ge=0)
+    is_self_senior: bool = False
+    is_parents_senior: bool = False
+    preventive_checkup: float = Field(default=0, ge=0)
+
+
+class SalaryOptimizerRequest(BaseModel):
+    ctc: float = Field(ge=0)

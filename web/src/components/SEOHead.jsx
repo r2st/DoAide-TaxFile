@@ -29,6 +29,11 @@ export default function SEOHead({ title, description, keywords, canonical, jsonL
     setOG('og:title', title)
     setOG('og:type', 'website')
     setOG('og:site_name', 'DoAide TaxFile')
+    setOG('og:image', 'https://tax.doaide.com/og-image.png')
+    setMeta('twitter:card', 'summary_large_image')
+    setMeta('twitter:title', title)
+    if (description) setMeta('twitter:description', description)
+    setMeta('twitter:image', 'https://tax.doaide.com/og-image.png')
     if (canonical) {
       setOG('og:url', canonical)
       let link = document.querySelector('link[rel="canonical"]')

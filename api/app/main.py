@@ -5,13 +5,23 @@ from app.config import settings
 from app.routers import (
     advance_tax,
     capital_gains,
+    compound_interest,
+    emi,
+    fd,
+    gratuity,
     home_loan,
     hra,
     itr_selector,
+    mutual_fund,
     nps,
+    ppf,
     recommendations,
+    salary_optimizer,
     section_80c,
+    section_80d,
     senior_citizen,
+    sip,
+    take_home_salary,
     tax_calculator,
     tds,
 )
@@ -41,6 +51,16 @@ app.include_router(recommendations.router, prefix="/api/v1", tags=["Recommendati
 app.include_router(nps.router, prefix="/api/v1", tags=["NPS"])
 app.include_router(home_loan.router, prefix="/api/v1", tags=["Home Loan"])
 app.include_router(senior_citizen.router, prefix="/api/v1", tags=["Senior Citizen"])
+app.include_router(take_home_salary.router, prefix="/api/v1", tags=["Take Home Salary"])
+app.include_router(gratuity.router, prefix="/api/v1", tags=["Gratuity"])
+app.include_router(ppf.router, prefix="/api/v1", tags=["PPF"])
+app.include_router(sip.router, prefix="/api/v1", tags=["SIP"])
+app.include_router(fd.router, prefix="/api/v1", tags=["FD"])
+app.include_router(mutual_fund.router, prefix="/api/v1", tags=["Mutual Fund"])
+app.include_router(emi.router, prefix="/api/v1", tags=["EMI"])
+app.include_router(compound_interest.router, prefix="/api/v1", tags=["Compound Interest"])
+app.include_router(section_80d.router, prefix="/api/v1", tags=["Section 80D"])
+app.include_router(salary_optimizer.router, prefix="/api/v1", tags=["Salary Optimizer"])
 
 
 @app.get("/health")

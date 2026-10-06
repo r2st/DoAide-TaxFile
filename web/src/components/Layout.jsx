@@ -3,16 +3,17 @@ import { Link, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
   { path: '/income-tax-calculator', label: 'Tax Calculator' },
-  { path: '/itr-form-selector', label: 'ITR Selector' },
+  { path: '/take-home-salary-calculator', label: 'Salary' },
+  { path: '/sip-calculator', label: 'SIP' },
+  { path: '/emi-calculator', label: 'EMI' },
   { path: '/hra-calculator', label: 'HRA' },
-  { path: '/80c-planner', label: '80C Planner' },
-  { path: '/capital-gains-calculator', label: 'Capital Gains' },
-  { path: '/tds-calculator', label: 'TDS' },
-  { path: '/advance-tax-calculator', label: 'Advance Tax' },
+  { path: '/80c-planner', label: '80C' },
+  { path: '/80d-calculator', label: '80D' },
+  { path: '/ppf-calculator', label: 'PPF' },
+  { path: '/fd-calculator', label: 'FD' },
+  { path: '/mutual-fund-calculator', label: 'Mutual Fund' },
+  { path: '/gratuity-calculator', label: 'Gratuity' },
   { path: '/rent-receipt-generator', label: 'Rent Receipts' },
-  { path: '/nps-calculator', label: 'NPS' },
-  { path: '/home-loan-calculator', label: 'Home Loan' },
-  { path: '/senior-citizen-calculator', label: 'Senior Citizen' },
 ]
 
 const s = {
@@ -166,7 +167,7 @@ export default function Layout({ children }) {
       <main style={s.main}>{children}</main>
 
       <footer style={s.footer}>
-        <p>DoAide TaxFile — Free income tax tools for India</p>
+        <p>DoAide TaxFile — Free tax & financial tools for India</p>
         <p style={{ marginTop: 4 }}>FY 2026-27 (AY 2027-28) • All calculations are indicative</p>
       </footer>
 

@@ -470,3 +470,344 @@ export function generateRentReceipt({ tenantName, landlordName, landlordPAN, add
   const totalRent = receipts.length * rentAmount
   return { receipts, totalRent, tenantName, landlordName, landlordPAN, address }
 }
+
+export function calculateTakeHomeSalary(ctc, isMetro = false, pfContributionRate = 0.12) {
+  const basic = Math.round(ctc * 0.40)
+  const hra = Math.round(basic * (isMetro ? 0.50 : 0.40))
+  const employerPF = Math.round(Math.min(basic, 180000) * pfContributionRate)
+  const employeePF = employerPF
+  const gratuity = Math.round(basic * 0.0481)
+  const professionalTax = 2400
+  const specialAllowance = Math.max(ctc - basic - hra - employerPF - gratuity, 0)
+  const grossSalary = basic + hra + specialAllowance
+  const totalDeductions = employeePF + professionalTax
+  const annualInHand = grossSalary - totalDeductions
+  const taxableIncome = grossSalary - Math.min(75000, grossSalary)
+  const newRegime = calculateNewRegime(grossSalary)
+  const monthlyTax = Math.round(newRegime.totalTax / 12)
+  const monthlyInHand = Math.round((annualInHand - newRegime.totalTax) / 12)
+
+  return {
+    ctc: Math.round(ctc),
+    basic,
+    hra,
+    specialAllowance: Math.round(specialAllowance),
+    employerPF,
+    employeePF,
+    gratuity,
+    professionalTax,
+    grossSalary: Math.round(grossSalary),
+    totalDeductions: Math.round(totalDeductions),
+    annualInHand: Math.round(annualInHand),
+    estimatedTax: newRegime.totalTax,
+    taxableIncome: Math.round(taxableIncome),
+    monthlyGross: Math.round(grossSalary / 12),
+    monthlyDeductions: Math.round(totalDeductions / 12),
+    monthlyTax,
+    monthlyInHand: Math.max(monthlyInHand, 0),
+    annualTakeHome: Math.max(annualInHand - newRegime.totalTax, 0),
+  }
+}
+
+export function calculateGratuity(lastDrawnSalary, yearsOfService, isGovernment = false) {
+  const cappedYears = Math.max(yearsOfService, 0)
+  let gratuityAmount
+  if (isGovernment) {
+    gratuityAmount = Math.round((lastDrawnSalary * cappedYears * 15) / 30)
+  } else {
+    gratuityAmount = Math.round((lastDrawnSalary * cappedYears * 15) / 26)
+  }
+  const exemptionLimit = 2000000
+  const exemptAmount = Math.min(gratuityAmount, exemptionLimit)
+  const taxableAmount = Math.max(gratuityAmount - exemptionLimit, 0)
+  const eligible = cappedYears >= 5
+
+  return {
+    lastDrawnSalary: Math.round(lastDrawnSalary),
+    yearsOfService: cappedYears,
+    isGovernment,
+    gratuityAmount,
+    exemptionLimit,
+    exemptAmount,
+    taxableAmount,
+    eligible,
+    formula: isGovernment
+      ? `(${formatINR(lastDrawnSalary)} × ${cappedYears} × 15) / 30`
+      : `(${formatINR(lastDrawnSalary)} × ${cappedYears} × 15) / 26`,
+  }
+}
+
+export function calculatePPF(annualInvestment, existingBalance = 0, yearsRemaining = 15, interestRate = 7.1) {
+  const rate = interestRate / 100
+  const schedule = []
+  let balance = existingBalance
+  let totalInvested = existingBalance
+  let totalInterest = 0
+
+  for (let year = 1; year <= yearsRemaining; year++) {
+    const interest = Math.round((balance + annualInvestment) * rate)
+    balance = balance + annualInvestment + interest
+    totalInvested += annualInvestment
+    totalInterest += interest
+    schedule.push({
+      year,
+      investment: Math.round(annualInvestment),
+      interest,
+      balance: Math.round(balance),
+      totalInvested: Math.round(totalInvested),
+    })
+  }
+
+  return {
+    annualInvestment: Math.round(annualInvestment),
+    interestRate,
+    yearsRemaining,
+    existingBalance: Math.round(existingBalance),
+    maturityAmount: Math.round(balance),
+    totalInvested: Math.round(totalInvested),
+    totalInterest: Math.round(totalInterest),
+    schedule,
+  }
+}
+
+export function calculateSIP(monthlyAmount, annualReturnRate, years, stepUpPercent = 0) {
+  const monthlyRate = annualReturnRate / 100 / 12
+  const months = years * 12
+  let totalInvested = 0
+  let futureValue = 0
+  let currentSIP = monthlyAmount
+
+  for (let month = 1; month <= months; month++) {
+    if (stepUpPercent > 0 && month > 1 && (month - 1) % 12 === 0) {
+      currentSIP = Math.round(currentSIP * (1 + stepUpPercent / 100))
+    }
+    totalInvested += currentSIP
+    futureValue = (futureValue + currentSIP) * (1 + monthlyRate)
+  }
+
+  futureValue = Math.round(futureValue)
+  totalInvested = Math.round(totalInvested)
+  const wealthGained = futureValue - totalInvested
+
+  return {
+    monthlyAmount: Math.round(monthlyAmount),
+    annualReturnRate,
+    years,
+    stepUpPercent,
+    totalInvested,
+    futureValue,
+    wealthGained,
+  }
+}
+
+export function calculateFD(principal, annualRate, tenureYears, compoundingFrequency = 4, isSenior = false) {
+  const n = compoundingFrequency
+  const r = annualRate / 100
+  const maturityAmount = Math.round(principal * Math.pow(1 + r / n, n * tenureYears))
+  const totalInterest = maturityAmount - Math.round(principal)
+  const tdsThreshold = isSenior ? 50000 : 40000
+  const tdsApplicable = totalInterest > tdsThreshold
+  const tdsAmount = tdsApplicable ? Math.round(totalInterest * 0.10) : 0
+  const interestAfterTDS = totalInterest - tdsAmount
+  const effectiveReturn = Math.round(principal + interestAfterTDS)
+
+  return {
+    principal: Math.round(principal),
+    annualRate,
+    tenureYears,
+    compoundingFrequency: n,
+    compoundingLabel: { 1: 'Annually', 2: 'Half-Yearly', 4: 'Quarterly', 12: 'Monthly' }[n] || 'Quarterly',
+    maturityAmount,
+    totalInterest,
+    tdsThreshold,
+    tdsApplicable,
+    tdsAmount,
+    interestAfterTDS,
+    effectiveReturn,
+    isSenior,
+  }
+}
+
+export function calculateMutualFund(investmentType, amount, annualReturnRate, years) {
+  if (investmentType === 'sip') {
+    const sip = calculateSIP(amount, annualReturnRate, years)
+    return { ...sip, investmentType: 'sip' }
+  }
+  const futureValue = Math.round(amount * Math.pow(1 + annualReturnRate / 100, years))
+  const totalInvested = Math.round(amount)
+  const wealthGained = futureValue - totalInvested
+  const absoluteReturn = totalInvested > 0 ? ((futureValue - totalInvested) / totalInvested) * 100 : 0
+  const cagr = totalInvested > 0 ? (Math.pow(futureValue / totalInvested, 1 / years) - 1) * 100 : 0
+
+  return {
+    investmentType: 'lumpsum',
+    amount: totalInvested,
+    annualReturnRate,
+    years,
+    totalInvested,
+    futureValue,
+    wealthGained,
+    absoluteReturn: Math.round(absoluteReturn * 100) / 100,
+    cagr: Math.round(cagr * 100) / 100,
+  }
+}
+
+export function calculateEMI(loanAmount, annualRate, tenureYears) {
+  const monthlyRate = annualRate / 100 / 12
+  const months = tenureYears * 12
+  let emi
+  if (monthlyRate === 0) {
+    emi = Math.round(loanAmount / months)
+  } else {
+    emi = Math.round(loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1))
+  }
+  const totalPayment = emi * months
+  const totalInterest = totalPayment - Math.round(loanAmount)
+  const schedule = []
+  let balance = loanAmount
+
+  for (let year = 1; year <= tenureYears; year++) {
+    let yearPrincipal = 0
+    let yearInterest = 0
+    for (let m = 0; m < 12; m++) {
+      const interestComponent = Math.round(balance * monthlyRate)
+      const principalComponent = emi - interestComponent
+      yearPrincipal += principalComponent
+      yearInterest += interestComponent
+      balance = Math.max(balance - principalComponent, 0)
+    }
+    schedule.push({
+      year,
+      principalPaid: Math.round(yearPrincipal),
+      interestPaid: Math.round(yearInterest),
+      balance: Math.round(balance),
+    })
+  }
+
+  return {
+    loanAmount: Math.round(loanAmount),
+    annualRate,
+    tenureYears,
+    emi,
+    totalPayment: Math.round(totalPayment),
+    totalInterest: Math.round(totalInterest),
+    schedule,
+  }
+}
+
+export function calculateCompoundInterest(principal, annualRate, years, compoundingFrequency = 1) {
+  const n = compoundingFrequency
+  const r = annualRate / 100
+  const amount = Math.round(principal * Math.pow(1 + r / n, n * years))
+  const totalInterest = amount - Math.round(principal)
+  const simpleInterest = Math.round(principal * r * years)
+  const compoundingBenefit = totalInterest - simpleInterest
+
+  const yearlyBreakdown = []
+  for (let y = 1; y <= years; y++) {
+    const bal = Math.round(principal * Math.pow(1 + r / n, n * y))
+    yearlyBreakdown.push({
+      year: y,
+      balance: bal,
+      interest: bal - Math.round(principal),
+    })
+  }
+
+  return {
+    principal: Math.round(principal),
+    annualRate,
+    years,
+    compoundingFrequency: n,
+    compoundingLabel: { 1: 'Annually', 2: 'Half-Yearly', 4: 'Quarterly', 12: 'Monthly', 365: 'Daily' }[n] || `${n}x/year`,
+    totalAmount: amount,
+    totalInterest,
+    simpleInterest,
+    compoundingBenefit,
+    yearlyBreakdown,
+  }
+}
+
+export function calculateSection80D(selfPremium, spousePremium = 0, childrenPremium = 0, parentsPremium = 0, isSelfSenior = false, isParentsSenior = false, preventiveCheckup = 0) {
+  const selfFamilyPremium = selfPremium + spousePremium + childrenPremium
+  const selfLimit = isSelfSenior ? 50000 : 25000
+  const parentsLimit = isParentsSenior ? 50000 : 25000
+  const maxPreventive = 5000
+  const preventive = Math.min(preventiveCheckup, maxPreventive)
+  const selfDeduction = Math.min(selfFamilyPremium + preventive, selfLimit)
+  const parentsDeduction = Math.min(parentsPremium, parentsLimit)
+  const totalDeduction = selfDeduction + parentsDeduction
+  const taxSaving30 = Math.round(totalDeduction * 0.312)
+  const taxSaving20 = Math.round(totalDeduction * 0.208)
+  const selfRemaining = Math.max(selfLimit - selfFamilyPremium - preventive, 0)
+  const parentsRemaining = Math.max(parentsLimit - parentsPremium, 0)
+
+  return {
+    selfFamilyPremium: Math.round(selfFamilyPremium),
+    parentsPremium: Math.round(parentsPremium),
+    preventiveCheckup: preventive,
+    selfLimit,
+    parentsLimit,
+    selfDeduction,
+    parentsDeduction,
+    totalDeduction,
+    selfRemaining,
+    parentsRemaining,
+    taxSavingHighSlab: taxSaving30,
+    taxSavingMidSlab: taxSaving20,
+    isSelfSenior,
+    isParentsSenior,
+  }
+}
+
+export function calculateSalaryOptimizer(ctc) {
+  const basicLow = Math.round(ctc * 0.30)
+  const basicStd = Math.round(ctc * 0.40)
+  const basicHigh = Math.round(ctc * 0.50)
+
+  function buildStructure(basic, label) {
+    const hra = Math.round(basic * 0.50)
+    const lta = Math.round(Math.min(ctc * 0.05, 50000))
+    const foodCoupons = Math.round(Math.min(26400, ctc * 0.03))
+    const nps80ccd2 = Math.round(basic * 0.10)
+    const epfEmployer = Math.round(Math.min(basic, 180000) * 0.12)
+    const epfEmployee = epfEmployer
+    const gratuity = Math.round(basic * 0.0481)
+    const special = Math.max(ctc - basic - hra - lta - foodCoupons - nps80ccd2 - epfEmployer - gratuity, 0)
+    const grossSalary = basic + hra + special + lta + foodCoupons
+    const totalDeductions80C = Math.min(epfEmployee, 150000)
+    const totalDeductionsOld = 50000 + totalDeductions80C + nps80ccd2
+    const taxableOld = Math.max(grossSalary - totalDeductionsOld - Math.min(hra, grossSalary * 0.20), 0)
+    const newR = calculateNewRegime(grossSalary)
+
+    return {
+      label,
+      basic,
+      hra,
+      lta,
+      foodCoupons,
+      nps80ccd2,
+      epfEmployer,
+      epfEmployee,
+      gratuity,
+      specialAllowance: Math.round(special),
+      grossSalary: Math.round(grossSalary),
+      estimatedTaxNew: newR.totalTax,
+      monthlyInHandEstimate: Math.round((grossSalary - epfEmployee - 2400 - newR.totalTax) / 12),
+    }
+  }
+
+  const structures = [
+    buildStructure(basicLow, 'Low Basic (30%)'),
+    buildStructure(basicStd, 'Standard Basic (40%)'),
+    buildStructure(basicHigh, 'High Basic (50%)'),
+  ]
+
+  const best = structures.reduce((a, b) => a.monthlyInHandEstimate > b.monthlyInHandEstimate ? a : b)
+
+  return {
+    ctc: Math.round(ctc),
+    structures,
+    recommended: best.label,
+    bestMonthlyInHand: best.monthlyInHandEstimate,
+  }
+}

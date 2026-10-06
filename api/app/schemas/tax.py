@@ -79,3 +79,31 @@ class RecommendationsRequest(BaseModel):
     existing_hra_exemption: float = Field(default=0, ge=0)
     existing_home_loan: float = Field(default=0, ge=0)
     existing_nps: float = Field(default=0, ge=0)
+
+
+class NPSRequest(BaseModel):
+    annual_contribution: float = Field(ge=0)
+    employer_contribution: float = Field(default=0, ge=0)
+    gross_income: float = Field(default=0, ge=0)
+    age: int = Field(default=30, ge=18, le=100)
+
+
+class HomeLoanRequest(BaseModel):
+    principal_per_year: float = Field(ge=0)
+    interest_per_year: float = Field(ge=0)
+    loan_amount: float = Field(ge=0)
+    is_let_out: bool = False
+    is_first_time_buyer: bool = False
+    property_value: float = Field(default=0, ge=0)
+
+
+class SeniorCitizenRequest(BaseModel):
+    gross_income: float = Field(ge=0)
+    age: int = Field(ge=60, le=120)
+    section_80c: float = Field(default=0, ge=0)
+    section_80d: float = Field(default=0, ge=0)
+    section_80d_parents: float = Field(default=0, ge=0)
+    section_80ttb: float = Field(default=0, ge=0)
+    home_loan_interest: float = Field(default=0, ge=0)
+    nps_80ccd_1b: float = Field(default=0, ge=0)
+    other_deductions: float = Field(default=0, ge=0)

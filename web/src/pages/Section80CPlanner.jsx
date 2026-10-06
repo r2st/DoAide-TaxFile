@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
+import WhatsAppShare from '../components/WhatsAppShare'
+import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { plan80C, INVESTMENT_OPTIONS, formatINR } from '../lib/taxEngine'
 
@@ -64,6 +66,7 @@ export default function Section80CPlanner() {
         description="Plan your Section 80C investments for maximum tax savings. Track your ₹1.5 lakh limit with PPF, ELSS, NSC, FD, and more."
         keywords="80C investment planner, 80C tax saving, PPF ELSS tax saving, Section 80C limit"
         canonical="https://tax.doaide.com/80c-planner"
+        faqs={FAQS}
       />
 
       <h1 style={s.title}>Section 80C Investment Planner</h1>
@@ -97,6 +100,11 @@ export default function Section80CPlanner() {
           <span>{pct.toFixed(0)}% utilized</span>
           <span>Remaining: {formatINR(result.remaining80C)}</span>
         </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: 12, marginTop: 20, flexWrap: 'wrap' }} className="no-print">
+        <WhatsAppShare text={`80C Investment Plan\n80C Used: ${formatINR(result.capped80C)} / ${formatINR(150000)}\nRemaining: ${formatINR(result.remaining80C)}\nNPS (80CCD 1B): ${formatINR(result.nps80CCD1B)}\nTotal Deduction: ${formatINR(result.totalDeduction)}\n\ntax.doaide.com/80c-planner`} />
+        <PrintButton />
       </div>
 
       {result.nps80CCD1B > 0 && (

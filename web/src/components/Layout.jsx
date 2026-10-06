@@ -9,6 +9,10 @@ const NAV_LINKS = [
   { path: '/capital-gains-calculator', label: 'Capital Gains' },
   { path: '/tds-calculator', label: 'TDS' },
   { path: '/advance-tax-calculator', label: 'Advance Tax' },
+  { path: '/rent-receipt-generator', label: 'Rent Receipts' },
+  { path: '/nps-calculator', label: 'NPS' },
+  { path: '/home-loan-calculator', label: 'Home Loan' },
+  { path: '/senior-citizen-calculator', label: 'Senior Citizen' },
 ]
 
 const s = {

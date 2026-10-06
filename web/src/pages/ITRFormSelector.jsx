@@ -2,6 +2,8 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
+import WhatsAppShare from '../components/WhatsAppShare'
+import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { selectITRForm, formatINR } from '../lib/taxEngine'
 
@@ -58,6 +60,7 @@ export default function ITRFormSelector() {
         description="Find the right ITR form for your income. Answer simple questions to get ITR-1, ITR-2, ITR-3, or ITR-4 recommendation for FY 2026-27."
         keywords="ITR form selector, which ITR form to file, ITR-1 ITR-2 ITR-3 ITR-4"
         canonical="https://tax.doaide.com/itr-form-selector"
+        faqs={FAQS}
       />
 
       <h1 style={s.title}>ITR Form Selector</h1>
@@ -86,6 +89,10 @@ export default function ITRFormSelector() {
           <div style={s.resultName}>{result.name}</div>
           <div style={s.resultReason}>{result.reason}</div>
           <div style={s.deadline}>Filing Deadline: {result.deadline}</div>
+          <div style={{ display: 'flex', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
+            <WhatsAppShare text={`ITR Form: ${result.form} (${result.name})\n${result.reason}\nDeadline: ${result.deadline}\n\ntax.doaide.com/itr-form-selector`} />
+            <PrintButton />
+          </div>
         </ResultCard>
       )}
 

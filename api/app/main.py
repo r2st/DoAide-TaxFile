@@ -5,10 +5,13 @@ from app.config import settings
 from app.routers import (
     advance_tax,
     capital_gains,
+    home_loan,
     hra,
     itr_selector,
+    nps,
     recommendations,
     section_80c,
+    senior_citizen,
     tax_calculator,
     tds,
 )
@@ -35,6 +38,9 @@ app.include_router(capital_gains.router, prefix="/api/v1", tags=["Capital Gains"
 app.include_router(tds.router, prefix="/api/v1", tags=["TDS"])
 app.include_router(advance_tax.router, prefix="/api/v1", tags=["Advance Tax"])
 app.include_router(recommendations.router, prefix="/api/v1", tags=["Recommendations"])
+app.include_router(nps.router, prefix="/api/v1", tags=["NPS"])
+app.include_router(home_loan.router, prefix="/api/v1", tags=["Home Loan"])
+app.include_router(senior_citizen.router, prefix="/api/v1", tags=["Senior Citizen"])
 
 
 @app.get("/health")

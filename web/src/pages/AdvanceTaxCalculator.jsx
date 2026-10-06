@@ -2,6 +2,8 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
+import WhatsAppShare from '../components/WhatsAppShare'
+import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateAdvanceTax, formatINR } from '../lib/taxEngine'
 
@@ -58,6 +60,7 @@ export default function AdvanceTaxCalculator() {
         description="Calculate advance tax installments with due dates for FY 2026-27. Interest calculation under Section 234B and 234C."
         keywords="advance tax calculator, advance tax due dates, Section 234B, Section 234C, quarterly tax installments"
         canonical="https://tax.doaide.com/advance-tax-calculator"
+        faqs={FAQS}
       />
 
       <h1 style={s.title}>Advance Tax Calculator</h1>
@@ -111,6 +114,10 @@ export default function AdvanceTaxCalculator() {
               </div>
             </div>
           )}
+          <div style={{ display: 'flex', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
+            <WhatsAppShare text={`Advance Tax Schedule FY 2026-27\nTotal Tax: ${formatINR(result.totalTax)}\nTDS Deducted: ${formatINR(result.tdsDeducted)}\nNet Payable: ${formatINR(result.netTax)}\n${result.applicable ? result.installments.map(i => `${i.dueDate}: ${formatINR(i.amount)}`).join('\n') : 'Not applicable (below ₹10,000)'}\n\ntax.doaide.com/advance-tax-calculator`} />
+            <PrintButton />
+          </div>
         </ResultCard>
       )}
 

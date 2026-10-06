@@ -3,6 +3,7 @@ import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
 import WhatsAppShare from '../components/WhatsAppShare'
+import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateHRA, formatINR } from '../lib/taxEngine'
 
@@ -58,6 +59,7 @@ export default function HRACalculator() {
         description="Calculate your HRA tax exemption under Section 10(13A). Enter basic salary, HRA received, and rent paid to find your exemption amount."
         keywords="HRA exemption calculator, HRA calculation, Section 10(13A), house rent allowance"
         canonical="https://tax.doaide.com/hra-calculator"
+        faqs={FAQS}
       />
 
       <h1 style={s.title}>HRA Exemption Calculator</h1>
@@ -101,8 +103,9 @@ export default function HRACalculator() {
             Exemption = min( {formatINR(result.actualHRA)} , {formatINR(result.percentOfSalary)} , {formatINR(result.rentMinus10Pct)} ) = {formatINR(result.exemption)}
           </div>
 
-          <div style={{ marginTop: 16 }}>
+          <div style={{ display: 'flex', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
             <WhatsAppShare text={shareText} />
+            <PrintButton />
           </div>
         </ResultCard>
       )}

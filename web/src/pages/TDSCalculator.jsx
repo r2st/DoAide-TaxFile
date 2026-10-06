@@ -2,6 +2,8 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
+import WhatsAppShare from '../components/WhatsAppShare'
+import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateTDS, formatINR, formatPct } from '../lib/taxEngine'
 
@@ -77,6 +79,7 @@ export default function TDSCalculator() {
         description="Calculate TDS on salary, rent, professional fees, interest, and more. Current TDS rates and thresholds for FY 2026-27."
         keywords="TDS calculator, TDS rates, TDS on salary, TDS on rent, TDS on professional fees"
         canonical="https://tax.doaide.com/tds-calculator"
+        faqs={FAQS}
       />
 
       <h1 style={s.title}>TDS Calculator</h1>
@@ -128,6 +131,10 @@ export default function TDSCalculator() {
               Higher TDS rate of 20% applied as PAN is not available.
             </div>
           )}
+          <div style={{ display: 'flex', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
+            <WhatsAppShare text={`TDS on ${INCOME_OPTIONS.find(o => o.value === result.incomeType)?.label}\nAmount: ${formatINR(result.amount)}\nTDS: ${result.tds != null ? formatINR(result.tds) : 'At slab rate'}\nSection: ${result.section}\n\ntax.doaide.com/tds-calculator`} />
+            <PrintButton />
+          </div>
         </ResultCard>
       )}
 

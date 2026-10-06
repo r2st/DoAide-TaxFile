@@ -1,9 +1,12 @@
 from app.services.tax_engine import (
     calculate_advance_tax,
     calculate_capital_gains,
+    calculate_home_loan_benefit,
     calculate_hra_exemption,
     calculate_new_regime,
+    calculate_nps_benefit,
     calculate_old_regime,
+    calculate_senior_citizen_tax,
     calculate_tds,
     plan_80c,
     select_itr_form,
@@ -175,3 +178,103 @@ class Test80CPlanner:
         result = plan_80c({"ppf": 100_000, "nps_80ccd_1b": 40_000})
         assert result["nps_80ccd_1b"] == 40_000
         assert result["total_deduction"] == 140_000
+
+
+class TestNPSBenefit:
+    def test_basic_contribution(self):
+        result = calculate_nps_benefit(50_000, gross_income=1_000_000)
+        assert result["deduction_80ccd1"] == 50_000
+        assert result["deduction_80ccd1b"] == 50_000
+
+    def test_80ccd1_cap_at_10_percent(self):
+        result = calculate_nps_benefit(200_000, gross_income=1_000_000)
+        assert result["deduction_80ccd1"] == 100_000
+
+    def test_80ccd1b_cap_at_50k(self):
+        result = calculate_nps_benefit(100_000, gross_income=1_000_000)
+        assert result["deduction_80ccd1b"] == 50_000
+
+    def test_employer_contribution(self):
+        result = calculate_nps_benefit(50_000, employer_contribution=100_000, gross_income=1_000_000)
+        assert result["deduction_80ccd2"] == 100_000
+
+    def test_employer_cap_14_percent(self):
+        result = calculate_nps_benefit(50_000, employer_contribution=200_000, gross_income=1_000_000)
+        assert result["deduction_80ccd2"] == 140_000
+
+    def test_corpus_projection(self):
+        result = calculate_nps_benefit(50_000, age=30)
+        assert result["years_to_retire"] == 30
+        assert result["estimated_corpus"] > 0
+
+    def test_zero_income(self):
+        result = calculate_nps_benefit(50_000)
+        assert result["deduction_80ccd1"] == 0
+        assert result["deduction_80ccd2"] == 0
+
+
+class TestHomeLoanBenefit:
+    def test_basic_deductions(self):
+        result = calculate_home_loan_benefit(200_000, 300_000, 5_000_000)
+        assert result["section_80c"] == 150_000
+        assert result["section_24b"] == 200_000
+
+    def test_interest_cap_self_occupied(self):
+        result = calculate_home_loan_benefit(100_000, 300_000, 5_000_000, is_let_out=False)
+        assert result["section_24b"] == 200_000
+
+    def test_let_out_no_interest_cap(self):
+        result = calculate_home_loan_benefit(100_000, 300_000, 5_000_000, is_let_out=True)
+        assert result["section_24b"] == 300_000
+
+    def test_80eea_first_time_buyer(self):
+        result = calculate_home_loan_benefit(
+            100_000, 300_000, 3_000_000, is_first_time_buyer=True, property_value=4_000_000,
+        )
+        assert result["section_80eea"] == 100_000
+
+    def test_80eea_not_eligible_high_value(self):
+        result = calculate_home_loan_benefit(
+            100_000, 300_000, 3_000_000, is_first_time_buyer=True, property_value=5_000_000,
+        )
+        assert result["section_80eea"] == 0
+
+    def test_principal_cap(self):
+        result = calculate_home_loan_benefit(200_000, 100_000, 5_000_000)
+        assert result["section_80c"] == 150_000
+
+
+class TestSeniorCitizenTax:
+    def test_senior_higher_exemption(self):
+        result = calculate_senior_citizen_tax(400_000, 65)
+        assert result["total_tax_old"] == 0
+        assert result["category"] == "Senior Citizen (60-79)"
+
+    def test_super_senior_higher_exemption(self):
+        result = calculate_senior_citizen_tax(500_000, 82)
+        assert result["total_tax_old"] == 0
+        assert result["category"] == "Super Senior Citizen (80+)"
+
+    def test_regime_comparison(self):
+        result = calculate_senior_citizen_tax(1_500_000, 65, section_80c=150_000, section_80d=50_000)
+        assert result["recommended"] in ("new", "old")
+        assert result["savings"] >= 0
+
+    def test_special_benefits_senior(self):
+        result = calculate_senior_citizen_tax(800_000, 65)
+        assert any("80TTB" in b for b in result["special_benefits"])
+        assert any("80D" in b for b in result["special_benefits"])
+
+    def test_special_benefits_super_senior(self):
+        result = calculate_senior_citizen_tax(800_000, 85)
+        assert any("advance tax" in b.lower() for b in result["special_benefits"])
+
+    def test_deductions_reduce_old_regime(self):
+        no_ded = calculate_senior_citizen_tax(1_500_000, 65)
+        with_ded = calculate_senior_citizen_tax(1_500_000, 65, section_80c=150_000)
+        assert with_ded["total_tax_old"] <= no_ded["total_tax_old"]
+
+    def test_new_regime_same_regardless_of_age(self):
+        senior = calculate_senior_citizen_tax(1_500_000, 65)
+        super_senior = calculate_senior_citizen_tax(1_500_000, 85)
+        assert senior["total_tax_new"] == super_senior["total_tax_new"]

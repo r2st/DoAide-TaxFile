@@ -177,7 +177,7 @@ def calculate_hra_exemption(
 
 
 def select_itr_form(
-    has_salary: bool = False,
+    has_salary: bool = False,  # noqa: ARG001
     has_business_income: bool = False,
     has_capital_gains: bool = False,
     has_foreign_assets: bool = False,
@@ -429,6 +429,154 @@ def calculate_advance_tax(total_tax: float, tds_deducted: float) -> dict:
         "net_tax": round(net_tax),
         "advance_tax_applicable": True,
         "installments": installments,
+    }
+
+
+SENIOR_OLD_REGIME_SLABS = [
+    (300_000, 0.00),
+    (500_000, 0.05),
+    (1_000_000, 0.20),
+    (float("inf"), 0.30),
+]
+
+SUPER_SENIOR_OLD_REGIME_SLABS = [
+    (500_000, 0.00),
+    (1_000_000, 0.20),
+    (float("inf"), 0.30),
+]
+
+
+def calculate_nps_benefit(
+    annual_contribution: float,
+    employer_contribution: float = 0,
+    gross_income: float = 0,
+    age: int = 30,
+) -> dict:
+    self_capped_80ccd1 = min(annual_contribution, gross_income * 0.10) if gross_income > 0 else 0
+    additional_capped_1b = min(annual_contribution, SECTION_80CCD_1B_LIMIT)
+    employer_capped_80ccd2 = min(employer_contribution, gross_income * 0.14) if gross_income > 0 else 0
+    total_deduction = self_capped_80ccd1 + additional_capped_1b + employer_capped_80ccd2
+    years_to_retire = max(60 - age, 0)
+    estimated_corpus = 0
+    if years_to_retire > 0:
+        total_annual = annual_contribution + employer_contribution
+        estimated_corpus = round(total_annual * ((1.10 ** years_to_retire - 1) / 0.10) * 1.10)
+    return {
+        "self_contribution": round(annual_contribution),
+        "employer_contribution": round(employer_contribution),
+        "deduction_80ccd1": round(self_capped_80ccd1),
+        "deduction_80ccd1b": round(additional_capped_1b),
+        "deduction_80ccd2": round(employer_capped_80ccd2),
+        "total_deduction": round(total_deduction),
+        "tax_saving_high_slab": round(total_deduction * 0.312),
+        "tax_saving_mid_slab": round(total_deduction * 0.208),
+        "estimated_corpus": estimated_corpus,
+        "years_to_retire": years_to_retire,
+    }
+
+
+def calculate_home_loan_benefit(
+    principal_per_year: float,
+    interest_per_year: float,
+    loan_amount: float,
+    is_let_out: bool = False,
+    is_first_time_buyer: bool = False,
+    property_value: float = 0,
+) -> dict:
+    sec_80c = min(principal_per_year, SECTION_80C_LIMIT)
+    max_interest = interest_per_year if is_let_out else min(interest_per_year, 200_000)
+    sec_80eea = 0
+    if is_first_time_buyer and property_value <= 4_500_000 and loan_amount <= 3_500_000:
+        sec_80eea = min(max(interest_per_year - 200_000, 0), 150_000)
+    total_deduction = sec_80c + max_interest + sec_80eea
+    return {
+        "principal_per_year": round(principal_per_year),
+        "interest_per_year": round(interest_per_year),
+        "loan_amount": round(loan_amount),
+        "section_80c": round(sec_80c),
+        "section_24b": round(max_interest),
+        "section_80eea": round(sec_80eea),
+        "total_deduction": round(total_deduction),
+        "tax_saving_high_slab": round(total_deduction * 0.312),
+        "is_let_out": is_let_out,
+        "is_first_time_buyer": is_first_time_buyer,
+    }
+
+
+def calculate_senior_citizen_tax(
+    gross_income: float,
+    age: int,
+    section_80c: float = 0,
+    section_80d: float = 0,
+    section_80d_parents: float = 0,
+    section_80ttb: float = 0,
+    home_loan_interest: float = 0,
+    nps_80ccd_1b: float = 0,
+    other_deductions: float = 0,
+) -> dict:
+    is_super_senior = age >= 80  # noqa: PLR2004
+    is_senior = age >= 60  # noqa: PLR2004
+
+    new_result = calculate_new_regime(gross_income)
+
+    standard_deduction = min(OLD_REGIME_STANDARD_DEDUCTION, gross_income)
+    capped_80c = min(section_80c, SECTION_80C_LIMIT)
+    max_80d = SECTION_80D_LIMIT_SENIOR if is_senior else SECTION_80D_LIMIT_SELF
+    capped_80d = min(section_80d, max_80d)
+    capped_80d_parents = min(section_80d_parents, SECTION_80D_LIMIT_PARENTS_SENIOR)
+    capped_80ttb = min(section_80ttb, 50_000) if is_senior else 0
+    capped_home_loan = min(home_loan_interest, 200_000)
+    capped_nps = min(nps_80ccd_1b, SECTION_80CCD_1B_LIMIT)
+
+    total_deductions = (
+        standard_deduction + capped_80c + capped_80d + capped_80d_parents
+        + capped_80ttb + capped_home_loan + capped_nps + other_deductions
+    )
+    taxable = max(gross_income - total_deductions, 0)
+
+    if is_super_senior:
+        slabs = SUPER_SENIOR_OLD_REGIME_SLABS
+    elif is_senior:
+        slabs = SENIOR_OLD_REGIME_SLABS
+    else:
+        slabs = OLD_REGIME_SLABS
+
+    tax, _slab_breakdown = _apply_slabs(taxable, slabs)
+    rebate_87a = 0
+    if taxable <= 500_000:
+        rebate_87a = min(tax, 12_500)
+    tax_after_rebate = max(tax - rebate_87a, 0)
+    surcharge = _surcharge(tax_after_rebate, gross_income)
+    cess = round((tax_after_rebate + surcharge) * CESS_RATE)
+    total_old = tax_after_rebate + surcharge + cess
+
+    recommended = "new" if new_result["total_tax"] <= total_old else "old"
+    savings = abs(new_result["total_tax"] - total_old)
+
+    special_benefits = []
+    if is_senior:
+        special_benefits.append("Higher 80D limit: ₹50,000 (vs ₹25,000 for below 60)")
+        special_benefits.append("Section 80TTB: Up to ₹50,000 deduction on interest from deposits")
+        special_benefits.append("No TDS on interest up to ₹50,000 (Form 15H)")
+    if is_super_senior:
+        special_benefits.append("No advance tax requirement")
+        special_benefits.append("Higher basic exemption: ₹5,00,000")
+    elif is_senior:
+        special_benefits.append("Higher basic exemption: ₹3,00,000")
+
+    category = "Super Senior Citizen (80+)" if is_super_senior else ("Senior Citizen (60-79)" if is_senior else "Below 60")
+
+    return {
+        "category": category,
+        "age": age,
+        "gross_income": round(gross_income),
+        "deductions_total": round(total_deductions),
+        "taxable_income": round(taxable),
+        "total_tax_old": total_old,
+        "total_tax_new": new_result["total_tax"],
+        "recommended": recommended,
+        "savings": savings,
+        "special_benefits": special_benefits,
     }
 
 

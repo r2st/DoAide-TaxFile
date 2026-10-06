@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
+import FAQSection from '../components/FAQSection'
+
+const HOME_FAQS = [
+  { q: 'What income tax regime should I choose for FY 2026-27?', a: 'It depends on your deductions. The new regime has lower rates but fewer deductions (only ₹75,000 standard deduction). The old regime allows 80C (₹1.5L), 80D, HRA, home loan interest, and more. Use our Income Tax Calculator to compare both with your actual numbers.' },
+  { q: 'What are the income tax slab rates for FY 2026-27?', a: 'New regime: 0% up to ₹4L, 5% (₹4-8L), 10% (₹8-12L), 15% (₹12-16L), 20% (₹16-20L), 25% (₹20-24L), 30% (above ₹24L). Old regime: 0% up to ₹2.5L, 5% (₹2.5-5L), 20% (₹5-10L), 30% (above ₹10L). Senior citizens have higher exemption limits.' },
+  { q: 'When is the deadline to file ITR for FY 2026-27?', a: 'For most individuals: July 31, 2027. For businesses requiring audit: October 31, 2027. Late filing attracts a penalty of ₹5,000 (₹1,000 if income is below ₹5 lakh) and interest on unpaid tax.' },
+  { q: 'How much can I save with Section 80C?', a: 'Section 80C allows a deduction of up to ₹1,50,000 through PPF, ELSS, NSC, tax-saver FD, LIC, EPF, home loan principal, and tuition fees. At the highest slab (30% + cess), you can save up to ₹46,800 in tax.' },
+  { q: 'Is this calculator free to use?', a: 'Yes, all tools on DoAide TaxFile are 100% free. No login, no signup, no hidden charges. Use as many calculators as you need.' },
+]
 
 const TOOLS = [
   { path: '/income-tax-calculator', icon: '🧮', title: 'Income Tax Calculator', desc: 'Compare old vs new regime side-by-side. Find which saves you more money.' },
@@ -9,6 +18,13 @@ const TOOLS = [
   { path: '/capital-gains-calculator', icon: '📈', title: 'Capital Gains Calculator', desc: 'STCG and LTCG tax on equity, debt, real estate, gold, and crypto.' },
   { path: '/tds-calculator', icon: '🏦', title: 'TDS Calculator', desc: 'Calculate TDS rates and amounts for salary, rent, professional fees.' },
   { path: '/advance-tax-calculator', icon: '📅', title: 'Advance Tax Calculator', desc: 'Quarterly advance tax installments with due dates and interest.' },
+  { path: '/rent-receipt-generator', icon: '🧾', title: 'Rent Receipt Generator', desc: 'Generate rent receipts for HRA claims. Print or save as PDF.' },
+  { path: '/form-16-analyzer', icon: '📄', title: 'Form 16 Analyzer', desc: 'Enter Form 16 data to verify tax, compare regimes, check refund.' },
+  { path: '/tax-refund-status', icon: '🔍', title: 'Tax Refund Status', desc: 'Step-by-step guide to check your income tax refund status online.' },
+  { path: '/standard-deduction-calculator', icon: '📝', title: 'Deduction Calculator', desc: 'Track all deduction sections — 80C, 80D, 80E, 80G, 24(b) and more.' },
+  { path: '/nps-calculator', icon: '🏛️', title: 'NPS Tax Benefit Calculator', desc: 'Calculate NPS deductions under 80CCD(1), 80CCD(1B), and 80CCD(2).' },
+  { path: '/home-loan-calculator', icon: '🏡', title: 'Home Loan Tax Benefit', desc: 'Section 24(b), 80C principal, and 80EEA deductions on home loans.' },
+  { path: '/senior-citizen-calculator', icon: '👴', title: 'Senior Citizen Calculator', desc: 'Special tax slabs, 80TTB, higher 80D limits for seniors (60+/80+).' },
   { path: '/income-tax-calculator', icon: '💡', title: 'Tax Saving Tips', desc: 'Get personalized recommendations to reduce your tax liability.', hash: '#recommendations' },
 ]
 
@@ -114,8 +130,21 @@ export default function HomePage() {
       <SEOHead
         title="DoAide TaxFile - Free Income Tax Calculator India FY 2026-27"
         description="Free income tax calculator, ITR form selector, HRA exemption calculator, 80C planner, capital gains calculator for India FY 2026-27. No login required."
-        keywords="income tax calculator India 2026, ITR form selector, HRA exemption calculator, 80C investment planner, capital gains calculator India"
+        keywords="income tax calculator India 2026, ITR form selector, HRA exemption calculator, 80C investment planner, capital gains calculator India, rent receipt generator, NPS calculator, home loan tax benefit"
         canonical="https://tax.doaide.com"
+        faqs={HOME_FAQS}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'DoAide TaxFile',
+          url: 'https://tax.doaide.com',
+          description: 'Free income tax tools for India — calculators, ITR form selector, rent receipt generator, and more for FY 2026-27.',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://tax.doaide.com/?q={search_term_string}',
+            'query-input': 'required name=search_term_string',
+          },
+        }}
       />
 
       <section style={s.hero}>
@@ -146,6 +175,8 @@ export default function HomePage() {
           </Link>
         ))}
       </section>
+
+      <FAQSection faqs={HOME_FAQS} />
 
       <section style={s.seo}>
         <h2 style={s.seoTitle}>About Income Tax in India</h2>

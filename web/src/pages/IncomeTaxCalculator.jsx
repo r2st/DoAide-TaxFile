@@ -83,6 +83,7 @@ export default function IncomeTaxCalculator() {
         description="Free income tax calculator for India FY 2026-27. Compare old and new tax regime side by side. Calculate tax with HRA, 80C, 80D deductions."
         keywords="income tax calculator India 2026, old vs new regime calculator, tax calculator FY 2026-27"
         canonical="https://tax.doaide.com/income-tax-calculator"
+        faqs={FAQS}
       />
 
       <h1 style={s.title}>Income Tax Calculator</h1>

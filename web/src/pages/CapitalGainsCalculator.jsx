@@ -3,6 +3,7 @@ import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
 import WhatsAppShare from '../components/WhatsAppShare'
+import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateCapitalGains, formatINR, formatPct } from '../lib/taxEngine'
 
@@ -68,6 +69,7 @@ export default function CapitalGainsCalculator() {
         description="Calculate capital gains tax on equity, mutual funds, real estate, gold, and crypto. STCG and LTCG rates for FY 2026-27."
         keywords="capital gains calculator India, LTCG calculator, STCG tax, equity capital gains, crypto tax India"
         canonical="https://tax.doaide.com/capital-gains-calculator"
+        faqs={FAQS}
       />
 
       <h1 style={s.title}>Capital Gains Calculator</h1>
@@ -144,8 +146,9 @@ export default function CapitalGainsCalculator() {
             </div>
           )}
 
-          <div style={{ marginTop: 16 }}>
+          <div style={{ display: 'flex', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
             <WhatsAppShare text={shareText} />
+            <PrintButton />
           </div>
         </ResultCard>
       )}

@@ -291,3 +291,182 @@ export function generateRecommendations(grossIncome, age, existing = {}) {
 
   return { oldRegimeTax: oldResult.totalTax, newRegimeTax: newResult.totalTax, recommended: better, regimeSavings: Math.abs(newResult.totalTax - oldResult.totalTax), suggestions }
 }
+
+export function calculateNPSBenefit(annualContribution, employerContribution = 0, grossIncome = 0, age = 30) {
+  const selfCapped80CCD1 = Math.min(annualContribution, grossIncome * 0.10)
+  const additionalCapped1B = Math.min(annualContribution, 50000)
+  const employerCapped80CCD2 = Math.min(employerContribution, grossIncome * 0.14)
+  const totalDeduction = selfCapped80CCD1 + additionalCapped1B + employerCapped80CCD2
+  const taxSaving30 = Math.round(totalDeduction * 0.312)
+  const taxSaving20 = Math.round(totalDeduction * 0.208)
+  const yearsToRetire = Math.max(60 - age, 0)
+  const estimatedCorpus = yearsToRetire > 0
+    ? Math.round((annualContribution + employerContribution) * ((Math.pow(1.10, yearsToRetire) - 1) / 0.10) * 1.10)
+    : 0
+  return {
+    selfContribution: Math.round(annualContribution),
+    employerContribution: Math.round(employerContribution),
+    deduction80CCD1: selfCapped80CCD1,
+    deduction80CCD1B: additionalCapped1B,
+    deduction80CCD2: employerCapped80CCD2,
+    totalDeduction: Math.round(totalDeduction),
+    taxSavingHighSlab: taxSaving30,
+    taxSavingMidSlab: taxSaving20,
+    estimatedCorpus,
+    yearsToRetire,
+  }
+}
+
+export function calculateHomeLoanBenefit(principalPerYear, interestPerYear, loanAmount, isLetOut = false, isFirstTimeBuyer = false, propertyValue = 0) {
+  const sec80C = Math.min(principalPerYear, 150000)
+  const maxInterest = isLetOut ? interestPerYear : Math.min(interestPerYear, 200000)
+  const sec80EEA = (isFirstTimeBuyer && propertyValue <= 4500000 && loanAmount <= 3500000)
+    ? Math.min(Math.max(interestPerYear - 200000, 0), 150000)
+    : 0
+  const totalDeduction = sec80C + maxInterest + sec80EEA
+  const taxSaving30 = Math.round(totalDeduction * 0.312)
+  return {
+    principalPerYear: Math.round(principalPerYear),
+    interestPerYear: Math.round(interestPerYear),
+    loanAmount: Math.round(loanAmount),
+    section80C: sec80C,
+    section24b: Math.round(maxInterest),
+    section80EEA: sec80EEA,
+    totalDeduction: Math.round(totalDeduction),
+    taxSavingHighSlab: taxSaving30,
+    isLetOut,
+    isFirstTimeBuyer,
+  }
+}
+
+const SENIOR_SLABS_OLD = [
+  [300000, 0],
+  [500000, 0.05],
+  [1000000, 0.20],
+  [Infinity, 0.30],
+]
+
+const SUPER_SENIOR_SLABS_OLD = [
+  [500000, 0],
+  [1000000, 0.20],
+  [Infinity, 0.30],
+]
+
+export function calculateSeniorCitizenTax(grossIncome, age, deductions = {}) {
+  const isSuperSenior = age >= 80
+  const isSenior = age >= 60
+  const newR = calculateNewRegime(grossIncome)
+  const stdDeduction = Math.min(50000, grossIncome)
+  const s80c = Math.min(deductions.section80C || 0, 150000)
+  const s80d = Math.min(deductions.section80D || 0, isSenior ? 50000 : 25000)
+  const s80dParents = Math.min(deductions.section80DParents || 0, 50000)
+  const s80TTB = Math.min(deductions.section80TTB || 0, 50000)
+  const homeLoan = Math.min(deductions.homeLoanInterest || 0, 200000)
+  const nps = Math.min(deductions.nps80CCD1B || 0, 50000)
+  const other = deductions.other || 0
+  const totalDed = stdDeduction + s80c + s80d + s80dParents + s80TTB + homeLoan + nps + other
+  const taxable = Math.max(grossIncome - totalDed, 0)
+  const slabs = isSuperSenior ? SUPER_SENIOR_SLABS_OLD : (isSenior ? SENIOR_SLABS_OLD : OLD_REGIME_SLABS)
+  const { tax, breakdown } = applySlabs(taxable, slabs)
+  let rebate87A = 0
+  if (taxable <= 500000) rebate87A = Math.min(tax, 12500)
+  const afterRebate = Math.max(tax - rebate87A, 0)
+  const surcharge = calcSurcharge(afterRebate, grossIncome)
+  const cess = Math.round((afterRebate + surcharge) * 0.04)
+  const total = afterRebate + surcharge + cess
+  const recommended = newR.totalTax <= total ? 'new' : 'old'
+  const savings = Math.abs(newR.totalTax - total)
+  return {
+    category: isSuperSenior ? 'Super Senior Citizen (80+)' : (isSenior ? 'Senior Citizen (60-79)' : 'Below 60'),
+    age,
+    grossIncome: Math.round(grossIncome),
+    standardDeduction: stdDeduction,
+    section80C: s80c,
+    section80D: Math.round(s80d),
+    section80DParents: Math.round(s80dParents),
+    section80TTB: Math.round(s80TTB),
+    homeLoanInterest: homeLoan,
+    nps80CCD1B: nps,
+    otherDeductions: Math.round(other),
+    deductionsTotal: Math.round(totalDed),
+    taxableIncome: Math.round(taxable),
+    taxOnIncome: tax,
+    slabBreakdown: breakdown,
+    rebate87A,
+    taxAfterRebate: afterRebate,
+    surcharge,
+    cess,
+    totalTaxOld: total,
+    totalTaxNew: newR.totalTax,
+    recommended,
+    savings,
+    specialBenefits: [
+      ...(isSenior ? ['Higher 80D limit: ₹50,000 (vs ₹25,000 for below 60)'] : []),
+      ...(isSenior ? ['Section 80TTB: Up to ₹50,000 deduction on interest from deposits'] : []),
+      ...(isSuperSenior ? ['No advance tax requirement'] : []),
+      ...(isSuperSenior ? ['Higher basic exemption: ₹5,00,000'] : isSenior ? ['Higher basic exemption: ₹3,00,000'] : []),
+      ...(isSenior ? ['No TDS on interest up to ₹50,000 (Form 15H)'] : []),
+    ],
+  }
+}
+
+export function calculateStandardDeductions(deductions = {}) {
+  const std = 50000
+  const s80c = Math.min(deductions.section80C || 0, 150000)
+  const s80d = Math.min(deductions.section80D || 0, deductions.isSenior ? 50000 : 25000)
+  const s80dParents = Math.min(deductions.section80DParents || 0, deductions.parentsSenior ? 50000 : 25000)
+  const s80ccd1b = Math.min(deductions.nps80CCD1B || 0, 50000)
+  const s80e = deductions.section80E || 0
+  const s80g = deductions.section80G || 0
+  const s80tta = Math.min(deductions.section80TTA || 0, 10000)
+  const s80ttb = deductions.isSenior ? Math.min(deductions.section80TTB || 0, 50000) : 0
+  const s80ee = Math.min(deductions.section80EE || 0, 50000)
+  const s80eea = Math.min(deductions.section80EEA || 0, 150000)
+  const s24b = Math.min(deductions.section24b || 0, 200000)
+  const hra = deductions.hraExemption || 0
+  const lta = deductions.lta || 0
+  const total = std + s80c + s80d + s80dParents + s80ccd1b + s80e + s80g + s80tta + s80ttb + s80ee + s80eea + s24b + hra + lta
+  return {
+    standardDeduction: std,
+    section80C: s80c, section80CMax: 150000,
+    section80D: Math.round(s80d), section80DMax: deductions.isSenior ? 50000 : 25000,
+    section80DParents: Math.round(s80dParents), section80DParentsMax: deductions.parentsSenior ? 50000 : 25000,
+    nps80CCD1B: s80ccd1b, nps80CCD1BMax: 50000,
+    section80E: Math.round(s80e),
+    section80G: Math.round(s80g),
+    section80TTA: Math.round(s80tta), section80TTAMax: 10000,
+    section80TTB: Math.round(s80ttb), section80TTBMax: 50000,
+    section80EE: Math.round(s80ee), section80EEMax: 50000,
+    section80EEA: Math.round(s80eea), section80EEAMax: 150000,
+    section24b: Math.round(s24b), section24bMax: 200000,
+    hraExemption: Math.round(hra),
+    lta: Math.round(lta),
+    totalDeductions: Math.round(total),
+  }
+}
+
+export function generateRentReceipt({ tenantName, landlordName, landlordPAN, address, rentAmount, fromMonth, toMonth, year }) {
+  const months = [
+    'April', 'May', 'June', 'July', 'August', 'September',
+    'October', 'November', 'December', 'January', 'February', 'March',
+  ]
+  const from = fromMonth || 0
+  const to = toMonth != null ? toMonth : 11
+  const receipts = []
+  for (let i = from; i <= to; i++) {
+    const isNextCalYear = i >= 9
+    const calYear = isNextCalYear ? year + 1 : year
+    receipts.push({
+      month: months[i],
+      year: calYear,
+      amount: rentAmount,
+      tenantName,
+      landlordName,
+      landlordPAN: landlordPAN || '',
+      address,
+      date: `${new Date(calYear, (i + 3) % 12, 1).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`,
+    })
+  }
+  const totalRent = receipts.length * rentAmount
+  return { receipts, totalRent, tenantName, landlordName, landlordPAN, address }
+}

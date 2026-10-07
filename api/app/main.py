@@ -24,6 +24,7 @@ from app.routers import (
     section_80c,
     section_80d,
     senior_citizen,
+    seo,
     sip,
     ssy,
     take_home_salary,
@@ -73,6 +74,9 @@ app.include_router(elss_comparison.router, prefix="/api/v1", tags=["ELSS Compari
 app.include_router(tax_loss_harvesting.router, prefix="/api/v1", tags=["Tax Loss Harvesting"])
 app.include_router(refund.router, prefix="/api/v1", tags=["Refund"])
 app.include_router(professional_tax.router, prefix="/api/v1", tags=["Professional Tax"])
+
+
+app.include_router(seo.router, tags=["SEO"])
 
 
 @app.get("/health")

@@ -1155,3 +1155,110 @@ export function calculateSalaryOptimizer(ctc) {
     bestMonthlyInHand: best.monthlyInHandEstimate,
   }
 }
+
+export function calculateGST(amount, gstRate, isInclusive = false) {
+  const rate = gstRate / 100
+  let baseAmount, gstAmount, totalAmount
+  if (isInclusive) {
+    totalAmount = amount
+    baseAmount = Math.round(amount / (1 + rate))
+    gstAmount = totalAmount - baseAmount
+  } else {
+    baseAmount = amount
+    gstAmount = Math.round(amount * rate)
+    totalAmount = baseAmount + gstAmount
+  }
+  const cgst = Math.round(gstAmount / 2)
+  const sgst = Math.round(gstAmount / 2)
+  const igst = gstAmount
+  return { baseAmount, gstAmount, totalAmount, cgst, sgst, igst, gstRate }
+}
+
+export function calculateLumpsum(principal, annualReturnRate, years) {
+  const r = annualReturnRate / 100
+  const futureValue = Math.round(principal * Math.pow(1 + r, years))
+  const totalGains = futureValue - principal
+  return { principal, futureValue, totalGains, annualReturnRate, years }
+}
+
+export function calculateRD(monthlyDeposit, annualRate, tenureYears) {
+  const r = annualRate / 100
+  const n = 4
+  const totalMonths = tenureYears * 12
+  let maturityValue = 0
+  for (let m = 1; m <= totalMonths; m++) {
+    const remainingQuarters = ((totalMonths - m + 1) / 3)
+    maturityValue += monthlyDeposit * Math.pow(1 + r / n, remainingQuarters)
+  }
+  maturityValue = Math.round(maturityValue)
+  const totalInvested = Math.round(monthlyDeposit * totalMonths)
+  const totalInterest = maturityValue - totalInvested
+  return { monthlyDeposit, totalInvested, totalInterest, maturityValue, annualRate, tenureYears }
+}
+
+export function calculateSWP(corpus, monthlyWithdrawal, annualReturnRate, years) {
+  const monthlyRate = annualReturnRate / 100 / 12
+  const totalMonths = years * 12
+  let balance = corpus
+  let totalWithdrawn = 0
+  let lastMonth = totalMonths
+  for (let m = 1; m <= totalMonths; m++) {
+    balance = balance * (1 + monthlyRate) - monthlyWithdrawal
+    totalWithdrawn += monthlyWithdrawal
+    if (balance <= 0) { balance = 0; lastMonth = m; break }
+  }
+  const finalBalance = Math.round(Math.max(balance, 0))
+  return {
+    initialCorpus: corpus, monthlyWithdrawal, annualReturnRate, years,
+    totalWithdrawn: Math.round(totalWithdrawn), finalBalance,
+    monthsLasted: lastMonth, corpusExhausted: balance <= 0,
+  }
+}
+
+export function calculateCAGR(beginningValue, endingValue, years) {
+  if (beginningValue <= 0 || years <= 0) return { cagr: 0, absoluteReturn: 0, totalGain: 0 }
+  const cagr = (Math.pow(endingValue / beginningValue, 1 / years) - 1) * 100
+  const absoluteReturn = ((endingValue - beginningValue) / beginningValue) * 100
+  const totalGain = endingValue - beginningValue
+  return { cagr: Math.round(cagr * 100) / 100, absoluteReturn: Math.round(absoluteReturn * 100) / 100, totalGain: Math.round(totalGain), beginningValue, endingValue, years }
+}
+
+export function calculateInflation(currentAmount, inflationRate, years) {
+  const r = inflationRate / 100
+  const futureAmount = Math.round(currentAmount * Math.pow(1 + r, years))
+  const purchasingPower = Math.round(currentAmount / Math.pow(1 + r, years))
+  const totalInflation = Math.round(((Math.pow(1 + r, years) - 1)) * 10000) / 100
+  return { currentAmount, futureAmount, purchasingPower, inflationRate, years, totalInflation }
+}
+
+export function calculateRetirement(currentAge, retirementAge, lifeExpectancy, monthlyExpenses, inflationRate, expectedReturn, currentSavings = 0) {
+  const yearsToRetire = retirementAge - currentAge
+  const yearsInRetirement = lifeExpectancy - retirementAge
+  const r = inflationRate / 100
+  const monthlyExpenseAtRetirement = Math.round(monthlyExpenses * Math.pow(1 + r, yearsToRetire))
+  const annualExpenseAtRetirement = monthlyExpenseAtRetirement * 12
+  const realReturn = ((1 + expectedReturn / 100) / (1 + r) - 1)
+  let corpusNeeded
+  if (realReturn <= 0) {
+    corpusNeeded = annualExpenseAtRetirement * yearsInRetirement
+  } else {
+    corpusNeeded = Math.round(annualExpenseAtRetirement * (1 - Math.pow(1 + realReturn, -yearsInRetirement)) / realReturn)
+  }
+  const savingsFV = Math.round(currentSavings * Math.pow(1 + expectedReturn / 100, yearsToRetire))
+  const gap = Math.max(corpusNeeded - savingsFV, 0)
+  const monthlyRate = expectedReturn / 100 / 12
+  const totalMonths = yearsToRetire * 12
+  let monthlySIPNeeded = 0
+  if (gap > 0 && totalMonths > 0) {
+    if (monthlyRate === 0) {
+      monthlySIPNeeded = Math.round(gap / totalMonths)
+    } else {
+      monthlySIPNeeded = Math.round(gap * monthlyRate / (Math.pow(1 + monthlyRate, totalMonths) - 1))
+    }
+  }
+  return {
+    currentAge, retirementAge, lifeExpectancy, yearsToRetire, yearsInRetirement,
+    monthlyExpenseAtRetirement, corpusNeeded, currentSavingsFV: savingsFV,
+    gap, monthlySIPNeeded,
+  }
+}

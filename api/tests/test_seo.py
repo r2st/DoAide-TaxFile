@@ -36,8 +36,17 @@ class TestSitemapPages:
         assert "/calculators/stamp-duty" in PAGES
         assert "/calculators/rental-income" in PAGES
 
+    def test_has_financial_calculators(self):
+        assert "/gst-calculator" in PAGES
+        assert "/lumpsum-calculator" in PAGES
+        assert "/rd-calculator" in PAGES
+        assert "/swp-calculator" in PAGES
+        assert "/cagr-calculator" in PAGES
+        assert "/inflation-calculator" in PAGES
+        assert "/retirement-calculator" in PAGES
+
     def test_minimum_page_count(self):
-        assert len(PAGES) >= 48
+        assert len(PAGES) >= 55
 
     def test_base_url(self):
         assert BASE_URL == "https://tax.doaide.com"

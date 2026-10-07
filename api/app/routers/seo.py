@@ -57,6 +57,13 @@ PAGES = [
     "/compare/cleartax",
     "/compare/tax2win",
     "/best-income-tax-calculator",
+    "/gst-calculator",
+    "/lumpsum-calculator",
+    "/rd-calculator",
+    "/swp-calculator",
+    "/cagr-calculator",
+    "/inflation-calculator",
+    "/retirement-calculator",
 ]
 
 

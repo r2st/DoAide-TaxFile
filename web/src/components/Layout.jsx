@@ -11,9 +11,10 @@ const NAV_LINKS = [
   { path: '/80d-calculator', label: '80D' },
   { path: '/ppf-calculator', label: 'PPF' },
   { path: '/fd-calculator', label: 'FD' },
+  { path: '/gst-calculator', label: 'GST' },
   { path: '/mutual-fund-calculator', label: 'Mutual Fund' },
+  { path: '/retirement-calculator', label: 'Retirement' },
   { path: '/epf-calculator', label: 'EPF' },
-  { path: '/ssy-calculator', label: 'SSY' },
   { path: '/guides', label: 'Guides' },
   { path: '/compare/cleartax', label: 'Compare' },
 ]

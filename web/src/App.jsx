@@ -49,6 +49,13 @@ import VsTax2Win from './pages/compare/VsTax2Win'
 import BestIncomeTaxCalculator from './pages/compare/BestIncomeTaxCalculator'
 import StampDutyCalculator from './pages/StampDutyCalculator'
 import RentalIncomeCalculator from './pages/RentalIncomeCalculator'
+import GSTCalculator from './pages/GSTCalculator'
+import LumpsumCalculator from './pages/LumpsumCalculator'
+import RDCalculator from './pages/RDCalculator'
+import SWPCalculator from './pages/SWPCalculator'
+import CAGRCalculator from './pages/CAGRCalculator'
+import InflationCalculator from './pages/InflationCalculator'
+import RetirementCalculator from './pages/RetirementCalculator'
 
 export default function App() {
   return (
@@ -88,6 +95,13 @@ export default function App() {
         <Route path="/professional-tax-calculator" element={<ProfessionalTaxCalculator />} />
         <Route path="/calculators/stamp-duty" element={<StampDutyCalculator />} />
         <Route path="/calculators/rental-income" element={<RentalIncomeCalculator />} />
+        <Route path="/gst-calculator" element={<GSTCalculator />} />
+        <Route path="/lumpsum-calculator" element={<LumpsumCalculator />} />
+        <Route path="/rd-calculator" element={<RDCalculator />} />
+        <Route path="/swp-calculator" element={<SWPCalculator />} />
+        <Route path="/cagr-calculator" element={<CAGRCalculator />} />
+        <Route path="/inflation-calculator" element={<InflationCalculator />} />
+        <Route path="/retirement-calculator" element={<RetirementCalculator />} />
         <Route path="/guides" element={<GuidesPage />} />
         <Route path="/guides/income-tax-slabs-2026-27" element={<IncomeTaxSlabsGuide />} />
         <Route path="/guides/section-80c-deductions" element={<Section80CGuide />} />

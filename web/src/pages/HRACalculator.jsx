@@ -110,6 +110,26 @@ export default function HRACalculator() {
         </ResultCard>
       )}
 
+      <div style={{ marginTop: 40 }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 22, marginBottom: 16 }}>Worked Examples</h2>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Example: ₹50K salary, ₹20K rent, Mumbai</div>
+          Basic: ₹6,00,000 | HRA: ₹3,00,000 | Rent: ₹2,40,000<br/>
+          min(₹3L, 50%×₹6L=₹3L, ₹2.4L−₹60K=₹1.8L) = <strong>₹1,80,000 exempt</strong>
+        </div>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Example: ₹80K salary, ₹25K rent, Bangalore</div>
+          Basic+DA: ₹9,60,000 | HRA: ₹4,00,000 | Rent: ₹3,00,000<br/>
+          min(₹4L, 40%×₹9.6L=₹3.84L, ₹3L−₹96K=₹2.04L) = <strong>₹2,04,000 exempt</strong>
+        </div>
+
+        <p style={{ fontSize: 14, color: 'var(--doaide-text-secondary)' }}>
+          Read our detailed <a href="/guides/hra-exemption-calculation" style={{ color: 'var(--doaide-gold)', textDecoration: 'none' }}>HRA Exemption Guide with Examples</a> for more scenarios.
+        </p>
+      </div>
+
       <FAQSection faqs={FAQS} />
     </div>
   )

@@ -44,6 +44,9 @@ import TaxOnSalary from './pages/guides/TaxOnSalary'
 import OldVsNewRegime from './pages/guides/OldVsNewRegime'
 import TaxSavingTips from './pages/guides/TaxSavingTips'
 import HomeLoanTaxBenefits from './pages/guides/HomeLoanTaxBenefits'
+import HRAExemptionGuide from './pages/guides/HRAExemptionGuide'
+import CapitalGainsMutualFunds from './pages/guides/CapitalGainsMutualFunds'
+import Section80CComplete from './pages/guides/Section80CComplete'
 import VsClearTax from './pages/compare/VsClearTax'
 import VsTax2Win from './pages/compare/VsTax2Win'
 import BestIncomeTaxCalculator from './pages/compare/BestIncomeTaxCalculator'
@@ -114,6 +117,9 @@ export default function App() {
         <Route path="/guides/old-vs-new-regime" element={<OldVsNewRegime />} />
         <Route path="/guides/tax-saving-tips" element={<TaxSavingTips />} />
         <Route path="/guides/home-loan-tax" element={<HomeLoanTaxBenefits />} />
+        <Route path="/guides/hra-exemption-calculation" element={<HRAExemptionGuide />} />
+        <Route path="/guides/capital-gains-mutual-funds" element={<CapitalGainsMutualFunds />} />
+        <Route path="/guides/section-80c-complete-list" element={<Section80CComplete />} />
         <Route path="/compare/cleartax" element={<VsClearTax />} />
         <Route path="/compare/tax2win" element={<VsTax2Win />} />
         <Route path="/best-income-tax-calculator" element={<BestIncomeTaxCalculator />} />

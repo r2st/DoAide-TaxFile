@@ -153,6 +153,28 @@ export default function CapitalGainsCalculator() {
         </ResultCard>
       )}
 
+      <div style={{ marginTop: 40 }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 22, marginBottom: 16 }}>Worked Examples</h2>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Equity MF — LTCG with exemption</div>
+          Buy: ₹5,00,000 | Sell: ₹7,50,000 | Held: 26 months<br/>
+          Gain: ₹2.5L | Exempt: ₹1.25L | Taxable: ₹1.25L<br/>
+          Tax: ₹1.25L × 12.5% + 4% cess = <strong>₹16,250</strong>
+        </div>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Crypto — STCG</div>
+          Buy: ₹1,00,000 | Sell: ₹1,80,000 | Held: 6 months<br/>
+          Gain: ₹80,000 | STCG rate: 20%<br/>
+          Tax: ₹80K × 20% + 4% cess = <strong>₹16,640</strong>
+        </div>
+
+        <p style={{ fontSize: 14, color: 'var(--doaide-text-secondary)' }}>
+          Read our detailed <a href="/guides/capital-gains-mutual-funds" style={{ color: 'var(--doaide-gold)', textDecoration: 'none' }}>Capital Gains on Mutual Funds Guide</a> for SIP taxation, debt fund rules, and tax-saving strategies.
+        </p>
+      </div>
+
       <FAQSection faqs={FAQS} />
     </div>
   )

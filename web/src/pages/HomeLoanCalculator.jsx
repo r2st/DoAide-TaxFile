@@ -133,6 +133,29 @@ export default function HomeLoanCalculator() {
         </ResultCard>
       )}
 
+      <div style={{ marginTop: 40 }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 22, marginBottom: 16 }}>Worked Examples</h2>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Self-occupied property, ₹50L loan</div>
+          Principal/year: ₹1,80,000 | Interest/year: ₹4,20,000<br/>
+          80C (principal): min(₹1.8L, ₹1.5L) = ₹1,50,000<br/>
+          24(b) (interest): min(₹4.2L, ₹2L) = ₹2,00,000<br/>
+          Total deduction: <strong>₹3,50,000</strong> | Tax saving at 31.2%: <strong>₹1,09,200</strong>
+        </div>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>First-time buyer, property ≤ ₹45L</div>
+          Principal/year: ₹1,20,000 | Interest/year: ₹3,50,000 | Loan: ₹35L<br/>
+          80C: ₹1,20,000 | 24(b): ₹2,00,000 | 80EEA: ₹1,50,000<br/>
+          Total deduction: <strong>₹4,70,000</strong> | Tax saving: <strong>₹1,46,640</strong>
+        </div>
+
+        <p style={{ fontSize: 14, color: 'var(--doaide-text-secondary)' }}>
+          Read our detailed <a href="/guides/home-loan-tax" style={{ color: 'var(--doaide-gold)', textDecoration: 'none' }}>Home Loan Tax Benefits Guide</a> for more scenarios including let-out property and co-borrower claims.
+        </p>
+      </div>
+
       <FAQSection faqs={FAQS} />
     </div>
   )

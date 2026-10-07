@@ -25,7 +25,7 @@ class TestSitemapPages:
     def test_has_guides(self):
         assert "/guides" in PAGES
         guide_pages = [p for p in PAGES if p.startswith("/guides/")]
-        assert len(guide_pages) == 11
+        assert len(guide_pages) == 14
 
     def test_has_comparison_pages(self):
         assert "/compare/cleartax" in PAGES
@@ -45,8 +45,13 @@ class TestSitemapPages:
         assert "/inflation-calculator" in PAGES
         assert "/retirement-calculator" in PAGES
 
+    def test_has_new_guides(self):
+        assert "/guides/hra-exemption-calculation" in PAGES
+        assert "/guides/capital-gains-mutual-funds" in PAGES
+        assert "/guides/section-80c-complete-list" in PAGES
+
     def test_minimum_page_count(self):
-        assert len(PAGES) >= 55
+        assert len(PAGES) >= 58
 
     def test_base_url(self):
         assert BASE_URL == "https://tax.doaide.com"

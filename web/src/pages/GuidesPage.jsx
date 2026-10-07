@@ -69,6 +69,24 @@ const GUIDES = [
     desc: 'Salary restructuring, 80C investments, NPS, health insurance — maximize your take-home.',
     time: '10 min read',
   },
+  {
+    path: '/guides/hra-exemption-calculation',
+    title: 'HRA Exemption Calculation with Examples 2026',
+    desc: 'Step-by-step HRA exemption formula with worked examples for metro and non-metro cities. Section 10(13A) and Section 80GG.',
+    time: '12 min read',
+  },
+  {
+    path: '/guides/capital-gains-mutual-funds',
+    title: 'Capital Gains Tax on Mutual Funds India 2026',
+    desc: 'LTCG and STCG rates for equity, debt, hybrid, and gold funds. SIP taxation, tax-loss harvesting, and ₹1.25L exemption.',
+    time: '15 min read',
+  },
+  {
+    path: '/guides/section-80c-complete-list',
+    title: 'Section 80C Deductions — Complete List 2026',
+    desc: 'Every 80C, 80CCC, 80CCD instrument with limits, lock-in, returns. Plus 80D, 80E, 80G, 80EEA and beyond-80C deductions.',
+    time: '18 min read',
+  },
 ]
 
 const s = {

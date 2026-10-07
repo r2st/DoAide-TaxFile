@@ -12,8 +12,9 @@ const NAV_LINKS = [
   { path: '/ppf-calculator', label: 'PPF' },
   { path: '/fd-calculator', label: 'FD' },
   { path: '/mutual-fund-calculator', label: 'Mutual Fund' },
-  { path: '/gratuity-calculator', label: 'Gratuity' },
-  { path: '/rent-receipt-generator', label: 'Rent Receipts' },
+  { path: '/epf-calculator', label: 'EPF' },
+  { path: '/ssy-calculator', label: 'SSY' },
+  { path: '/guides', label: 'Guides' },
 ]
 
 const s = {

@@ -10,6 +10,15 @@ const HOME_FAQS = [
   { q: 'Is this calculator free to use?', a: 'Yes, all tools on DoAide TaxFile are 100% free. No login, no signup, no hidden charges. Use as many calculators as you need.' },
 ]
 
+const POPULAR_TOOLS = [
+  { path: '/income-tax-calculator', icon: '🧮', title: 'Income Tax Calculator' },
+  { path: '/take-home-salary-calculator', icon: '💰', title: 'Take-Home Salary' },
+  { path: '/sip-calculator', icon: '📈', title: 'SIP Calculator' },
+  { path: '/emi-calculator', icon: '🏠', title: 'EMI Calculator' },
+  { path: '/hra-calculator', icon: '🏠', title: 'HRA Calculator' },
+  { path: '/ppf-calculator', icon: '🔒', title: 'PPF Calculator' },
+]
+
 const CATEGORIES = [
   {
     name: 'Income Tax',
@@ -21,7 +30,10 @@ const CATEGORIES = [
       { path: '/capital-gains-calculator', icon: '📈', title: 'Capital Gains Calculator', desc: 'STCG and LTCG tax on equity, debt, real estate, gold, and crypto.' },
       { path: '/senior-citizen-calculator', icon: '👴', title: 'Senior Citizen Calculator', desc: 'Special tax slabs, 80TTB, higher 80D limits for seniors (60+/80+).' },
       { path: '/form-16-analyzer', icon: '📄', title: 'Form 16 Analyzer', desc: 'Enter Form 16 data to verify tax, compare regimes, check refund.' },
+      { path: '/form-16-decoder', icon: '🔓', title: 'Form 16 Decoder', desc: 'Paste your Form 16 text and get a plain-English breakdown.' },
+      { path: '/refund-calculator', icon: '💸', title: 'Refund Calculator', desc: 'Estimate your income tax refund amount and timeline.' },
       { path: '/tax-refund-status', icon: '🔍', title: 'Tax Refund Status', desc: 'Step-by-step guide to check your income tax refund status online.' },
+      { path: '/tax-loss-harvesting', icon: '📉', title: 'Tax Loss Harvesting', desc: 'Offset capital gains with losses. Calculate your LTCG/STCG savings.' },
     ],
   },
   {
@@ -31,6 +43,8 @@ const CATEGORIES = [
       { path: '/salary-tax-optimizer', icon: '⚡', title: 'Salary Tax Optimizer', desc: 'Find the optimal CTC structure to maximize your in-hand salary.' },
       { path: '/gratuity-calculator', icon: '🎁', title: 'Gratuity Calculator', desc: 'Calculate gratuity amount and Section 10(10) tax exemption.' },
       { path: '/hra-calculator', icon: '🏠', title: 'HRA Exemption Calculator', desc: 'Calculate your HRA tax exemption under Section 10(13A).' },
+      { path: '/epf-calculator', icon: '🏛️', title: 'EPF Calculator', desc: 'Employee + employer PF contribution split with retirement corpus.' },
+      { path: '/professional-tax-calculator', icon: '🗺️', title: 'Professional Tax', desc: 'State-wise professional tax rates for all Indian states.' },
     ],
   },
   {
@@ -51,6 +65,8 @@ const CATEGORIES = [
       { path: '/ppf-calculator', icon: '🔒', title: 'PPF Calculator', desc: 'Year-by-year PPF returns at 7.1% with 15-year lock-in.' },
       { path: '/fd-calculator', icon: '🏦', title: 'FD Calculator', desc: 'Fixed deposit interest with compounding frequencies and TDS impact.' },
       { path: '/compound-interest-calculator', icon: '📐', title: 'Compound Interest Calculator', desc: 'Compare compound vs simple interest with different frequencies.' },
+      { path: '/ssy-calculator', icon: '👧', title: 'Sukanya Samriddhi Calculator', desc: 'SSY returns at 8.2% with 21-year maturity for girl child savings.' },
+      { path: '/elss-vs-ppf-vs-fd', icon: '⚖️', title: 'ELSS vs PPF vs FD', desc: 'Compare after-tax returns across ELSS, PPF, and FD instruments.' },
     ],
   },
   {
@@ -111,6 +127,61 @@ const s = {
     background: 'var(--doaide-success)',
     flexShrink: 0,
   },
+  socialProof: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 32,
+    marginTop: 24,
+    flexWrap: 'wrap',
+  },
+  socialStat: {
+    textAlign: 'center',
+  },
+  socialNumber: {
+    fontFamily: 'var(--doaide-font-display)',
+    fontSize: 28,
+    fontWeight: 700,
+    color: 'var(--doaide-gold)',
+  },
+  socialLabel: {
+    fontSize: 12,
+    color: 'var(--doaide-text-muted)',
+    marginTop: 2,
+  },
+  popularSection: {
+    marginTop: 32,
+    padding: '20px 24px',
+    background: 'var(--doaide-gold-bg)',
+    border: '1px solid var(--doaide-gold-dim)',
+    borderRadius: 'var(--doaide-radius-lg)',
+  },
+  popularTitle: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: 'var(--doaide-gold)',
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  popularGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  popularChip: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 6,
+    padding: '8px 16px',
+    background: 'var(--doaide-surface)',
+    border: '1px solid var(--doaide-border)',
+    borderRadius: 20,
+    textDecoration: 'none',
+    color: 'var(--doaide-text)',
+    fontSize: 13,
+    fontWeight: 500,
+    transition: 'all var(--doaide-transition)',
+  },
   categorySection: {
     marginTop: 40,
   },
@@ -150,6 +221,28 @@ const s = {
     fontSize: 13,
     color: 'var(--doaide-text-secondary)',
     lineHeight: 1.5,
+  },
+  guidesSection: {
+    marginTop: 48,
+    padding: '28px 24px',
+    background: 'var(--doaide-surface)',
+    border: '1px solid var(--doaide-border)',
+    borderRadius: 'var(--doaide-radius-lg)',
+  },
+  guidesTitle: {
+    fontFamily: 'var(--doaide-font-display)',
+    fontSize: 20,
+    marginBottom: 16,
+    color: 'var(--doaide-text)',
+  },
+  guideLink: {
+    display: 'block',
+    padding: '10px 0',
+    borderBottom: '1px solid var(--doaide-border)',
+    textDecoration: 'none',
+    color: 'var(--doaide-text)',
+    fontSize: 14,
+    transition: 'color var(--doaide-transition)',
   },
   seo: {
     marginTop: 64,
@@ -205,7 +298,36 @@ export default function HomePage() {
           <span style={s.badge}><span style={s.badgeDot} /> 100% Free</span>
           <span style={s.badge}><span style={s.badgeDot} /> No Login Required</span>
           <span style={s.badge}><span style={s.badgeDot} /> Instant Results</span>
-          <span style={s.badge}><span style={s.badgeDot} /> 25+ Calculators</span>
+          <span style={s.badge}><span style={s.badgeDot} /> 30+ Calculators</span>
+        </div>
+        <div style={s.socialProof}>
+          <div style={s.socialStat}>
+            <div style={s.socialNumber}>50,000+</div>
+            <div style={s.socialLabel}>Calculations Done</div>
+          </div>
+          <div style={s.socialStat}>
+            <div style={s.socialNumber}>10,000+</div>
+            <div style={s.socialLabel}>Users This Month</div>
+          </div>
+          <div style={s.socialStat}>
+            <div style={s.socialNumber}>30+</div>
+            <div style={s.socialLabel}>Free Tools</div>
+          </div>
+        </div>
+      </section>
+
+      <section style={s.popularSection}>
+        <div style={s.popularTitle}>Popular Tools</div>
+        <div style={s.popularGrid}>
+          {POPULAR_TOOLS.map(tool => (
+            <Link key={tool.path} to={tool.path} style={s.popularChip}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--doaide-gold)'; e.currentTarget.style.color = 'var(--doaide-gold)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--doaide-border)'; e.currentTarget.style.color = 'var(--doaide-text)' }}
+            >
+              <span>{tool.icon}</span>
+              <span>{tool.title}</span>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -226,6 +348,29 @@ export default function HomePage() {
           </div>
         </section>
       ))}
+
+      <section style={s.guidesSection}>
+        <h2 style={s.guidesTitle}>Tax Guides & Articles</h2>
+        <Link to="/guides/income-tax-slabs-2026-27" style={s.guideLink}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--doaide-gold)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--doaide-text)'}
+        >Income Tax Slabs FY 2026-27: Old vs New Regime Complete Guide</Link>
+        <Link to="/guides/section-80c-deductions" style={s.guideLink}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--doaide-gold)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--doaide-text)'}
+        >Section 80C Deductions: Complete List of Tax Saving Investments 2026</Link>
+        <Link to="/guides/how-to-file-itr-online" style={s.guideLink}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--doaide-gold)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--doaide-text)'}
+        >How to File ITR Online: Step by Step Guide 2026</Link>
+        <Link to="/guides/best-tax-saving-salaried" style={{ ...s.guideLink, borderBottom: 'none' }}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--doaide-gold)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--doaide-text)'}
+        >Best Tax Saving Options for Salaried Employees 2026</Link>
+        <div style={{ textAlign: 'right', marginTop: 12 }}>
+          <Link to="/guides" style={{ color: 'var(--doaide-gold)', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>View All Guides →</Link>
+        </div>
+      </section>
 
       <FAQSection faqs={HOME_FAQS} />
 

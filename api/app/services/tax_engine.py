@@ -27,6 +27,22 @@ SURCHARGE_SLABS = [
     (float("inf"), 0.37),
 ]
 
+def format_inr(amount):
+    s = str(int(amount))
+    if len(s) <= 3:
+        return s
+    last3 = s[-3:]
+    rest = s[:-3]
+    parts = []
+    while len(rest) > 2:
+        parts.append(rest[-2:])
+        rest = rest[:-2]
+    if rest:
+        parts.append(rest)
+    parts.reverse()
+    return ",".join(parts) + "," + last3
+
+
 NEW_REGIME_STANDARD_DEDUCTION = 75_000
 OLD_REGIME_STANDARD_DEDUCTION = 50_000
 CESS_RATE = 0.04
@@ -1009,4 +1025,300 @@ def calculate_salary_optimizer(ctc: float) -> dict:
         "structures": structures,
         "recommended": best["label"],
         "best_monthly_in_hand": best["monthly_in_hand_estimate"],
+    }
+
+
+def calculate_ssy(annual_investment: float, existing_balance: float = 0, girl_age: int = 1, interest_rate: float = 8.2):
+    rate = interest_rate / 100
+    deposit_years = max(0, 15 - girl_age)
+    maturity_years = max(0, 21 - girl_age)
+    capped = min(annual_investment, 250_000)
+    balance = existing_balance
+    schedule = []
+
+    for year in range(1, maturity_years + 1):
+        deposit = capped if year <= deposit_years else 0
+        interest = round((balance + deposit) * rate)
+        balance = balance + deposit + interest
+        schedule.append({
+            "year": year,
+            "age": girl_age + year,
+            "deposit": deposit,
+            "interest": interest,
+            "balance": round(balance),
+        })
+
+    total_invested = round(existing_balance + capped * deposit_years)
+    return {
+        "annualInvestment": capped,
+        "interestRate": interest_rate,
+        "girlAge": girl_age,
+        "depositYears": deposit_years,
+        "maturityYears": maturity_years,
+        "maturityAmount": round(balance),
+        "totalInvested": total_invested,
+        "totalInterest": round(balance - total_invested),
+        "schedule": schedule,
+    }
+
+
+def calculate_epf(basic_salary: float, employee_rate: float = 0.12, employer_rate: float = 0.12,
+                  current_balance: float = 0, years_to_retire: int = 25, interest_rate: float = 8.25):
+    monthly_basic = basic_salary
+    employee_contribution = round(monthly_basic * employee_rate)
+    employer_total = round(monthly_basic * employer_rate)
+    pension_basic = min(monthly_basic, 15_000)
+    pension_contribution = round(pension_basic * 0.0833)
+    employer_epf = employer_total - pension_contribution
+
+    monthly_rate = interest_rate / 100 / 12
+    balance = current_balance
+    schedule = []
+
+    for year in range(1, years_to_retire + 1):
+        yearly_employee = 0
+        yearly_employer = 0
+        for _ in range(12):
+            balance += employee_contribution + employer_epf
+            interest_month = balance * monthly_rate
+            balance += interest_month
+            yearly_employee += employee_contribution
+            yearly_employer += employer_epf
+        schedule.append({
+            "year": year,
+            "employeeContribution": yearly_employee,
+            "employerEPF": yearly_employer,
+            "balance": round(balance),
+        })
+
+    total_employee = employee_contribution * 12 * years_to_retire
+    total_employer_epf = employer_epf * 12 * years_to_retire
+
+    return {
+        "basicSalary": round(monthly_basic),
+        "employeeContribution": employee_contribution,
+        "employerEPF": employer_epf,
+        "pensionContribution": pension_contribution,
+        "employerTotal": employer_total,
+        "totalEmployeeContribution": total_employee,
+        "totalEmployerEPF": total_employer_epf,
+        "retirementCorpus": round(balance),
+        "totalInterestEarned": round(balance - current_balance - total_employee - total_employer_epf),
+        "schedule": schedule,
+    }
+
+
+def compare_elss_vs_ppf_vs_fd(annual_investment: float, years: int = 10, tax_slab: float = 0.30,
+                                fd_rate: float = 7.0, elss_return: float = 12.0, ppf_rate: float = 7.1):
+    def compound(principal, rate, n):
+        return principal * ((1 + rate / 100) ** n - 1) / (rate / 100) if rate > 0 else principal * n
+
+    ppf_val = compound(annual_investment, ppf_rate, min(years, 15))
+    ppf_tax = 0
+    ppf_after = round(ppf_val)
+
+    fd_val = compound(annual_investment, fd_rate, years)
+    fd_invested = annual_investment * years
+    fd_interest = fd_val - fd_invested
+    fd_tax = round(fd_interest * (tax_slab + tax_slab * 0.04))
+    fd_after = round(fd_val - fd_tax)
+
+    elss_val = compound(annual_investment, elss_return, years)
+    elss_invested = annual_investment * years
+    elss_gain = elss_val - elss_invested
+    ltcg_exempt = 125_000
+    taxable_gain = max(0, elss_gain - ltcg_exempt)
+    elss_tax = round(taxable_gain * 0.125)
+    elss_after = round(elss_val - elss_tax)
+
+    return {
+        "annualInvestment": round(annual_investment),
+        "years": years,
+        "elss": {
+            "preReturn": round(elss_val),
+            "tax": elss_tax,
+            "afterTax": elss_after,
+            "lockIn": 3,
+            "risk": "High",
+        },
+        "ppf": {
+            "preReturn": round(ppf_val),
+            "tax": ppf_tax,
+            "afterTax": ppf_after,
+            "lockIn": 15,
+            "risk": "Nil",
+        },
+        "fd": {
+            "preReturn": round(fd_val),
+            "tax": fd_tax,
+            "afterTax": fd_after,
+            "lockIn": 5,
+            "risk": "Nil",
+        },
+    }
+
+
+def calculate_tax_loss_harvesting(gains: float, losses: float, gain_type: str = "ltcg"):
+    net = gains - losses
+    if gain_type == "ltcg":
+        exempt = 125_000
+        taxable_without = max(0, gains - exempt)
+        tax_without = round(taxable_without * 0.125)
+        taxable_with = max(0, net - exempt)
+        tax_with = round(taxable_with * 0.125)
+    else:
+        tax_without = round(gains * 0.20)
+        taxable_with = max(0, net)
+        tax_with = round(taxable_with * 0.20)
+
+    savings = tax_without - tax_with
+    carry_forward = max(0, losses - gains)
+
+    return {
+        "gains": round(gains),
+        "losses": round(losses),
+        "gainType": gain_type.upper(),
+        "taxWithout": tax_without,
+        "taxWith": tax_with,
+        "savings": savings,
+        "carryForward": round(carry_forward),
+        "netGain": round(net),
+    }
+
+
+def calculate_refund(total_income: float, tds_deducted: float = 0, advance_tax_paid: float = 0,
+                     self_assessment_tax: float = 0, regime: str = "new"):
+    if regime == "new":
+        result = calculate_new_regime(total_income)
+    else:
+        result = calculate_old_regime(total_income)
+
+    tax_liability = result["total_tax"]
+    total_paid = tds_deducted + advance_tax_paid + self_assessment_tax
+    diff = total_paid - tax_liability
+    refund_amount = max(0, diff)
+    tax_due = max(0, -diff)
+    interest = round(refund_amount * 0.06 * 0.5) if refund_amount > 0 else 0
+
+    return {
+        "totalIncome": round(total_income),
+        "regime": regime,
+        "taxLiability": tax_liability,
+        "tdsDeducted": round(tds_deducted),
+        "advanceTaxPaid": round(advance_tax_paid),
+        "selfAssessmentTax": round(self_assessment_tax),
+        "totalTaxPaid": round(total_paid),
+        "refundAmount": round(refund_amount),
+        "taxDue": round(tax_due),
+        "interestOnRefund": interest,
+    }
+
+
+PROFESSIONAL_TAX_RATES = {
+    "maharashtra": {
+        "label": "Maharashtra",
+        "slabs": [
+            {"min": 0, "max": 7500, "monthly": 0},
+            {"min": 7501, "max": 10000, "monthly": 175},
+            {"min": 10001, "max": float("inf"), "monthly": 200},
+        ],
+        "february_extra": 100,
+    },
+    "karnataka": {
+        "label": "Karnataka",
+        "slabs": [
+            {"min": 0, "max": 15000, "monthly": 0},
+            {"min": 15001, "max": 25000, "monthly": 200},
+            {"min": 25001, "max": float("inf"), "monthly": 200},
+        ],
+    },
+    "west_bengal": {
+        "label": "West Bengal",
+        "slabs": [
+            {"min": 0, "max": 10000, "monthly": 0},
+            {"min": 10001, "max": 15000, "monthly": 110},
+            {"min": 15001, "max": 25000, "monthly": 130},
+            {"min": 25001, "max": 40000, "monthly": 150},
+            {"min": 40001, "max": float("inf"), "monthly": 200},
+        ],
+    },
+    "andhra_pradesh": {
+        "label": "Andhra Pradesh",
+        "slabs": [
+            {"min": 0, "max": 15000, "monthly": 0},
+            {"min": 15001, "max": 20000, "monthly": 150},
+            {"min": 20001, "max": float("inf"), "monthly": 200},
+        ],
+    },
+    "telangana": {
+        "label": "Telangana",
+        "slabs": [
+            {"min": 0, "max": 15000, "monthly": 0},
+            {"min": 15001, "max": 20000, "monthly": 150},
+            {"min": 20001, "max": float("inf"), "monthly": 200},
+        ],
+    },
+    "tamil_nadu": {
+        "label": "Tamil Nadu",
+        "slabs": [
+            {"min": 0, "max": 21000, "monthly": 0},
+            {"min": 21001, "max": 30000, "monthly": 135},
+            {"min": 30001, "max": 45000, "monthly": 315},
+            {"min": 45001, "max": 60000, "monthly": 690},
+            {"min": 60001, "max": 75000, "monthly": 1025},
+            {"min": 75001, "max": float("inf"), "monthly": 1250},
+        ],
+    },
+    "gujarat": {
+        "label": "Gujarat",
+        "slabs": [
+            {"min": 0, "max": 5999, "monthly": 0},
+            {"min": 6000, "max": 8999, "monthly": 80},
+            {"min": 9000, "max": 11999, "monthly": 150},
+            {"min": 12000, "max": float("inf"), "monthly": 200},
+        ],
+    },
+}
+
+
+def calculate_professional_tax(monthly_salary: float, state: str = "maharashtra"):
+    state_data = PROFESSIONAL_TAX_RATES.get(state)
+    if not state_data:
+        return {
+            "monthlySalary": round(monthly_salary),
+            "monthlyTax": 0,
+            "februaryTax": 0,
+            "annualTax": 0,
+            "maxAllowed": 2500,
+            "stateLabel": state.replace("_", " ").title(),
+            "slabs": [],
+        }
+
+    monthly_tax = 0
+    for slab in state_data["slabs"]:
+        if monthly_salary >= slab["min"] and monthly_salary <= slab["max"]:
+            monthly_tax = slab["monthly"]
+            break
+
+    feb_extra = state_data.get("february_extra", 0)
+    february_tax = monthly_tax + feb_extra
+    annual_tax = monthly_tax * 11 + february_tax
+
+    formatted_slabs = []
+    for slab in state_data["slabs"]:
+        top = slab["max"]
+        if top == float("inf"):
+            range_str = f"Above {format_inr(slab['min'])}"
+        else:
+            range_str = f"{format_inr(slab['min'])} - {format_inr(top)}"
+        formatted_slabs.append({"range": range_str, "monthly": slab["monthly"]})
+
+    return {
+        "monthlySalary": round(monthly_salary),
+        "monthlyTax": monthly_tax,
+        "februaryTax": february_tax,
+        "annualTax": annual_tax,
+        "maxAllowed": 2500,
+        "stateLabel": state_data["label"],
+        "slabs": formatted_slabs,
     }

@@ -6,7 +6,9 @@ from app.routers import (
     advance_tax,
     capital_gains,
     compound_interest,
+    elss_comparison,
     emi,
+    epf,
     fd,
     gratuity,
     home_loan,
@@ -15,14 +17,18 @@ from app.routers import (
     mutual_fund,
     nps,
     ppf,
+    professional_tax,
     recommendations,
+    refund,
     salary_optimizer,
     section_80c,
     section_80d,
     senior_citizen,
     sip,
+    ssy,
     take_home_salary,
     tax_calculator,
+    tax_loss_harvesting,
     tds,
 )
 
@@ -61,6 +67,12 @@ app.include_router(emi.router, prefix="/api/v1", tags=["EMI"])
 app.include_router(compound_interest.router, prefix="/api/v1", tags=["Compound Interest"])
 app.include_router(section_80d.router, prefix="/api/v1", tags=["Section 80D"])
 app.include_router(salary_optimizer.router, prefix="/api/v1", tags=["Salary Optimizer"])
+app.include_router(ssy.router, prefix="/api/v1", tags=["SSY"])
+app.include_router(epf.router, prefix="/api/v1", tags=["EPF"])
+app.include_router(elss_comparison.router, prefix="/api/v1", tags=["ELSS Comparison"])
+app.include_router(tax_loss_harvesting.router, prefix="/api/v1", tags=["Tax Loss Harvesting"])
+app.include_router(refund.router, prefix="/api/v1", tags=["Refund"])
+app.include_router(professional_tax.router, prefix="/api/v1", tags=["Professional Tax"])
 
 
 @app.get("/health")

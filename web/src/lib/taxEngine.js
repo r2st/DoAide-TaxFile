@@ -759,6 +759,350 @@ export function calculateSection80D(selfPremium, spousePremium = 0, childrenPrem
   }
 }
 
+export function calculateSSY(annualInvestment, existingBalance = 0, girlAge = 0, interestRate = 8.2) {
+  const rate = interestRate / 100
+  const depositYears = Math.min(15, 21 - Math.max(girlAge, 0))
+  const maturityYear = 21
+  const schedule = []
+  let balance = existingBalance
+  let totalInvested = existingBalance
+  let totalInterest = 0
+  const cappedInvestment = Math.min(annualInvestment, 250000)
+
+  for (let year = 1; year <= maturityYear; year++) {
+    const investment = year <= depositYears ? cappedInvestment : 0
+    const interest = Math.round((balance + investment) * rate)
+    balance = balance + investment + interest
+    totalInvested += investment
+    totalInterest += interest
+    schedule.push({
+      year,
+      age: girlAge + year,
+      investment: Math.round(investment),
+      interest,
+      balance: Math.round(balance),
+    })
+  }
+
+  return {
+    annualInvestment: Math.round(cappedInvestment),
+    interestRate,
+    girlAge,
+    depositYears,
+    maturityYear,
+    existingBalance: Math.round(existingBalance),
+    maturityAmount: Math.round(balance),
+    totalInvested: Math.round(totalInvested),
+    totalInterest: Math.round(totalInterest),
+    taxBenefit80C: Math.min(Math.round(cappedInvestment), 150000),
+    schedule,
+  }
+}
+
+export function calculateEPF(basicSalary, employeeRate = 12, employerRate = 12, currentBalance = 0, yearsToRetire = 30, interestRate = 8.25) {
+  const monthlyBasic = Math.round(basicSalary / 12)
+  const employeeMonthly = Math.round(monthlyBasic * employeeRate / 100)
+  const employerPFMonthly = Math.round(monthlyBasic * Math.min(employerRate, 12) / 100)
+  const employerPensionMonthly = Math.round(Math.min(monthlyBasic, 15000) * 8.33 / 100)
+  const employerEPFMonthly = Math.max(employerPFMonthly - employerPensionMonthly, 0)
+  const totalMonthlyContribution = employeeMonthly + employerEPFMonthly
+  const annualContribution = totalMonthlyContribution * 12
+  const monthlyRate = interestRate / 100 / 12
+  let balance = currentBalance
+  const schedule = []
+
+  for (let year = 1; year <= yearsToRetire; year++) {
+    let yearContribution = 0
+    let yearInterest = 0
+    for (let m = 0; m < 12; m++) {
+      balance += totalMonthlyContribution
+      yearContribution += totalMonthlyContribution
+      const interest = Math.round(balance * monthlyRate)
+      balance += interest
+      yearInterest += interest
+    }
+    schedule.push({
+      year,
+      contribution: Math.round(yearContribution),
+      interest: Math.round(yearInterest),
+      balance: Math.round(balance),
+    })
+  }
+
+  return {
+    basicSalary: Math.round(basicSalary),
+    employeeMonthly,
+    employerEPFMonthly,
+    employerPensionMonthly,
+    totalMonthlyContribution,
+    annualContribution,
+    interestRate,
+    currentBalance: Math.round(currentBalance),
+    yearsToRetire,
+    maturityAmount: Math.round(balance),
+    totalContributed: Math.round(currentBalance + annualContribution * yearsToRetire),
+    totalInterest: Math.round(balance - currentBalance - annualContribution * yearsToRetire),
+    taxBenefit80C: Math.min(employeeMonthly * 12, 150000),
+    schedule,
+  }
+}
+
+export function compareELSSvsPPFvsFD(annualInvestment, years, taxSlab = 0.312, fdRate = 7.0, elssReturn = 12, ppfRate = 7.1) {
+  const elss = calculateMutualFund('lumpsum', annualInvestment, elssReturn, years)
+  const elssLTCG = Math.max(elss.futureValue - annualInvestment - 125000, 0) * 0.125
+  const elssAfterTax = Math.round(elss.futureValue - elssLTCG)
+
+  const ppf = calculatePPF(annualInvestment, 0, years, ppfRate)
+  const ppfAfterTax = ppf.maturityAmount
+
+  const fd = calculateFD(annualInvestment, fdRate, years, 4)
+  const fdInterestTax = Math.round(fd.totalInterest * taxSlab)
+  const fdAfterTax = Math.round(fd.maturityAmount - fdInterestTax)
+
+  const investments = [
+    {
+      name: 'ELSS',
+      invested: Math.round(annualInvestment),
+      preReturn: elss.futureValue,
+      tax: Math.round(elssLTCG),
+      afterTaxReturn: elssAfterTax,
+      effectiveReturn: years > 0 ? Math.round((Math.pow(elssAfterTax / annualInvestment, 1 / years) - 1) * 10000) / 100 : 0,
+      lockIn: '3 years',
+      risk: 'High',
+      taxStatus: 'LTCG >₹1.25L at 12.5%',
+    },
+    {
+      name: 'PPF',
+      invested: ppf.totalInvested,
+      preReturn: ppf.maturityAmount,
+      tax: 0,
+      afterTaxReturn: ppfAfterTax,
+      effectiveReturn: ppf.totalInvested > 0 && years > 0 ? Math.round((Math.pow(ppfAfterTax / ppf.totalInvested, 1 / years) - 1) * 10000) / 100 : 0,
+      lockIn: '15 years',
+      risk: 'Low',
+      taxStatus: 'EEE — fully tax-free',
+    },
+    {
+      name: 'Tax Saver FD',
+      invested: Math.round(annualInvestment),
+      preReturn: fd.maturityAmount,
+      tax: Math.round(fdInterestTax),
+      afterTaxReturn: fdAfterTax,
+      effectiveReturn: years > 0 ? Math.round((Math.pow(fdAfterTax / annualInvestment, 1 / years) - 1) * 10000) / 100 : 0,
+      lockIn: '5 years',
+      risk: 'Low',
+      taxStatus: 'Interest taxed at slab rate',
+    },
+  ]
+
+  const taxSaving80C = Math.round(Math.min(annualInvestment, 150000) * taxSlab)
+
+  investments.sort((a, b) => b.afterTaxReturn - a.afterTaxReturn)
+
+  return {
+    annualInvestment: Math.round(annualInvestment),
+    years,
+    taxSlab,
+    taxSaving80C,
+    investments,
+    bestOption: investments[0].name,
+  }
+}
+
+export function calculateTaxLossHarvesting(gains, losses, gainType = 'LTCG') {
+  const totalGains = Math.round(gains)
+  const totalLosses = Math.round(losses)
+  const netGain = Math.max(totalGains - totalLosses, 0)
+  const lossUtilized = Math.min(totalLosses, totalGains)
+  const carryForwardLoss = Math.max(totalLosses - totalGains, 0)
+
+  let taxRate, exemption, taxableWithout, taxableWith
+  if (gainType === 'LTCG') {
+    taxRate = 0.125
+    exemption = 125000
+    taxableWithout = Math.max(totalGains - exemption, 0)
+    taxableWith = Math.max(netGain - exemption, 0)
+  } else {
+    taxRate = 0.20
+    exemption = 0
+    taxableWithout = totalGains
+    taxableWith = netGain
+  }
+
+  const taxWithout = Math.round(taxableWithout * taxRate)
+  const taxWith = Math.round(taxableWith * taxRate)
+  const cessWithout = Math.round(taxWithout * 0.04)
+  const cessWith = Math.round(taxWith * 0.04)
+  const totalTaxWithout = taxWithout + cessWithout
+  const totalTaxWith = taxWith + cessWith
+  const taxSaved = totalTaxWithout - totalTaxWith
+
+  return {
+    totalGains,
+    totalLosses,
+    netGain,
+    lossUtilized,
+    carryForwardLoss,
+    gainType,
+    taxRate,
+    exemption,
+    taxableWithoutHarvesting: taxableWithout,
+    taxableWithHarvesting: taxableWith,
+    taxWithoutHarvesting: totalTaxWithout,
+    taxWithHarvesting: totalTaxWith,
+    taxSaved,
+    carryForwardYears: carryForwardLoss > 0 ? 8 : 0,
+  }
+}
+
+export function calculateRefund(totalIncome, tdsDeducted, advanceTaxPaid = 0, selfAssessmentTax = 0, regime = 'new', deductions = {}) {
+  let taxLiability
+  if (regime === 'new') {
+    const r = calculateNewRegime(totalIncome)
+    taxLiability = r.totalTax
+  } else {
+    const r = calculateOldRegime(totalIncome, deductions)
+    taxLiability = r.totalTax
+  }
+
+  const totalPaid = Math.round(tdsDeducted) + Math.round(advanceTaxPaid) + Math.round(selfAssessmentTax)
+  const refundAmount = Math.max(totalPaid - taxLiability, 0)
+  const taxDue = Math.max(taxLiability - totalPaid, 0)
+  const interestOnRefund = refundAmount > 0 ? Math.round(refundAmount * 0.06 / 12 * 6) : 0
+
+  return {
+    totalIncome: Math.round(totalIncome),
+    regime,
+    taxLiability,
+    tdsDeducted: Math.round(tdsDeducted),
+    advanceTaxPaid: Math.round(advanceTaxPaid),
+    selfAssessmentTax: Math.round(selfAssessmentTax),
+    totalTaxPaid: totalPaid,
+    refundAmount,
+    taxDue,
+    interestOnRefund,
+    estimatedTimeline: refundAmount > 0 ? '4-6 months after e-verification' : null,
+  }
+}
+
+const PROFESSIONAL_TAX_RATES = {
+  maharashtra: [
+    { from: 0, to: 7500, monthly: 0 },
+    { from: 7501, to: 10000, monthly: 175 },
+    { from: 10001, to: Infinity, monthly: 200, febMax: 300 },
+  ],
+  karnataka: [
+    { from: 0, to: 15000, monthly: 0 },
+    { from: 15001, to: 25000, monthly: 200 },
+    { from: 25001, to: Infinity, monthly: 200 },
+  ],
+  west_bengal: [
+    { from: 0, to: 10000, monthly: 0 },
+    { from: 10001, to: 15000, monthly: 110 },
+    { from: 15001, to: 25000, monthly: 130 },
+    { from: 25001, to: 40000, monthly: 150 },
+    { from: 40001, to: Infinity, monthly: 200 },
+  ],
+  andhra_pradesh: [
+    { from: 0, to: 15000, monthly: 0 },
+    { from: 15001, to: 20000, monthly: 150 },
+    { from: 20001, to: Infinity, monthly: 200 },
+  ],
+  telangana: [
+    { from: 0, to: 15000, monthly: 0 },
+    { from: 15001, to: 20000, monthly: 150 },
+    { from: 20001, to: Infinity, monthly: 200 },
+  ],
+  tamil_nadu: [
+    { from: 0, to: 21000, monthly: 0 },
+    { from: 21001, to: 30000, monthly: 135 },
+    { from: 30001, to: 45000, monthly: 315 },
+    { from: 45001, to: 60000, monthly: 690 },
+    { from: 60001, to: 75000, monthly: 1025 },
+    { from: 75001, to: Infinity, monthly: 1250 },
+  ],
+  gujarat: [
+    { from: 0, to: 5999, monthly: 0 },
+    { from: 6000, to: 8999, monthly: 80 },
+    { from: 9000, to: 11999, monthly: 150 },
+    { from: 12000, to: Infinity, monthly: 200 },
+  ],
+  madhya_pradesh: [
+    { from: 0, to: 18750, monthly: 0 },
+    { from: 18751, to: 25000, monthly: 125 },
+    { from: 25001, to: Infinity, monthly: 208 },
+  ],
+  kerala: [
+    { from: 0, to: 11999, monthly: 0 },
+    { from: 12000, to: 17999, monthly: 120 },
+    { from: 18000, to: 24999, monthly: 180 },
+    { from: 25000, to: 29999, monthly: 250 },
+    { from: 30000, to: Infinity, monthly: 208 },
+  ],
+  odisha: [
+    { from: 0, to: 13304, monthly: 0 },
+    { from: 13305, to: 25000, monthly: 125 },
+    { from: 25001, to: Infinity, monthly: 200 },
+  ],
+  assam: [
+    { from: 0, to: 10000, monthly: 0 },
+    { from: 10001, to: 15000, monthly: 150 },
+    { from: 15001, to: 25000, monthly: 180 },
+    { from: 25001, to: Infinity, monthly: 208 },
+  ],
+  bihar: [
+    { from: 0, to: 25000, monthly: 0 },
+    { from: 25001, to: 50000, monthly: 100 },
+    { from: 50001, to: Infinity, monthly: 208 },
+  ],
+  rajasthan: [
+    { from: 0, to: Infinity, monthly: 0 },
+  ],
+  delhi: [
+    { from: 0, to: Infinity, monthly: 0 },
+  ],
+  uttar_pradesh: [
+    { from: 0, to: Infinity, monthly: 0 },
+  ],
+}
+
+export const PROFESSIONAL_TAX_STATES = Object.keys(PROFESSIONAL_TAX_RATES).map(k => ({
+  value: k,
+  label: k.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' '),
+}))
+
+export function calculateProfessionalTax(monthlySalary, state) {
+  const slabs = PROFESSIONAL_TAX_RATES[state]
+  if (!slabs) return { error: 'State not found', monthlyTax: 0, annualTax: 0 }
+
+  let monthlyTax = 0
+  for (const slab of slabs) {
+    if (monthlySalary >= slab.from && monthlySalary <= slab.to) {
+      monthlyTax = slab.monthly
+      break
+    }
+  }
+
+  const febSlab = slabs.find(s => monthlySalary >= s.from && monthlySalary <= s.to)
+  const febAmount = febSlab && febSlab.febMax ? febSlab.febMax : monthlyTax
+  const annualTax = monthlyTax * 11 + febAmount
+  const maxAllowed = 2500
+
+  return {
+    state,
+    stateLabel: state.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' '),
+    monthlySalary: Math.round(monthlySalary),
+    monthlyTax,
+    februaryTax: febAmount,
+    annualTax: Math.min(annualTax, maxAllowed),
+    maxAllowed,
+    slabs: slabs.map(s => ({
+      range: s.to === Infinity ? `Above ₹${s.from.toLocaleString('en-IN')}` : `₹${s.from.toLocaleString('en-IN')} - ₹${s.to.toLocaleString('en-IN')}`,
+      monthly: s.monthly,
+    })),
+  }
+}
+
 export function calculateSalaryOptimizer(ctc) {
   const basicLow = Math.round(ctc * 0.30)
   const basicStd = Math.round(ctc * 0.40)

@@ -3,6 +3,7 @@ from app.services.tax_engine import (
     calculate_capital_gains,
     calculate_compound_interest,
     calculate_emi,
+    calculate_epf,
     calculate_fd,
     calculate_gratuity,
     calculate_home_loan_benefit,
@@ -12,12 +13,17 @@ from app.services.tax_engine import (
     calculate_nps_benefit,
     calculate_old_regime,
     calculate_ppf,
+    calculate_professional_tax,
+    calculate_refund,
     calculate_salary_optimizer,
     calculate_section_80d,
     calculate_senior_citizen_tax,
     calculate_sip,
+    calculate_ssy,
     calculate_take_home_salary,
+    calculate_tax_loss_harvesting,
     calculate_tds,
+    compare_elss_vs_ppf_vs_fd,
     plan_80c,
     select_itr_form,
 )
@@ -451,3 +457,102 @@ class TestSalaryOptimizer:
         result = calculate_salary_optimizer(2_000_000)
         for s in result["structures"]:
             assert s["monthly_in_hand_estimate"] > 0
+
+
+class TestSSY:
+    def test_maturity_amount(self):
+        result = calculate_ssy(150_000, 0, 1, 8.2)
+        assert result["maturityAmount"] > 0
+        assert result["depositYears"] > 0
+        assert len(result["schedule"]) > 0
+
+    def test_cap_at_250k(self):
+        result = calculate_ssy(300_000, 0, 1, 8.2)
+        assert result["annualInvestment"] == 250_000
+
+    def test_existing_balance(self):
+        result = calculate_ssy(100_000, 500_000, 5, 8.2)
+        assert result["maturityAmount"] > 500_000
+
+
+class TestEPF:
+    def test_retirement_corpus(self):
+        result = calculate_epf(50_000, 0.12, 0.12, 0, 25, 8.25)
+        assert result["retirementCorpus"] > 0
+        assert len(result["schedule"]) == 25
+
+    def test_employer_split(self):
+        result = calculate_epf(50_000, 0.12, 0.12, 0, 1, 8.25)
+        assert result["employerEPF"] > 0
+        assert result["pensionContribution"] > 0
+        assert result["employerEPF"] + result["pensionContribution"] == result["employerTotal"]
+
+
+class TestELSSComparison:
+    def test_returns_all_three(self):
+        result = compare_elss_vs_ppf_vs_fd(150_000, 10, 0.30, 7.0, 12.0, 7.1)
+        assert "elss" in result
+        assert "ppf" in result
+        assert "fd" in result
+
+    def test_ppf_tax_free(self):
+        result = compare_elss_vs_ppf_vs_fd(150_000, 10, 0.30, 7.0, 12.0, 7.1)
+        assert result["ppf"]["tax"] == 0
+
+    def test_fd_has_tax(self):
+        result = compare_elss_vs_ppf_vs_fd(150_000, 10, 0.30, 7.0, 12.0, 7.1)
+        assert result["fd"]["tax"] > 0
+
+
+class TestTaxLossHarvesting:
+    def test_ltcg_savings(self):
+        result = calculate_tax_loss_harvesting(500_000, 200_000, "ltcg")
+        assert result["savings"] > 0
+        assert result["taxWith"] < result["taxWithout"]
+
+    def test_carry_forward(self):
+        result = calculate_tax_loss_harvesting(100_000, 300_000, "ltcg")
+        assert result["carryForward"] == 200_000
+
+    def test_stcg(self):
+        result = calculate_tax_loss_harvesting(500_000, 100_000, "stcg")
+        assert result["gainType"] == "STCG"
+        assert result["savings"] > 0
+
+
+class TestRefund:
+    def test_refund_when_tds_exceeds_liability(self):
+        result = calculate_refund(800_000, 100_000, 0, 0, "new")
+        assert result["refundAmount"] > 0
+        assert result["taxDue"] == 0
+
+    def test_tax_due_when_tds_insufficient(self):
+        result = calculate_refund(2_000_000, 10_000, 0, 0, "new")
+        assert result["taxDue"] > 0
+        assert result["refundAmount"] == 0
+
+    def test_interest_on_refund(self):
+        result = calculate_refund(500_000, 200_000, 0, 0, "new")
+        if result["refundAmount"] > 0:
+            assert result["interestOnRefund"] > 0
+
+
+class TestProfessionalTax:
+    def test_maharashtra_above_10k(self):
+        result = calculate_professional_tax(50_000, "maharashtra")
+        assert result["monthlyTax"] == 200
+        assert result["februaryTax"] == 300
+        assert result["annualTax"] == 2500
+
+    def test_maharashtra_below_7500(self):
+        result = calculate_professional_tax(5_000, "maharashtra")
+        assert result["monthlyTax"] == 0
+        assert result["annualTax"] == 0
+
+    def test_unknown_state(self):
+        result = calculate_professional_tax(50_000, "delhi")
+        assert result["monthlyTax"] == 0
+
+    def test_slab_table(self):
+        result = calculate_professional_tax(50_000, "karnataka")
+        assert len(result["slabs"]) > 0

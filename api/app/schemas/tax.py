@@ -175,3 +175,47 @@ class Section80DRequest(BaseModel):
 
 class SalaryOptimizerRequest(BaseModel):
     ctc: float = Field(ge=0)
+
+
+class SSYRequest(BaseModel):
+    annual_investment: float = Field(ge=0, le=250000)
+    existing_balance: float = Field(default=0, ge=0)
+    girl_age: int = Field(default=1, ge=0, le=10)
+    interest_rate: float = Field(default=8.2, ge=0, le=20)
+
+
+class EPFRequest(BaseModel):
+    basic_salary: float = Field(ge=0)
+    employee_rate: float = Field(default=0.12, ge=0, le=1)
+    employer_rate: float = Field(default=0.12, ge=0, le=1)
+    current_balance: float = Field(default=0, ge=0)
+    years_to_retire: int = Field(default=25, ge=1, le=50)
+    interest_rate: float = Field(default=8.25, ge=0, le=20)
+
+
+class ELSSComparisonRequest(BaseModel):
+    annual_investment: float = Field(ge=0)
+    years: int = Field(default=10, ge=1, le=50)
+    tax_slab: float = Field(default=0.30, ge=0, le=0.42)
+    fd_rate: float = Field(default=7.0, ge=0, le=20)
+    elss_return: float = Field(default=12.0, ge=0, le=50)
+    ppf_rate: float = Field(default=7.1, ge=0, le=20)
+
+
+class TaxLossHarvestingRequest(BaseModel):
+    gains: float = Field(ge=0)
+    losses: float = Field(ge=0)
+    gain_type: str = Field(default="ltcg", pattern="^(ltcg|stcg)$")
+
+
+class RefundRequest(BaseModel):
+    total_income: float = Field(ge=0)
+    tds_deducted: float = Field(default=0, ge=0)
+    advance_tax_paid: float = Field(default=0, ge=0)
+    self_assessment_tax: float = Field(default=0, ge=0)
+    regime: str = Field(default="new", pattern="^(new|old)$")
+
+
+class ProfessionalTaxRequest(BaseModel):
+    monthly_salary: float = Field(ge=0)
+    state: str = Field(default="maharashtra")

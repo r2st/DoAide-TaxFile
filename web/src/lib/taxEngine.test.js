@@ -24,6 +24,12 @@ import {
   calculateCompoundInterest,
   calculateSection80D,
   calculateSalaryOptimizer,
+  calculateSSY,
+  calculateEPF,
+  compareELSSvsPPFvsFD,
+  calculateTaxLossHarvesting,
+  calculateRefund,
+  calculateProfessionalTax,
 } from './taxEngine'
 
 describe('formatINR', () => {
@@ -527,5 +533,137 @@ describe('calculateSalaryOptimizer', () => {
     r.structures.forEach(s => {
       expect(s.monthlyInHandEstimate).toBeGreaterThan(0)
     })
+  })
+})
+
+describe('calculateSSY', () => {
+  it('calculates maturity amount for girl age 1', () => {
+    const r = calculateSSY(150000, 0, 1, 8.2)
+    expect(r.maturityAmount).toBeGreaterThan(0)
+    expect(r.depositYears).toBe(15)
+    expect(r.schedule).toHaveLength(21)
+  })
+
+  it('caps investment at 2.5L', () => {
+    const r = calculateSSY(300000, 0, 1, 8.2)
+    expect(r.annualInvestment).toBe(250000)
+  })
+
+  it('handles existing balance', () => {
+    const r = calculateSSY(100000, 500000, 5, 8.2)
+    expect(r.maturityAmount).toBeGreaterThan(500000)
+  })
+})
+
+describe('calculateEPF', () => {
+  it('calculates retirement corpus', () => {
+    const r = calculateEPF(600000, 12, 12, 0, 25, 8.25)
+    expect(r.employeeMonthly).toBe(6000)
+    expect(r.maturityAmount).toBeGreaterThan(0)
+    expect(r.schedule).toHaveLength(25)
+  })
+
+  it('caps pension contribution at 15K monthly basic', () => {
+    const r = calculateEPF(600000, 12, 12, 0, 1, 8.25)
+    expect(r.employerPensionMonthly).toBe(Math.round(15000 * 8.33 / 100))
+  })
+
+  it('employer EPF monthly = total PF - pension', () => {
+    const r = calculateEPF(600000, 12, 12, 0, 1, 8.25)
+    const totalPF = Math.round(50000 * 12 / 100)
+    expect(r.employerEPFMonthly).toBe(totalPF - r.employerPensionMonthly)
+  })
+})
+
+describe('compareELSSvsPPFvsFD', () => {
+  it('returns three investment options', () => {
+    const r = compareELSSvsPPFvsFD(150000, 10, 0.30, 7.0, 12.0, 7.1)
+    expect(r.investments).toHaveLength(3)
+    expect(r.bestOption).toBeTruthy()
+  })
+
+  it('ELSS after-tax should be less than or equal to pre-return', () => {
+    const r = compareELSSvsPPFvsFD(150000, 10, 0.30, 7.0, 12.0, 7.1)
+    const elss = r.investments.find(i => i.name === 'ELSS')
+    expect(elss.afterTaxReturn).toBeLessThanOrEqual(elss.preReturn)
+  })
+
+  it('PPF is tax-free', () => {
+    const r = compareELSSvsPPFvsFD(150000, 10, 0.30, 7.0, 12.0, 7.1)
+    const ppf = r.investments.find(i => i.name === 'PPF')
+    expect(ppf.tax).toBe(0)
+    expect(ppf.afterTaxReturn).toBe(ppf.preReturn)
+  })
+
+  it('FD has tax deducted', () => {
+    const r = compareELSSvsPPFvsFD(150000, 10, 0.30, 7.0, 12.0, 7.1)
+    const fd = r.investments.find(i => i.name === 'Tax Saver FD')
+    expect(fd.tax).toBeGreaterThan(0)
+  })
+})
+
+describe('calculateTaxLossHarvesting', () => {
+  it('LTCG savings when losses offset gains', () => {
+    const r = calculateTaxLossHarvesting(500000, 200000, 'LTCG')
+    expect(r.taxSaved).toBeGreaterThan(0)
+    expect(r.taxWithHarvesting).toBeLessThan(r.taxWithoutHarvesting)
+  })
+
+  it('carry forward excess losses', () => {
+    const r = calculateTaxLossHarvesting(100000, 300000, 'LTCG')
+    expect(r.carryForwardLoss).toBe(200000)
+  })
+
+  it('STCG calculation', () => {
+    const r = calculateTaxLossHarvesting(500000, 100000, 'STCG')
+    expect(r.gainType).toBe('STCG')
+    expect(r.taxSaved).toBeGreaterThan(0)
+  })
+})
+
+describe('calculateRefund', () => {
+  it('refund when TDS exceeds liability', () => {
+    const r = calculateRefund(800000, 100000, 0, 0, 'new')
+    expect(r.refundAmount).toBeGreaterThan(0)
+    expect(r.taxDue).toBe(0)
+  })
+
+  it('tax due when TDS is less than liability', () => {
+    const r = calculateRefund(2000000, 10000, 0, 0, 'new')
+    expect(r.taxDue).toBeGreaterThan(0)
+    expect(r.refundAmount).toBe(0)
+  })
+
+  it('includes interest estimate on refund', () => {
+    const r = calculateRefund(500000, 200000, 0, 0, 'new')
+    if (r.refundAmount > 0) {
+      expect(r.interestOnRefund).toBeGreaterThan(0)
+    }
+  })
+})
+
+describe('calculateProfessionalTax', () => {
+  it('Maharashtra — salary above 10K', () => {
+    const r = calculateProfessionalTax(50000, 'maharashtra')
+    expect(r.monthlyTax).toBe(200)
+    expect(r.februaryTax).toBe(300)
+    expect(r.annualTax).toBe(2500)
+  })
+
+  it('Maharashtra — salary below 7500', () => {
+    const r = calculateProfessionalTax(5000, 'maharashtra')
+    expect(r.monthlyTax).toBe(0)
+    expect(r.annualTax).toBe(0)
+  })
+
+  it('unknown state returns zero', () => {
+    const r = calculateProfessionalTax(50000, 'delhi')
+    expect(r.monthlyTax).toBe(0)
+    expect(r.annualTax).toBe(0)
+  })
+
+  it('returns slab table', () => {
+    const r = calculateProfessionalTax(50000, 'karnataka')
+    expect(r.slabs.length).toBeGreaterThan(0)
   })
 })

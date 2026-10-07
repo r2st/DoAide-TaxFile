@@ -25,6 +25,18 @@ import EMICalculator from './pages/EMICalculator'
 import CompoundInterestCalculator from './pages/CompoundInterestCalculator'
 import Section80DCalculator from './pages/Section80DCalculator'
 import SalaryTaxOptimizer from './pages/SalaryTaxOptimizer'
+import SSYCalculator from './pages/SSYCalculator'
+import EPFCalculator from './pages/EPFCalculator'
+import ELSSComparison from './pages/ELSSComparison'
+import TaxLossHarvesting from './pages/TaxLossHarvesting'
+import Form16Decoder from './pages/Form16Decoder'
+import RefundCalculator from './pages/RefundCalculator'
+import ProfessionalTaxCalculator from './pages/ProfessionalTaxCalculator'
+import GuidesPage from './pages/GuidesPage'
+import IncomeTaxSlabsGuide from './pages/guides/IncomeTaxSlabsGuide'
+import Section80CGuide from './pages/guides/Section80CGuide'
+import HowToFileITRGuide from './pages/guides/HowToFileITRGuide'
+import BestTaxSavingGuide from './pages/guides/BestTaxSavingGuide'
 
 export default function App() {
   return (
@@ -55,6 +67,18 @@ export default function App() {
         <Route path="/compound-interest-calculator" element={<CompoundInterestCalculator />} />
         <Route path="/80d-calculator" element={<Section80DCalculator />} />
         <Route path="/salary-tax-optimizer" element={<SalaryTaxOptimizer />} />
+        <Route path="/ssy-calculator" element={<SSYCalculator />} />
+        <Route path="/epf-calculator" element={<EPFCalculator />} />
+        <Route path="/elss-vs-ppf-vs-fd" element={<ELSSComparison />} />
+        <Route path="/tax-loss-harvesting" element={<TaxLossHarvesting />} />
+        <Route path="/form-16-decoder" element={<Form16Decoder />} />
+        <Route path="/refund-calculator" element={<RefundCalculator />} />
+        <Route path="/professional-tax-calculator" element={<ProfessionalTaxCalculator />} />
+        <Route path="/guides" element={<GuidesPage />} />
+        <Route path="/guides/income-tax-slabs-2026-27" element={<IncomeTaxSlabsGuide />} />
+        <Route path="/guides/section-80c-deductions" element={<Section80CGuide />} />
+        <Route path="/guides/how-to-file-itr-online" element={<HowToFileITRGuide />} />
+        <Route path="/guides/best-tax-saving-salaried" element={<BestTaxSavingGuide />} />
       </Routes>
     </Layout>
   )

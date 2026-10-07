@@ -239,6 +239,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tax.doaide.com/old-vs-new-regime</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tax.doaide.com/80g-calculator</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tax.doaide.com/elss-vs-ppf-vs-fd</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>monthly</changefreq>

@@ -24,6 +24,7 @@ const CATEGORIES = [
     name: 'Income Tax',
     tools: [
       { path: '/income-tax-calculator', icon: '🧮', title: 'Income Tax Calculator', desc: 'Compare old vs new regime side-by-side. Find which saves you more.' },
+      { path: '/old-vs-new-regime', icon: '⚖️', title: 'Old vs New Regime', desc: 'Detailed side-by-side comparison with slab breakdown and recommendation.' },
       { path: '/itr-form-selector', icon: '📋', title: 'ITR Form Selector', desc: 'Answer a few questions to find the right ITR form for your income.' },
       { path: '/advance-tax-calculator', icon: '📅', title: 'Advance Tax Calculator', desc: 'Quarterly advance tax installments with due dates and interest.' },
       { path: '/tds-calculator', icon: '🏦', title: 'TDS Calculator', desc: 'Calculate TDS rates and amounts for salary, rent, professional fees.' },
@@ -53,6 +54,7 @@ const CATEGORIES = [
       { path: '/80c-planner', icon: '📊', title: '80C Investment Planner', desc: 'Plan your ₹1.5L Section 80C investments for maximum tax savings.' },
       { path: '/80d-calculator', icon: '🏥', title: '80D Health Insurance', desc: 'Calculate health insurance deduction for self, family, and parents.' },
       { path: '/standard-deduction-calculator', icon: '📝', title: 'Deduction Calculator', desc: 'Track all deduction sections — 80C, 80D, 80E, 80G, 24(b) and more.' },
+      { path: '/80g-calculator', icon: '🎁', title: '80G Donation Calculator', desc: 'Calculate tax benefit for charitable donations under Section 80G.' },
       { path: '/nps-calculator', icon: '🏛️', title: 'NPS Tax Benefit Calculator', desc: 'NPS deductions under 80CCD(1), 80CCD(1B), and 80CCD(2).' },
       { path: '/home-loan-calculator', icon: '🏡', title: 'Home Loan Tax Benefit', desc: 'Section 24(b), 80C principal, and 80EEA deductions on home loans.' },
     ],

@@ -121,6 +121,32 @@ export default function AdvanceTaxCalculator() {
         </ResultCard>
       )}
 
+      <div style={{ marginTop: 40 }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 22, marginBottom: 16 }}>Worked Examples</h2>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Freelancer with ₹3,00,000 total tax, no TDS</div>
+          Net tax payable: ₹3,00,000 (above ₹10,000 threshold)<br/>
+          Q1 — 15 Jun: 15% = ₹45,000<br/>
+          Q2 — 15 Sep: 45% cumulative = ₹90,000 (pay ₹45,000 more)<br/>
+          Q3 — 15 Dec: 75% cumulative = ₹1,80,000 (pay ₹90,000 more)<br/>
+          Q4 — 15 Mar: 100% = ₹3,00,000 (pay ₹75,000 more)<br/>
+          Missing Q1 entirely → 234C interest: <strong>₹450/month for 3 months = ₹1,350</strong>
+        </div>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Salaried with capital gains, ₹1,50,000 tax, ₹1,20,000 TDS</div>
+          Net tax payable: ₹30,000 (above ₹10,000 threshold)<br/>
+          Q1: ₹4,500 | Q2: ₹9,000 | Q3: ₹18,000 | Q4: ₹30,000<br/>
+          Since TDS covers most tax, advance tax installments are small.<br/>
+          If net tax were ₹8,000 instead → <strong>No advance tax needed</strong> (below ₹10,000)
+        </div>
+
+        <p style={{ fontSize: 14, color: 'var(--doaide-text-secondary)' }}>
+          Read our detailed <a href="/guides/advance-tax" style={{ color: 'var(--doaide-gold)', textDecoration: 'none' }}>Advance Tax Guide</a> for due dates, interest calculation under 234B/234C, and payment process.
+        </p>
+      </div>
+
       <FAQSection faqs={FAQS} />
     </div>
   )

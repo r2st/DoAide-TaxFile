@@ -547,7 +547,7 @@ class TestProfessionalTax:
     def test_maharashtra_below_7500(self):
         result = calculate_professional_tax(5_000, "maharashtra")
         assert result["monthlyTax"] == 0
-        assert result["annualTax"] == 0
+        assert result["annualTax"] == 100  # February extra ₹100 still applies
 
     def test_unknown_state(self):
         result = calculate_professional_tax(50_000, "delhi")

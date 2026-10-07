@@ -138,6 +138,31 @@ export default function NPSCalculator() {
         </ResultCard>
       )}
 
+      <div style={{ marginTop: 40 }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 22, marginBottom: 16 }}>Worked Examples</h2>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Private-sector employee, ₹15L gross salary</div>
+          Self contribution: ₹1,00,000/year | Employer NPS: ₹60,000 (10% of basic ₹6L)<br/>
+          80CCD(1): min(₹1L, 10% of ₹15L) = ₹1,00,000 (within 80C limit)<br/>
+          80CCD(1B): ₹50,000 (additional deduction)<br/>
+          80CCD(2): ₹60,000 (employer, both regimes)<br/>
+          Total deduction: <strong>₹2,10,000</strong> | Tax saving at 31.2%: <strong>₹65,520</strong>
+        </div>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>Central govt employee, ₹10L gross, age 30</div>
+          Self contribution: ₹50,000 | Employer NPS: ₹56,000 (14% of basic ₹4L)<br/>
+          80CCD(1): ₹50,000 | 80CCD(1B): ₹50,000 | 80CCD(2): ₹56,000<br/>
+          Total deduction: <strong>₹1,56,000</strong> | Tax saving: <strong>₹48,672</strong><br/>
+          Estimated corpus at 60 (10% return, 30 years): <strong>₹1.74 Cr</strong>
+        </div>
+
+        <p style={{ fontSize: 14, color: 'var(--doaide-text-secondary)' }}>
+          Read our detailed <a href="/guides/nps-vs-ppf-vs-elss" style={{ color: 'var(--doaide-gold)', textDecoration: 'none' }}>NPS vs PPF vs ELSS Guide</a> for a comprehensive comparison of tax-saving investments.
+        </p>
+      </div>
+
       <FAQSection faqs={FAQS} />
     </div>
   )

@@ -140,6 +140,32 @@ export default function SalaryTaxOptimizer() {
         </ResultCard>
       )}
 
+      <div style={{ marginTop: 40, maxWidth: 800 }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 22, marginBottom: 16 }}>Worked Examples</h2>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>CTC ₹20L — 30% vs 40% vs 50% Basic</div>
+          With 30% basic (₹6L): Higher HRA (₹3L), lower PF (₹21,600), more in-hand<br/>
+          With 40% basic (₹8L): Standard HRA (₹4L), standard PF (₹21,600), balanced<br/>
+          With 50% basic (₹10L): Lower HRA (₹5L), higher PF (₹21,600), more retirement savings<br/>
+          New regime winner: <strong>30% Basic</strong> — saves ~₹12,000/year vs 50% basic<br/>
+          Old regime: 30% basic + HRA exemption (if paying rent in metro) can save even more
+        </div>
+
+        <div style={{ padding: 16, background: 'var(--doaide-bg-alt)', borderRadius: 'var(--doaide-radius-md)', marginBottom: 16, fontSize: 13, fontFamily: 'var(--doaide-font-mono)', lineHeight: 1.7, color: 'var(--doaide-text-secondary)' }}>
+          <div style={{ fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 8, fontFamily: 'var(--doaide-font-display)', fontSize: 15 }}>CTC ₹12L — Maximizing take-home</div>
+          30% basic (₹3.6L): Monthly in-hand ~₹82,500<br/>
+          40% basic (₹4.8L): Monthly in-hand ~₹81,800<br/>
+          50% basic (₹6L): Monthly in-hand ~₹81,100<br/>
+          Difference: <strong>₹1,400/month</strong> (₹16,800/year) more with 30% basic<br/>
+          Add food coupons (₹2,200/month): saves another ₹8,237/year in tax
+        </div>
+
+        <p style={{ fontSize: 14, color: 'var(--doaide-text-secondary)' }}>
+          Read our detailed <a href="/guides/tax-on-salary" style={{ color: 'var(--doaide-gold)', textDecoration: 'none' }}>Income Tax on Salary Guide</a> for CTC breakdowns with complete worked examples.
+        </p>
+      </div>
+
       <FAQSection faqs={FAQS} />
     </div>
   )

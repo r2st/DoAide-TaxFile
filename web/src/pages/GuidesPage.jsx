@@ -10,10 +10,52 @@ const GUIDES = [
     time: '8 min read',
   },
   {
+    path: '/guides/old-vs-new-regime',
+    title: 'Old vs New Tax Regime 2026-27: Which is Better for You?',
+    desc: 'Detailed comparison with break-even analysis and worked examples at ₹10L, ₹15L, ₹20L, ₹30L income.',
+    time: '10 min read',
+  },
+  {
     path: '/guides/section-80c-deductions',
     title: 'Section 80C Deductions: Complete List of Tax Saving Investments 2026',
     desc: 'Every 80C instrument compared — PPF, ELSS, NSC, FD, SCSS, SSY, EPF, LIC, and more.',
     time: '10 min read',
+  },
+  {
+    path: '/guides/save-tax-new-regime',
+    title: 'How to Save Tax Under New Tax Regime 2026-27',
+    desc: 'Strategies that work without deductions — employer NPS, standard deduction, tax harvesting, and more.',
+    time: '8 min read',
+  },
+  {
+    path: '/guides/tax-saving-tips',
+    title: 'Top 15 Tax Saving Tips for Salaried Employees 2026',
+    desc: 'Actionable tips to save up to ₹2 lakh in taxes — for both old and new regime.',
+    time: '12 min read',
+  },
+  {
+    path: '/guides/nps-vs-ppf-vs-elss',
+    title: 'NPS vs PPF vs ELSS: Which Tax Saving Investment is Best?',
+    desc: 'Compare returns, lock-in, risk, and taxation of India\'s top three 80C investments.',
+    time: '10 min read',
+  },
+  {
+    path: '/guides/tax-on-salary',
+    title: 'Income Tax on Salary: Complete Breakdown with Examples',
+    desc: 'CTC vs gross vs net salary, allowances, deductions, TDS, and worked examples at ₹15L and ₹25L.',
+    time: '10 min read',
+  },
+  {
+    path: '/guides/home-loan-tax',
+    title: 'Home Loan Tax Benefits: Section 24, 80C, 80EEA',
+    desc: 'Complete guide to interest deduction, principal under 80C, joint loan benefits, and old vs new regime.',
+    time: '10 min read',
+  },
+  {
+    path: '/guides/advance-tax',
+    title: 'Advance Tax: Due Dates, Calculation & Payment Guide',
+    desc: 'Quarterly installments, Section 234B/234C interest, payment process, and worked examples.',
+    time: '8 min read',
   },
   {
     path: '/guides/how-to-file-itr-online',
@@ -50,8 +92,8 @@ export default function GuidesPage() {
     <div style={s.page}>
       <SEOHead
         title="Tax Guides & Articles - Income Tax Help India | DoAide TaxFile"
-        description="Free income tax guides for India FY 2026-27. Learn about tax slabs, Section 80C deductions, how to file ITR, and tax saving options for salaried employees."
-        keywords="income tax guide India, tax slabs 2026-27, Section 80C guide, how to file ITR, tax saving tips"
+        description="Free income tax guides for India FY 2026-27. Tax slabs, old vs new regime, 80C investments, NPS vs PPF vs ELSS, salary tax breakdown, home loan benefits, advance tax, and tax saving tips."
+        keywords="income tax guide India, tax slabs 2026-27, Section 80C guide, how to file ITR, tax saving tips, old vs new regime, NPS PPF ELSS comparison, home loan tax benefits"
         canonical="https://tax.doaide.com/guides"
       />
 

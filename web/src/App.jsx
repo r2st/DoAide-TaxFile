@@ -37,6 +37,18 @@ import IncomeTaxSlabsGuide from './pages/guides/IncomeTaxSlabsGuide'
 import Section80CGuide from './pages/guides/Section80CGuide'
 import HowToFileITRGuide from './pages/guides/HowToFileITRGuide'
 import BestTaxSavingGuide from './pages/guides/BestTaxSavingGuide'
+import SaveTaxNewRegime from './pages/guides/SaveTaxNewRegime'
+import NpsVsPpfVsElss from './pages/guides/NpsVsPpfVsElss'
+import AdvanceTaxGuide from './pages/guides/AdvanceTaxGuide'
+import TaxOnSalary from './pages/guides/TaxOnSalary'
+import OldVsNewRegime from './pages/guides/OldVsNewRegime'
+import TaxSavingTips from './pages/guides/TaxSavingTips'
+import HomeLoanTaxBenefits from './pages/guides/HomeLoanTaxBenefits'
+import VsClearTax from './pages/compare/VsClearTax'
+import VsTax2Win from './pages/compare/VsTax2Win'
+import BestIncomeTaxCalculator from './pages/compare/BestIncomeTaxCalculator'
+import StampDutyCalculator from './pages/StampDutyCalculator'
+import RentalIncomeCalculator from './pages/RentalIncomeCalculator'
 
 export default function App() {
   return (
@@ -74,11 +86,23 @@ export default function App() {
         <Route path="/form-16-decoder" element={<Form16Decoder />} />
         <Route path="/refund-calculator" element={<RefundCalculator />} />
         <Route path="/professional-tax-calculator" element={<ProfessionalTaxCalculator />} />
+        <Route path="/calculators/stamp-duty" element={<StampDutyCalculator />} />
+        <Route path="/calculators/rental-income" element={<RentalIncomeCalculator />} />
         <Route path="/guides" element={<GuidesPage />} />
         <Route path="/guides/income-tax-slabs-2026-27" element={<IncomeTaxSlabsGuide />} />
         <Route path="/guides/section-80c-deductions" element={<Section80CGuide />} />
         <Route path="/guides/how-to-file-itr-online" element={<HowToFileITRGuide />} />
         <Route path="/guides/best-tax-saving-salaried" element={<BestTaxSavingGuide />} />
+        <Route path="/guides/save-tax-new-regime" element={<SaveTaxNewRegime />} />
+        <Route path="/guides/nps-vs-ppf-vs-elss" element={<NpsVsPpfVsElss />} />
+        <Route path="/guides/advance-tax" element={<AdvanceTaxGuide />} />
+        <Route path="/guides/tax-on-salary" element={<TaxOnSalary />} />
+        <Route path="/guides/old-vs-new-regime" element={<OldVsNewRegime />} />
+        <Route path="/guides/tax-saving-tips" element={<TaxSavingTips />} />
+        <Route path="/guides/home-loan-tax" element={<HomeLoanTaxBenefits />} />
+        <Route path="/compare/cleartax" element={<VsClearTax />} />
+        <Route path="/compare/tax2win" element={<VsTax2Win />} />
+        <Route path="/best-income-tax-calculator" element={<BestIncomeTaxCalculator />} />
       </Routes>
     </Layout>
   )

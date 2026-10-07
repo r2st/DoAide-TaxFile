@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { path: '/epf-calculator', label: 'EPF' },
   { path: '/ssy-calculator', label: 'SSY' },
   { path: '/guides', label: 'Guides' },
+  { path: '/compare/cleartax', label: 'Compare' },
 ]
 
 const s = {

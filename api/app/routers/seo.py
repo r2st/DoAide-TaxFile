@@ -40,11 +40,23 @@ PAGES = [
     "/form-16-decoder",
     "/refund-calculator",
     "/professional-tax-calculator",
+    "/calculators/stamp-duty",
+    "/calculators/rental-income",
     "/guides",
     "/guides/income-tax-slabs-2026-27",
     "/guides/section-80c-deductions",
     "/guides/how-to-file-itr-online",
     "/guides/best-tax-saving-salaried",
+    "/guides/save-tax-new-regime",
+    "/guides/nps-vs-ppf-vs-elss",
+    "/guides/advance-tax",
+    "/guides/tax-on-salary",
+    "/guides/old-vs-new-regime",
+    "/guides/tax-saving-tips",
+    "/guides/home-loan-tax",
+    "/compare/cleartax",
+    "/compare/tax2win",
+    "/best-income-tax-calculator",
 ]
 
 
@@ -53,7 +65,7 @@ def sitemap():
     today = date.today().isoformat()
     urls = []
     for page in PAGES:
-        priority = "1.0" if page == "/" else "0.8" if page.startswith("/guides/") else "0.9"
+        priority = "1.0" if page == "/" else "0.8" if page.startswith("/guides/") or page.startswith("/compare/") else "0.9"
         freq = "weekly" if page == "/" else "monthly"
         urls.append(
             f"  <url>\n"

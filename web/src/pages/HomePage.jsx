@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import FAQSection from '../components/FAQSection'
+import RecentTools from '../components/RecentTools'
+import TrendingTools from '../components/TrendingTools'
 
 const HOME_FAQS = [
   { q: 'What income tax regime should I choose for FY 2026-27?', a: 'It depends on your deductions. The new regime has lower rates but fewer deductions (only ₹75,000 standard deduction). The old regime allows 80C (₹1.5L), 80D, HRA, home loan interest, and more. Use our Income Tax Calculator to compare both with your actual numbers.' },
@@ -332,6 +334,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <RecentTools />
+
       <section style={s.popularSection}>
         <div style={s.popularTitle}>Popular Tools</div>
         <div style={s.popularGrid}>
@@ -388,6 +392,8 @@ export default function HomePage() {
           <Link to="/guides" style={{ color: 'var(--doaide-gold)', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>View All Guides →</Link>
         </div>
       </section>
+
+      <TrendingTools />
 
       <FAQSection faqs={HOME_FAQS} />
 

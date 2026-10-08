@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
+import InstallPrompt from './components/InstallPrompt'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import IncomeTaxCalculator from './pages/IncomeTaxCalculator'
@@ -63,6 +64,8 @@ import RetirementCalculator from './pages/RetirementCalculator'
 import OldVsNewRegimeComparison from './pages/OldVsNewRegimeComparison'
 import Section80GCalculator from './pages/Section80GCalculator'
 import EmbedIncomeTaxCalculator from './pages/EmbedIncomeTaxCalculator'
+import ToolTracker from './components/ToolTracker'
+import SocialProofBar from './components/SocialProofBar'
 
 export default function App() {
   const { pathname } = useLocation()
@@ -75,7 +78,10 @@ export default function App() {
   }
 
   return (
+    <>
     <Layout>
+      <ToolTracker />
+      <SocialProofBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/income-tax-calculator" element={<IncomeTaxCalculator />} />
@@ -141,5 +147,7 @@ export default function App() {
         <Route path="/compare/best-itr-tools" element={<BestItrTools />} />
       </Routes>
     </Layout>
+    <InstallPrompt />
+    </>
   )
 }

@@ -69,6 +69,9 @@ import IncomeTaxSlabs2026 from './pages/blog/IncomeTaxSlabs2026'
 import HowToFileITR from './pages/blog/HowToFileITR'
 import Section80CDeductions from './pages/blog/Section80CDeductions'
 import NpsVsPpfVsElssBlog from './pages/blog/NpsVsPpfVsElss'
+import SaveIncomeTaxLegally2026 from './pages/blog/SaveIncomeTaxLegally2026'
+import Section80CInvestmentOptions from './pages/blog/Section80CInvestmentOptions'
+import NewVsOldRegimeCalculatorBlog from './pages/blog/NewVsOldRegimeCalculatorBlog'
 import ToolTracker from './components/ToolTracker'
 import SocialProofBar from './components/SocialProofBar'
 import ReferralBanner from './components/ReferralBanner'
@@ -157,6 +160,9 @@ export default function App() {
           <Route path="how-to-file-itr-online-free" element={<HowToFileITR />} />
           <Route path="section-80c-deductions-complete-guide" element={<Section80CDeductions />} />
           <Route path="nps-vs-ppf-vs-elss-comparison" element={<NpsVsPpfVsElssBlog />} />
+          <Route path="how-to-save-income-tax-legally-india-2026" element={<SaveIncomeTaxLegally2026 />} />
+          <Route path="section-80c-investment-options-compared" element={<Section80CInvestmentOptions />} />
+          <Route path="new-vs-old-tax-regime-calculator" element={<NewVsOldRegimeCalculatorBlog />} />
         </Route>
       </Routes>
     </Layout>

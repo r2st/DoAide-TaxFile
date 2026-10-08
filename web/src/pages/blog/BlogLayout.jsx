@@ -23,6 +23,21 @@ const ARTICLES = [
     title: 'NPS vs PPF vs ELSS — Complete Comparison Guide 2026',
     description: 'Detailed comparison of NPS, PPF, and ELSS for tax saving and wealth creation. Compare returns, tax benefits, lock-in, risk, and suitability for your goals.',
   },
+  {
+    slug: 'how-to-save-income-tax-legally-india-2026',
+    title: 'How to Save Income Tax Legally in India 2026 — Complete Guide',
+    description: 'Complete guide to saving income tax legally in India for FY 2026-27. Section 80C, 80D, HRA, NPS, home loan benefits and more — with exact amounts and strategies.',
+  },
+  {
+    slug: 'section-80c-investment-options-compared',
+    title: 'Section 80C Investment Options Compared — Which is Best for You?',
+    description: 'Side-by-side comparison of all Section 80C investment options — ELSS, PPF, NSC, FD, SSY, NPS, LIC. Returns, lock-in, risk, and which suits your profile.',
+  },
+  {
+    slug: 'new-vs-old-tax-regime-calculator',
+    title: 'New vs Old Tax Regime Calculator — Which Saves More Tax in 2026?',
+    description: 'Detailed comparison of new and old income tax regimes for FY 2026-27. Slab rates, deductions, worked examples at every income level, and a decision framework.',
+  },
 ]
 
 export { ARTICLES }

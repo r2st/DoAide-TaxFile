@@ -64,6 +64,11 @@ import RetirementCalculator from './pages/RetirementCalculator'
 import OldVsNewRegimeComparison from './pages/OldVsNewRegimeComparison'
 import Section80GCalculator from './pages/Section80GCalculator'
 import EmbedIncomeTaxCalculator from './pages/EmbedIncomeTaxCalculator'
+import BlogLayout, { BlogIndex } from './pages/blog/BlogLayout'
+import IncomeTaxSlabs2026 from './pages/blog/IncomeTaxSlabs2026'
+import HowToFileITR from './pages/blog/HowToFileITR'
+import Section80CDeductions from './pages/blog/Section80CDeductions'
+import NpsVsPpfVsElssBlog from './pages/blog/NpsVsPpfVsElss'
 import ToolTracker from './components/ToolTracker'
 import SocialProofBar from './components/SocialProofBar'
 
@@ -145,6 +150,13 @@ export default function App() {
         <Route path="/compare/tax2win" element={<VsTax2Win />} />
         <Route path="/best-income-tax-calculator" element={<BestIncomeTaxCalculator />} />
         <Route path="/compare/best-itr-tools" element={<BestItrTools />} />
+        <Route path="/blog" element={<BlogLayout />}>
+          <Route index element={<BlogIndex />} />
+          <Route path="income-tax-slabs-2026-27" element={<IncomeTaxSlabs2026 />} />
+          <Route path="how-to-file-itr-online-free" element={<HowToFileITR />} />
+          <Route path="section-80c-deductions-complete-guide" element={<Section80CDeductions />} />
+          <Route path="nps-vs-ppf-vs-elss-comparison" element={<NpsVsPpfVsElssBlog />} />
+        </Route>
       </Routes>
     </Layout>
     <InstallPrompt />

@@ -169,6 +169,36 @@ export default function Layout({ children }) {
 
       <main style={s.main}>{children}</main>
 
+      <section style={{ borderTop: '1px solid var(--doaide-border)', background: 'var(--doaide-bg, #f8f9fa)', padding: '2rem 1rem' }} aria-label="More free tools from DoAide" className="no-print">
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+          <p style={{ fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--doaide-text-muted)', margin: '0 0 1rem' }}>More free tools from DoAide</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem' }}>
+            {[
+              { icon: '📄', name: 'Docs', url: 'https://docs.doaide.com', desc: 'Free document generators' },
+              { icon: '📝', name: 'Resume', url: 'https://resume.doaide.com', desc: 'AI resume builder' },
+              { icon: '📊', name: '409A', url: 'https://409a.doaide.com', desc: 'Startup valuations' },
+              { icon: '🏷️', name: 'GST Bot', url: 'https://gst.doaide.com', desc: 'GST filing & compliance' },
+              { icon: '🛡️', name: 'InsureKit', url: 'https://insure.doaide.com', desc: 'Insurance calculators' },
+              { icon: '📈', name: 'Pulse', url: 'https://pulse.doaide.com', desc: 'Newsletter growth tools' },
+              { icon: '🧾', name: 'Invoicer', url: 'https://invoicer.doaide.com', desc: 'GST invoices' },
+              { icon: '📝', name: 'Contracts', url: 'https://contracts.doaide.com', desc: 'Business contracts' },
+              { icon: '🏠', name: 'HomeNex', url: 'https://homenex.aiknol.com', desc: 'AI CRM for real estate' },
+            ].map(t => (
+              <a key={t.url} href={t.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', padding: '0.75rem', background: 'var(--doaide-card-bg, #fff)', border: '1px solid var(--doaide-border)', borderRadius: '0.5rem', textDecoration: 'none', color: 'var(--doaide-text)' }}>
+                <span style={{ fontSize: '1.25rem', lineHeight: 1, flexShrink: 0 }}>{t.icon}</span>
+                <span>
+                  <strong style={{ display: 'block', fontSize: '0.85rem' }}>{t.name}</strong>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--doaide-text-muted)' }}>{t.desc}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+          <p style={{ marginTop: '1rem', fontSize: '0.8rem' }}>
+            <a href="https://doaide.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--doaide-gold)', textDecoration: 'none' }}>View all 40+ tools &rarr;</a>
+          </p>
+        </div>
+      </section>
+
       <footer style={s.footer}>
         <p>DoAide TaxFile — Free tax & financial tools for India</p>
         <p style={{ marginTop: 4 }}>FY 2026-27 (AY 2027-28) • All calculations are indicative</p>

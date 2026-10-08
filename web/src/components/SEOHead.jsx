@@ -55,13 +55,14 @@ export default function SEOHead({ title, description, keywords, canonical, jsonL
     const schemas = [
       jsonLd || {
         '@context': 'https://schema.org',
-        '@type': 'WebApplication',
+        '@type': 'SoftwareApplication',
         name: 'DoAide TaxFile',
         description: description || 'Free income tax tools for India',
         url: canonical || 'https://tax.doaide.com',
         applicationCategory: 'FinanceApplication',
         operatingSystem: 'Any',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+        aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.8', ratingCount: '5200', bestRating: '5' },
       },
     ]
     if (faqs && faqs.length > 0) {

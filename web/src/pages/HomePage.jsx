@@ -1,8 +1,72 @@
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import FAQSection from '../components/FAQSection'
 import RecentTools from '../components/RecentTools'
 import TrendingTools from '../components/TrendingTools'
+
+function AnimatedCounter({ end, suffix = '', duration = 2000 }) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true
+        const start = performance.now()
+        const step = (now) => {
+          const progress = Math.min((now - start) / duration, 1)
+          const eased = 1 - Math.pow(1 - progress, 3)
+          setCount(Math.floor(eased * end))
+          if (progress < 1) requestAnimationFrame(step)
+        }
+        requestAnimationFrame(step)
+      }
+    }, { threshold: 0.3 })
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [end, duration])
+
+  return <span ref={ref}>{count.toLocaleString()}{suffix}</span>
+}
+
+function DeadlineCountdown() {
+  const deadline = new Date('2027-07-31T23:59:59+05:30')
+  const [diff, setDiff] = useState(() => Math.max(0, deadline - Date.now()))
+
+  useEffect(() => {
+    const id = setInterval(() => setDiff(Math.max(0, deadline - Date.now())), 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  const days = Math.floor(diff / 86400000)
+  const hours = Math.floor((diff % 86400000) / 3600000)
+  const mins = Math.floor((diff % 3600000) / 60000)
+  const secs = Math.floor((diff % 60000) / 1000)
+
+  const unit = (val, label) => (
+    <div style={{ textAlign: 'center', minWidth: 56 }}>
+      <div style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 28, fontWeight: 700, color: 'var(--doaide-gold)' }}>{val}</div>
+      <div style={{ fontSize: 10, color: 'var(--doaide-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>{label}</div>
+    </div>
+  )
+
+  return (
+    <div style={{ marginTop: 32, padding: '20px 24px', background: 'var(--doaide-surface)', border: '1px solid var(--doaide-gold-dim)', borderRadius: 'var(--doaide-radius-lg)', textAlign: 'center' }}>
+      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--doaide-gold)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 12 }}>ITR Filing Deadline — FY 2026-27</div>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
+        {unit(days, 'Days')}
+        {unit(hours, 'Hours')}
+        {unit(mins, 'Mins')}
+        {unit(secs, 'Secs')}
+      </div>
+      <div style={{ marginTop: 12 }}>
+        <Link to="/income-tax-calculator" style={{ color: 'var(--doaide-gold)', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>Calculate Your Tax Now →</Link>
+      </div>
+    </div>
+  )
+}
 
 const TESTIMONIALS = [
   { name: "Kavita Sharma", role: "Chartered Accountant, Mumbai", stars: 5, quote: "TaxFile's old-vs-new regime comparison saved my clients lakhs. The calculations are instant and always match the latest slabs." },
@@ -330,19 +394,21 @@ export default function HomePage() {
         </div>
         <div style={s.socialProof}>
           <div style={s.socialStat}>
-            <div style={s.socialNumber}>50,000+</div>
+            <div style={s.socialNumber}><AnimatedCounter end={50000} suffix="+" /></div>
             <div style={s.socialLabel}>Calculations Done</div>
           </div>
           <div style={s.socialStat}>
-            <div style={s.socialNumber}>10,000+</div>
-            <div style={s.socialLabel}>Users This Month</div>
+            <div style={s.socialNumber}><AnimatedCounter end={10000} suffix="+" duration={1800} /></div>
+            <div style={s.socialLabel}>Taxpayers This Month</div>
           </div>
           <div style={s.socialStat}>
-            <div style={s.socialNumber}>30+</div>
+            <div style={s.socialNumber}><AnimatedCounter end={30} suffix="+" duration={1200} /></div>
             <div style={s.socialLabel}>Free Tools</div>
           </div>
         </div>
       </section>
+
+      <DeadlineCountdown />
 
       <RecentTools />
 

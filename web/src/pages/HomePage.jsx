@@ -231,6 +231,13 @@ const s = {
     color: 'var(--doaide-text-secondary)',
     lineHeight: 1.5,
   },
+  cardCta: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: 'var(--doaide-gold)',
+    marginTop: 8,
+    display: 'block',
+  },
   guidesSection: {
     marginTop: 48,
     padding: '28px 24px',
@@ -352,6 +359,7 @@ export default function HomePage() {
                 <div style={s.cardIcon}>{tool.icon}</div>
                 <div style={s.cardTitle}>{tool.title}</div>
                 <div style={s.cardDesc}>{tool.desc}</div>
+                <span style={s.cardCta}>Use Now →</span>
               </Link>
             ))}
           </div>

@@ -183,20 +183,33 @@ describe('calculateAdvanceTax', () => {
 })
 
 describe('calculateNPSBenefit', () => {
-  it('calculates basic contributions', () => {
+  it('allocates small contribution to 80CCD(1B) first', () => {
     const r = calculateNPSBenefit(50000, 0, 1000000)
-    expect(r.deduction80CCD1).toBe(50000)
     expect(r.deduction80CCD1B).toBe(50000)
+    expect(r.deduction80CCD1).toBe(0)
+    expect(r.totalDeduction).toBe(50000)
   })
 
   it('caps 80CCD(1) at 10% of income', () => {
     const r = calculateNPSBenefit(200000, 0, 1000000)
     expect(r.deduction80CCD1).toBe(100000)
+    expect(r.deduction80CCD1B).toBe(50000)
+    expect(r.totalDeduction).toBe(150000)
   })
 
   it('caps 80CCD(1B) at ₹50K', () => {
     const r = calculateNPSBenefit(100000, 0, 1000000)
     expect(r.deduction80CCD1B).toBe(50000)
+    expect(r.deduction80CCD1).toBe(50000)
+    expect(r.totalDeduction).toBe(100000)
+  })
+
+  it('self deduction never exceeds actual contribution', () => {
+    const r = calculateNPSBenefit(60000, 0, 1000000)
+    expect(r.deduction80CCD1 + r.deduction80CCD1B).toBeLessThanOrEqual(60000)
+    expect(r.deduction80CCD1B).toBe(50000)
+    expect(r.deduction80CCD1).toBe(10000)
+    expect(r.totalDeduction).toBe(60000)
   })
 
   it('includes employer contribution capped at 14%', () => {

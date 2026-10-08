@@ -293,8 +293,9 @@ export function generateRecommendations(grossIncome, age, existing = {}) {
 }
 
 export function calculateNPSBenefit(annualContribution, employerContribution = 0, grossIncome = 0, age = 30) {
-  const selfCapped80CCD1 = Math.min(annualContribution, grossIncome * 0.10)
   const additionalCapped1B = Math.min(annualContribution, 50000)
+  const remainingForCCD1 = Math.max(annualContribution - additionalCapped1B, 0)
+  const selfCapped80CCD1 = Math.min(remainingForCCD1, grossIncome * 0.10)
   const employerCapped80CCD2 = Math.min(employerContribution, grossIncome * 0.14)
   const totalDeduction = selfCapped80CCD1 + additionalCapped1B + employerCapped80CCD2
   const taxSaving30 = Math.round(totalDeduction * 0.312)

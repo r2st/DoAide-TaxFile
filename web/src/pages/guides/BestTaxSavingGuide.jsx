@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -205,7 +205,7 @@ export default function BestTaxSavingGuide() {
       </div>
 
       <div style={{ marginTop: 32 }}>
-        <WhatsAppShare text="Best Tax Saving Options for Salaried Employees 2026 — Complete guide\n\ntax.doaide.com/guides/best-tax-saving-salaried" />
+        <ShareButtons text="Best Tax Saving Options for Salaried Employees 2026 — Complete guide\n\ntax.doaide.com/guides/best-tax-saving-salaried" />
       </div>
 
       <FAQSection faqs={FAQS} />

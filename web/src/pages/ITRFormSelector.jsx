@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { selectITRForm, formatINR } from '../lib/taxEngine'
@@ -90,7 +90,7 @@ export default function ITRFormSelector() {
           <div style={s.resultReason}>{result.reason}</div>
           <div style={s.deadline}>Filing Deadline: {result.deadline}</div>
           <div style={{ display: 'flex', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
-            <WhatsAppShare text={`ITR Form: ${result.form} (${result.name})\n${result.reason}\nDeadline: ${result.deadline}\n\ntax.doaide.com/itr-form-selector`} />
+            <ShareButtons text={`ITR Form: ${result.form} (${result.name})\n${result.reason}\nDeadline: ${result.deadline}\n\ntax.doaide.com/itr-form-selector`} />
             <PrintButton />
           </div>
         </ResultCard>

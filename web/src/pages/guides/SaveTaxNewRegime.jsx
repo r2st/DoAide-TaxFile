@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 import PrintButton from '../../components/PrintButton'
 
 const s = {
@@ -191,7 +191,7 @@ export default function SaveTaxNewRegime() {
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
-        <WhatsAppShare text="How to Save Tax Under New Tax Regime 2026-27 — Complete Guide\n\ntax.doaide.com/guides/save-tax-new-regime" />
+        <ShareButtons text="How to Save Tax Under New Tax Regime 2026-27 — Complete Guide\n\ntax.doaide.com/guides/save-tax-new-regime" />
         <PrintButton />
       </div>
 

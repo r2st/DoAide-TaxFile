@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -149,7 +149,7 @@ export default function Section80CGuide() {
       <p style={s.p}>At this level, the new regime is usually better despite losing 80C. Still maximize EPF and VPF for the guaranteed 8.25% return. Consider NPS for the employer contribution benefit (80CCD 2, up to 14% of basic).</p>
 
       <div style={{ marginTop: 32 }}>
-        <WhatsAppShare text="Section 80C Deductions — Complete guide to tax-saving investments for FY 2026-27\n\ntax.doaide.com/guides/section-80c-deductions" />
+        <ShareButtons text="Section 80C Deductions — Complete guide to tax-saving investments for FY 2026-27\n\ntax.doaide.com/guides/section-80c-deductions" />
       </div>
 
       <FAQSection faqs={FAQS} />

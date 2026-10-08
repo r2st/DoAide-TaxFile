@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -194,7 +194,7 @@ export default function CapitalGainsMutualFunds() {
       </p>
 
       <div style={{ marginTop: 32, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <WhatsAppShare text="Capital Gains Tax on Mutual Funds India 2026 — Complete guide with examples\n\ntax.doaide.com/guides/capital-gains-mutual-funds" />
+        <ShareButtons text="Capital Gains Tax on Mutual Funds India 2026 — Complete guide with examples\n\ntax.doaide.com/guides/capital-gains-mutual-funds" />
       </div>
 
       <FAQSection faqs={FAQS} />

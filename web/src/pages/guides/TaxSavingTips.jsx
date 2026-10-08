@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 import PrintButton from '../../components/PrintButton'
 
 const s = {
@@ -392,7 +392,7 @@ export default function TaxSavingTips() {
       <FAQSection faqs={FAQS} />
 
       <div style={{ display: 'flex', gap: 12, marginTop: 32, marginBottom: 48 }}>
-        <WhatsAppShare />
+        <ShareButtons />
         <PrintButton />
       </div>
     </div>

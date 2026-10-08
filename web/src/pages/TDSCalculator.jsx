@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateTDS, formatINR, formatPct } from '../lib/taxEngine'
@@ -132,7 +132,7 @@ export default function TDSCalculator() {
             </div>
           )}
           <div style={{ display: 'flex', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
-            <WhatsAppShare text={`TDS on ${INCOME_OPTIONS.find(o => o.value === result.incomeType)?.label}\nAmount: ${formatINR(result.amount)}\nTDS: ${result.tds != null ? formatINR(result.tds) : 'At slab rate'}\nSection: ${result.section}\n\ntax.doaide.com/tds-calculator`} />
+            <ShareButtons text={`TDS on ${INCOME_OPTIONS.find(o => o.value === result.incomeType)?.label}\nAmount: ${formatINR(result.amount)}\nTDS: ${result.tds != null ? formatINR(result.tds) : 'At slab rate'}\nSection: ${result.section}\n\ntax.doaide.com/tds-calculator`} />
             <PrintButton />
           </div>
         </ResultCard>

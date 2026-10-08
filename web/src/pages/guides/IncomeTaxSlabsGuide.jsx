@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -162,7 +162,7 @@ export default function IncomeTaxSlabsGuide() {
       </p>
 
       <div style={{ marginTop: 32 }}>
-        <WhatsAppShare text="Income Tax Slabs FY 2026-27 — Complete guide comparing old vs new regime with worked examples\n\ntax.doaide.com/guides/income-tax-slabs-2026-27" />
+        <ShareButtons text="Income Tax Slabs FY 2026-27 — Complete guide comparing old vs new regime with worked examples\n\ntax.doaide.com/guides/income-tax-slabs-2026-27" />
       </div>
 
       <FAQSection faqs={FAQS} />

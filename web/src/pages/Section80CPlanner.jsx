@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { plan80C, INVESTMENT_OPTIONS, formatINR } from '../lib/taxEngine'
@@ -103,7 +103,7 @@ export default function Section80CPlanner() {
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginTop: 20, flexWrap: 'wrap' }} className="no-print">
-        <WhatsAppShare text={`80C Investment Plan\n80C Used: ${formatINR(result.capped80C)} / ${formatINR(150000)}\nRemaining: ${formatINR(result.remaining80C)}\nNPS (80CCD 1B): ${formatINR(result.nps80CCD1B)}\nTotal Deduction: ${formatINR(result.totalDeduction)}\n\ntax.doaide.com/80c-planner`} />
+        <ShareButtons text={`80C Investment Plan\n80C Used: ${formatINR(result.capped80C)} / ${formatINR(150000)}\nRemaining: ${formatINR(result.remaining80C)}\nNPS (80CCD 1B): ${formatINR(result.nps80CCD1B)}\nTotal Deduction: ${formatINR(result.totalDeduction)}\n\ntax.doaide.com/80c-planner`} />
         <PrintButton />
       </div>
 

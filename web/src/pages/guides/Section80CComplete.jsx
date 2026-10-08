@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -187,7 +187,7 @@ export default function Section80CComplete() {
       </ol>
 
       <div style={{ marginTop: 32, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <WhatsAppShare text="Section 80C Complete List 2026 — Every tax-saving deduction with limits and examples\n\ntax.doaide.com/guides/section-80c-complete-list" />
+        <ShareButtons text="Section 80C Complete List 2026 — Every tax-saving deduction with limits and examples\n\ntax.doaide.com/guides/section-80c-complete-list" />
       </div>
 
       <FAQSection faqs={FAQS} />

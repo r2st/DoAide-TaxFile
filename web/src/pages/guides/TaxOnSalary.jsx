@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 import PrintButton from '../../components/PrintButton'
 
 const s = {
@@ -414,7 +414,7 @@ export default function TaxOnSalary() {
 
       {/* --- Share & Print --- */}
       <div style={{ display: 'flex', gap: 12, marginTop: 32, marginBottom: 48 }}>
-        <WhatsAppShare title="Income Tax on Salary: Complete Breakdown with Examples FY 2026-27" />
+        <ShareButtons title="Income Tax on Salary: Complete Breakdown with Examples FY 2026-27" />
         <PrintButton />
       </div>
     </div>

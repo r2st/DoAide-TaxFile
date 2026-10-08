@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateNewRegime, calculateOldRegime, formatINR, formatPct } from '../lib/taxEngine'
@@ -219,7 +219,7 @@ export default function OldVsNewRegimeComparison() {
           </ResultCard>
 
           <div style={s.actions}>
-            <WhatsAppShare text={shareText} />
+            <ShareButtons text={shareText} />
             <PrintButton />
           </div>
         </>

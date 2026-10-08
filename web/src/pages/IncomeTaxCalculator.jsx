@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ComparisonTable from '../components/ComparisonTable'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateNewRegime, calculateOldRegime, calculateHRA, formatINR } from '../lib/taxEngine'
@@ -128,7 +128,7 @@ export default function IncomeTaxCalculator() {
             savings={result.savings}
           />
           <div style={s.actions}>
-            <WhatsAppShare text={shareText} />
+            <ShareButtons text={shareText} />
             <PrintButton />
           </div>
         </>

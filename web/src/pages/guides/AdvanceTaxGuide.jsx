@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 import PrintButton from '../../components/PrintButton'
 
 const s = {
@@ -328,7 +328,7 @@ export default function AdvanceTaxGuide() {
       </p>
 
       <div style={{ marginTop: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-        <WhatsAppShare text="Advance Tax Guide FY 2026-27 — Due dates, calculation method, payment process, interest under 234B & 234C\n\ntax.doaide.com/guides/advance-tax" />
+        <ShareButtons text="Advance Tax Guide FY 2026-27 — Due dates, calculation method, payment process, interest under 234B & 234C\n\ntax.doaide.com/guides/advance-tax" />
         <PrintButton />
       </div>
 

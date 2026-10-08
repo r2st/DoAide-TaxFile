@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -205,7 +205,7 @@ export default function HowToFileITRGuide() {
       </ol>
 
       <div style={{ marginTop: 32 }}>
-        <WhatsAppShare text="How to File ITR Online — Complete step-by-step guide for FY 2026-27\n\ntax.doaide.com/guides/how-to-file-itr-online" />
+        <ShareButtons text="How to File ITR Online — Complete step-by-step guide for FY 2026-27\n\ntax.doaide.com/guides/how-to-file-itr-online" />
       </div>
 
       <FAQSection faqs={FAQS} />

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 
 const formatINR = n => '₹' + n.toLocaleString('en-IN')
@@ -247,7 +247,7 @@ export default function StampDutyCalculator() {
       </p>
 
       <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
-        <WhatsAppShare text={`Stamp Duty Calculator — Check state-wise rates for property purchase\n\ntax.doaide.com/calculators/stamp-duty`} />
+        <ShareButtons text={`Stamp Duty Calculator — Check state-wise rates for property purchase\n\ntax.doaide.com/calculators/stamp-duty`} />
         <PrintButton />
       </div>
 

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateAdvanceTax, formatINR } from '../lib/taxEngine'
@@ -115,7 +115,7 @@ export default function AdvanceTaxCalculator() {
             </div>
           )}
           <div style={{ display: 'flex', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
-            <WhatsAppShare text={`Advance Tax Schedule FY 2026-27\nTotal Tax: ${formatINR(result.totalTax)}\nTDS Deducted: ${formatINR(result.tdsDeducted)}\nNet Payable: ${formatINR(result.netTax)}\n${result.applicable ? result.installments.map(i => `${i.dueDate}: ${formatINR(i.amount)}`).join('\n') : 'Not applicable (below ₹10,000)'}\n\ntax.doaide.com/advance-tax-calculator`} />
+            <ShareButtons text={`Advance Tax Schedule FY 2026-27\nTotal Tax: ${formatINR(result.totalTax)}\nTDS Deducted: ${formatINR(result.tdsDeducted)}\nNet Payable: ${formatINR(result.netTax)}\n${result.applicable ? result.installments.map(i => `${i.dueDate}: ${formatINR(i.amount)}`).join('\n') : 'Not applicable (below ₹10,000)'}\n\ntax.doaide.com/advance-tax-calculator`} />
             <PrintButton />
           </div>
         </ResultCard>

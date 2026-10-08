@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
@@ -128,7 +128,7 @@ export default function ProfessionalTaxCalculator() {
           </div>
 
           <div style={{ display: 'flex', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
-            <WhatsAppShare text={shareText} />
+            <ShareButtons text={shareText} />
             <PrintButton />
           </div>
         </ResultCard>

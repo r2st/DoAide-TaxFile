@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
-import WhatsAppShare from '../components/WhatsAppShare'
+import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { generateRentReceipt, formatINR } from '../lib/taxEngine'
@@ -104,7 +104,7 @@ export default function RentReceiptGenerator() {
           </div>
 
           <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }} className="no-print">
-            <WhatsAppShare text={`Rent Receipts Generated\n${result.receipts.length} months, Total: ${formatINR(result.totalRent)}\nLandlord: ${result.landlordName}\n\ntax.doaide.com/rent-receipt-generator`} />
+            <ShareButtons text={`Rent Receipts Generated\n${result.receipts.length} months, Total: ${formatINR(result.totalRent)}\nLandlord: ${result.landlordName}\n\ntax.doaide.com/rent-receipt-generator`} />
             <PrintButton />
           </div>
 

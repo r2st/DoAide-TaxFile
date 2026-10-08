@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 import PrintButton from '../../components/PrintButton'
 
 const s = {
@@ -397,7 +397,7 @@ export default function HomeLoanTaxBenefits() {
       </p>
 
       <div style={{ marginTop: 32, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-        <WhatsAppShare text="Home Loan Tax Benefits Guide FY 2026-27 — Section 24(b) interest, 80C principal, 80EEA, joint loan tips, old vs new regime comparison\n\ntax.doaide.com/guides/home-loan-tax" />
+        <ShareButtons text="Home Loan Tax Benefits Guide FY 2026-27 — Section 24(b) interest, 80C principal, 80EEA, joint loan tips, old vs new regime comparison\n\ntax.doaide.com/guides/home-loan-tax" />
         <PrintButton />
       </div>
 

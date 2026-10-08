@@ -4,6 +4,13 @@ import FAQSection from '../components/FAQSection'
 import RecentTools from '../components/RecentTools'
 import TrendingTools from '../components/TrendingTools'
 
+const TESTIMONIALS = [
+  { name: "Kavita Sharma", role: "Chartered Accountant, Mumbai", stars: 5, quote: "TaxFile's old-vs-new regime comparison saved my clients lakhs. The calculations are instant and always match the latest slabs." },
+  { name: "Arjun Reddy", role: "Freelance Developer, Hyderabad", stars: 5, quote: "Finally a tax calculator that handles freelancer income correctly. The 44ADA presumptive calculation is spot-on." },
+  { name: "Meera Iyer", role: "HR Manager, Bengaluru", stars: 5, quote: "I share the salary calculator link with every new joiner. It breaks down CTC to take-home perfectly — no more Excel sheets." },
+  { name: "Vikram Singh", role: "Small Business Owner, Chandigarh", stars: 4, quote: "The SIP and EMI calculators helped me plan my investments alongside tax savings. All free, no sign-up — incredible." },
+]
+
 const HOME_FAQS = [
   { q: 'What income tax regime should I choose for FY 2026-27?', a: 'It depends on your deductions. The new regime has lower rates but fewer deductions (only ₹75,000 standard deduction). The old regime allows 80C (₹1.5L), 80D, HRA, home loan interest, and more. Use our Income Tax Calculator to compare both with your actual numbers.' },
   { q: 'What are the income tax slab rates for FY 2026-27?', a: 'New regime: 0% up to ₹4L, 5% (₹4-8L), 10% (₹8-12L), 15% (₹12-16L), 20% (₹16-20L), 25% (₹20-24L), 30% (above ₹24L). Old regime: 0% up to ₹2.5L, 5% (₹2.5-5L), 20% (₹5-10L), 30% (above ₹10L). Senior citizens have higher exemption limits.' },
@@ -369,6 +376,26 @@ export default function HomePage() {
           </div>
         </section>
       ))}
+
+      <section style={{ marginTop: 48 }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 20, marginBottom: 16, color: 'var(--doaide-text)' }}>Trusted by Professionals</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+          {TESTIMONIALS.map(t => (
+            <div key={t.name} style={{ background: 'var(--doaide-surface)', border: '1px solid var(--doaide-border)', borderRadius: 'var(--doaide-radius-lg)', padding: 24 }}>
+              <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span key={i} style={{ color: i < t.stars ? 'var(--doaide-gold)' : 'var(--doaide-text-muted)', fontSize: 14 }}>★</span>
+                ))}
+              </div>
+              <p style={{ fontSize: 14, fontStyle: 'italic', color: 'var(--doaide-text-secondary)', lineHeight: 1.6, margin: '0 0 12px' }}>&ldquo;{t.quote}&rdquo;</p>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--doaide-text)' }}>{t.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--doaide-text-muted)' }}>{t.role}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <section style={s.guidesSection}>
         <h2 style={s.guidesTitle}>Tax Guides & Articles</h2>

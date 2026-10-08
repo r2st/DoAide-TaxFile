@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import IncomeTaxCalculator from './pages/IncomeTaxCalculator'
@@ -50,6 +50,7 @@ import Section80CComplete from './pages/guides/Section80CComplete'
 import VsClearTax from './pages/compare/VsClearTax'
 import VsTax2Win from './pages/compare/VsTax2Win'
 import BestIncomeTaxCalculator from './pages/compare/BestIncomeTaxCalculator'
+import BestItrTools from './pages/compare/BestItrTools'
 import StampDutyCalculator from './pages/StampDutyCalculator'
 import RentalIncomeCalculator from './pages/RentalIncomeCalculator'
 import GSTCalculator from './pages/GSTCalculator'
@@ -61,8 +62,18 @@ import InflationCalculator from './pages/InflationCalculator'
 import RetirementCalculator from './pages/RetirementCalculator'
 import OldVsNewRegimeComparison from './pages/OldVsNewRegimeComparison'
 import Section80GCalculator from './pages/Section80GCalculator'
+import EmbedIncomeTaxCalculator from './pages/EmbedIncomeTaxCalculator'
 
 export default function App() {
+  const { pathname } = useLocation()
+  if (pathname.startsWith('/embed/')) {
+    return (
+      <Routes>
+        <Route path="/embed/income-tax-calculator" element={<EmbedIncomeTaxCalculator />} />
+      </Routes>
+    )
+  }
+
   return (
     <Layout>
       <Routes>
@@ -127,6 +138,7 @@ export default function App() {
         <Route path="/compare/cleartax" element={<VsClearTax />} />
         <Route path="/compare/tax2win" element={<VsTax2Win />} />
         <Route path="/best-income-tax-calculator" element={<BestIncomeTaxCalculator />} />
+        <Route path="/compare/best-itr-tools" element={<BestItrTools />} />
       </Routes>
     </Layout>
   )

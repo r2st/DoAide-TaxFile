@@ -104,13 +104,13 @@ const s = {
   },
   heroTitle: {
     fontFamily: 'var(--doaide-font-display)',
-    fontSize: 42,
+    fontSize: 'clamp(28px, 7vw, 42px)',
     lineHeight: 1.2,
     color: 'var(--doaide-text)',
     marginBottom: 12,
   },
   heroSub: {
-    fontSize: 18,
+    fontSize: 'clamp(15px, 3vw, 18px)',
     color: 'var(--doaide-text-secondary)',
     marginBottom: 8,
   },
@@ -189,16 +189,17 @@ const s = {
   popularChip: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 6,
-    padding: '8px 16px',
+    gap: 8,
+    padding: '12px 18px',
     background: 'var(--doaide-surface)',
     border: '1px solid var(--doaide-border)',
     borderRadius: 20,
     textDecoration: 'none',
     color: 'var(--doaide-text)',
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 500,
     transition: 'all var(--doaide-transition)',
+    minHeight: 44,
   },
   categorySection: {
     marginTop: 40,
@@ -213,7 +214,7 @@ const s = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))',
     gap: 16,
   },
   card: {
@@ -261,13 +262,15 @@ const s = {
     color: 'var(--doaide-text)',
   },
   guideLink: {
-    display: 'block',
-    padding: '10px 0',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '14px 0',
     borderBottom: '1px solid var(--doaide-border)',
     textDecoration: 'none',
     color: 'var(--doaide-text)',
     fontSize: 14,
     transition: 'color var(--doaide-transition)',
+    minHeight: 44,
   },
   seo: {
     marginTop: 64,

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 import PrintButton from '../../components/PrintButton'
 
 const s = {
@@ -182,7 +182,7 @@ export default function BestIncomeTaxCalculator() {
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
-        <WhatsAppShare text="Best Free Income Tax Calculators in India 2026-27 — Top 5 ranked\n\ntax.doaide.com/best-income-tax-calculator" />
+        <ShareButtons text="Best Free Income Tax Calculators in India 2026-27 — Top 5 ranked\n\ntax.doaide.com/best-income-tax-calculator" />
         <PrintButton />
       </div>
 

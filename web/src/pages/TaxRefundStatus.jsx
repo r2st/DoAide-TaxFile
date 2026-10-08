@@ -1,5 +1,6 @@
 import SEOHead from '../components/SEOHead'
 import FAQSection from '../components/FAQSection'
+import ShareButtons from '../components/ShareButtons'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -142,6 +143,10 @@ export default function TaxRefundStatus() {
           <span style={s.timelineLabel}>Refund Credit</span>
           <span style={s.timelineDesc}>Refund credited to your pre-validated bank account via ECS/NEFT — 4-5 business days after processing</span>
         </div>
+      </div>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 24, marginBottom: 24 }}>
+        <ShareButtons text="Check your income tax refund status — free guide on DoAide TaxFile" toolName="Tax Refund Status Checker" />
       </div>
 
       <FAQSection faqs={FAQS} />

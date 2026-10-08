@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../../components/SEOHead'
 import FAQSection from '../../components/FAQSection'
 import Breadcrumb from '../../components/Breadcrumb'
-import WhatsAppShare from '../../components/WhatsAppShare'
+import ShareButtons from '../../components/ShareButtons'
 import PrintButton from '../../components/PrintButton'
 
 const s = {
@@ -177,7 +177,7 @@ export default function VsTax2Win() {
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginTop: 32, flexWrap: 'wrap' }}>
-        <WhatsAppShare text="DoAide TaxFile vs Tax2Win — 25+ free tax calculators compared\n\ntax.doaide.com/compare/tax2win" />
+        <ShareButtons text="DoAide TaxFile vs Tax2Win — 25+ free tax calculators compared\n\ntax.doaide.com/compare/tax2win" />
         <PrintButton />
       </div>
 

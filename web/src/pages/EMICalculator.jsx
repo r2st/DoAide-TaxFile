@@ -63,10 +63,11 @@ export default function EMICalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="EMI Calculator - Home, Car & Personal Loan | DoAide TaxFile"
-        description="Calculate EMI for home loan, car loan, and personal loan with amortization schedule. See principal vs interest breakup year by year."
-        keywords="EMI calculator, home loan EMI calculator, car loan EMI, personal loan EMI calculator, amortization schedule"
+        title="EMI Calculator 2026 — Home, Car & Personal Loan Free | DoAide TaxFile"
+        description="Free EMI calculator for home loan, car loan, and personal loan. Full amortization schedule with year-by-year principal vs interest breakup. No login required."
+        keywords="EMI calculator 2026, home loan EMI calculator, car loan EMI calculator, personal loan EMI, amortization schedule calculator, loan EMI online"
         canonical="https://tax.doaide.com/emi-calculator"
+        breadcrumbs={[{ name: 'EMI Calculator', url: 'https://tax.doaide.com/emi-calculator' }]}
         faqs={FAQS}
       />
 

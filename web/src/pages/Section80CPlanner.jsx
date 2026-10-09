@@ -62,11 +62,12 @@ export default function Section80CPlanner() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="Section 80C Investment Planner - Tax Saving Calculator | DoAide TaxFile"
-        description="Plan your Section 80C investments for maximum tax savings. Track your ₹1.5 lakh limit with PPF, ELSS, NSC, FD, and more."
-        keywords="80C investment planner, 80C tax saving, PPF ELSS tax saving, Section 80C limit"
+        title="Section 80C Planner 2026 — Tax Saving Investment Calculator Free | DoAide TaxFile"
+        description="Free Section 80C investment planner for FY 2026-27. Track your ₹1.5 lakh limit across PPF, ELSS, NSC, FD, LIC, and more. Maximize your tax savings instantly."
+        keywords="80C investment planner 2026, Section 80C tax saving, PPF ELSS tax saving calculator, 80C deduction limit, tax saving investments India"
         canonical="https://tax.doaide.com/80c-planner"
         faqs={FAQS}
+        breadcrumbs={[{ name: '80C Investment Planner', url: 'https://tax.doaide.com/80c-planner' }]}
       />
 
       <h1 style={s.title}>Section 80C Investment Planner</h1>

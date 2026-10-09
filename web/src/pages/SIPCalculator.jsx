@@ -59,11 +59,12 @@ export default function SIPCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="SIP Calculator - Systematic Investment Plan Returns | DoAide TaxFile"
-        description="Calculate SIP returns with step-up option. See how your monthly investments grow over time with compounding returns."
-        keywords="SIP calculator, systematic investment plan calculator, step up SIP calculator, mutual fund SIP returns"
+        title="SIP Calculator 2026 — Calculate Mutual Fund Returns Free | DoAide TaxFile"
+        description="Free SIP calculator with step-up option. Calculate how your monthly mutual fund investments grow with compounding. Instant results, no login required."
+        keywords="SIP calculator 2026, systematic investment plan calculator, step up SIP calculator, mutual fund SIP returns, SIP return calculator online"
         canonical="https://tax.doaide.com/sip-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'SIP Calculator', url: 'https://tax.doaide.com/sip-calculator' }]}
       />
 
       <h1 style={s.title}>SIP Calculator</h1>

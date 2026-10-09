@@ -62,11 +62,12 @@ export default function NPSCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="NPS Tax Benefit Calculator - Section 80CCD | DoAide TaxFile"
-        description="Calculate NPS tax benefits under Section 80CCD(1), 80CCD(1B), and 80CCD(2). Find your total deduction and estimated retirement corpus."
-        keywords="NPS calculator, NPS tax benefit, Section 80CCD, 80CCD 1B deduction, NPS retirement corpus"
+        title="NPS Calculator 2026 — Tax Benefit Under 80CCD Free | DoAide TaxFile"
+        description="Free NPS tax benefit calculator for FY 2026-27. Calculate deductions under Section 80CCD(1), 80CCD(1B), and 80CCD(2) with estimated retirement corpus. No login required."
+        keywords="NPS calculator 2026, NPS tax benefit calculator, Section 80CCD calculator, 80CCD 1B deduction, NPS retirement corpus calculator"
         canonical="https://tax.doaide.com/nps-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'NPS Calculator', url: 'https://tax.doaide.com/nps-calculator' }]}
       />
 
       <h1 style={s.title}>NPS Tax Benefit Calculator</h1>

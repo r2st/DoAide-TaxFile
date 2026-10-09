@@ -65,11 +65,12 @@ export default function CapitalGainsCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="Capital Gains Tax Calculator India - STCG & LTCG | DoAide TaxFile"
-        description="Calculate capital gains tax on equity, mutual funds, real estate, gold, and crypto. STCG and LTCG rates for FY 2026-27."
-        keywords="capital gains calculator India, LTCG calculator, STCG tax, equity capital gains, crypto tax India"
+        title="Capital Gains Tax Calculator 2026 — STCG & LTCG Free | DoAide TaxFile"
+        description="Free capital gains tax calculator for India FY 2026-27. Calculate STCG and LTCG on equity, mutual funds, real estate, gold, and crypto. Instant results, no login."
+        keywords="capital gains calculator India 2026, LTCG calculator, STCG tax calculator, equity capital gains, crypto tax India, mutual fund capital gains"
         canonical="https://tax.doaide.com/capital-gains-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'Capital Gains Calculator', url: 'https://tax.doaide.com/capital-gains-calculator' }]}
       />
 
       <h1 style={s.title}>Capital Gains Calculator</h1>

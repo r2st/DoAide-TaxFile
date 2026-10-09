@@ -78,9 +78,11 @@ const TESTIMONIALS = [
 const HOME_FAQS = [
   { q: 'What income tax regime should I choose for FY 2026-27?', a: 'It depends on your deductions. The new regime has lower rates but fewer deductions (only ₹75,000 standard deduction). The old regime allows 80C (₹1.5L), 80D, HRA, home loan interest, and more. Use our Income Tax Calculator to compare both with your actual numbers.' },
   { q: 'What are the income tax slab rates for FY 2026-27?', a: 'New regime: 0% up to ₹4L, 5% (₹4-8L), 10% (₹8-12L), 15% (₹12-16L), 20% (₹16-20L), 25% (₹20-24L), 30% (above ₹24L). Old regime: 0% up to ₹2.5L, 5% (₹2.5-5L), 20% (₹5-10L), 30% (above ₹10L). Senior citizens have higher exemption limits.' },
-  { q: 'When is the deadline to file ITR for FY 2026-27?', a: 'For most individuals: July 31, 2027. For businesses requiring audit: October 31, 2027. Late filing attracts a penalty of ₹5,000 (₹1,000 if income is below ₹5 lakh) and interest on unpaid tax.' },
+  { q: 'How do I file ITR online for FY 2026-27?', a: 'Step 1: Use our Income Tax Calculator to find your exact tax liability. Step 2: Compare old vs new regime to pick the one that saves more. Step 3: Use our ITR Form Selector to find the right form. Step 4: File on incometax.gov.in with your pre-calculated figures. The deadline is July 31, 2027.' },
+  { q: 'When is the deadline to file ITR for FY 2026-27?', a: 'For most individuals: July 31, 2027. For businesses requiring audit: October 31, 2027. Late filing attracts a penalty of ₹5,000 (₹1,000 if income is below ₹5 lakh) and interest on unpaid tax under Section 234A.' },
   { q: 'How much can I save with Section 80C?', a: 'Section 80C allows a deduction of up to ₹1,50,000 through PPF, ELSS, NSC, tax-saver FD, LIC, EPF, home loan principal, and tuition fees. At the highest slab (30% + cess), you can save up to ₹46,800 in tax.' },
-  { q: 'Is this calculator free to use?', a: 'Yes, all tools on DoAide TaxFile are 100% free. No login, no signup, no hidden charges. Use as many calculators as you need.' },
+  { q: 'Is DoAide TaxFile better than ClearTax?', a: 'For tax calculations and planning, DoAide TaxFile offers 30+ specialized calculators completely free — no login, no signup, no hidden charges. ClearTax is better for ITR filing services and CA assistance. For pure calculation and tax planning, TaxFile provides more tools at zero cost.' },
+  { q: 'Is this calculator free to use?', a: 'Yes, all 30+ tools on DoAide TaxFile are 100% free forever. No login, no signup, no hidden charges, no premium tiers. Use as many calculators as you need, as many times as you want.' },
 ]
 
 const POPULAR_TOOLS = [
@@ -178,7 +180,34 @@ const s = {
   heroSub: {
     fontSize: 'clamp(15px, 3vw, 18px)',
     color: 'var(--doaide-text-secondary)',
+    marginBottom: 16,
+  },
+  heroCta: {
+    display: 'inline-block',
+    padding: '14px 32px',
+    background: 'var(--doaide-gold)',
+    color: 'var(--doaide-text-on-gold)',
+    fontWeight: 700,
+    fontSize: 16,
+    borderRadius: 'var(--doaide-radius-md)',
+    textDecoration: 'none',
     marginBottom: 8,
+    border: 'none',
+    cursor: 'pointer',
+    transition: 'opacity var(--doaide-transition)',
+  },
+  heroCtaSecondary: {
+    display: 'inline-block',
+    padding: '14px 24px',
+    background: 'transparent',
+    color: 'var(--doaide-gold)',
+    fontWeight: 600,
+    fontSize: 14,
+    borderRadius: 'var(--doaide-radius-md)',
+    textDecoration: 'none',
+    border: '1px solid var(--doaide-gold-dim)',
+    marginLeft: 12,
+    transition: 'all var(--doaide-transition)',
   },
   fy: {
     display: 'inline-block',
@@ -360,9 +389,9 @@ export default function HomePage() {
   return (
     <>
       <SEOHead
-        title="DoAide TaxFile - Free Income Tax Calculator & Financial Tools India FY 2026-27"
-        description="Free income tax calculator, SIP calculator, EMI calculator, salary calculator, HRA exemption, 80C planner, capital gains calculator for India FY 2026-27. No login required."
-        keywords="income tax calculator India 2026, SIP calculator, EMI calculator, take home salary calculator, FD calculator, mutual fund calculator, PPF calculator, gratuity calculator, HRA exemption calculator, 80C planner, 80D calculator, capital gains calculator India, rent receipt generator, NPS calculator"
+        title="DoAide TaxFile — File ITR in Minutes | 30+ Free Tax Calculators India FY 2026-27"
+        description="File ITR in minutes with 30+ free tax calculators for India FY 2026-27. Income tax calculator, old vs new regime comparison, HRA, 80C planner, SIP, EMI — no login, no signup, 100% free. Better than ClearTax for tax planning."
+        keywords="income tax calculator India 2026, ITR filing calculator, file ITR online free, old vs new tax regime 2026-27, ClearTax alternative, SIP calculator, EMI calculator, take home salary calculator, HRA exemption calculator, 80C planner, 80D calculator, capital gains calculator India, NPS calculator, PPF calculator, FD calculator"
         canonical="https://tax.doaide.com"
         faqs={HOME_FAQS}
         jsonLd={{
@@ -382,12 +411,16 @@ export default function HomePage() {
       <section style={s.hero}>
         <span style={s.fy}>FY 2026-27 (AY 2027-28)</span>
         <h1 style={s.heroTitle}>
-          Free Tax & Financial Tools<br />
-          <span style={{ color: 'var(--doaide-gold)' }}>for India</span>
+          File ITR in Minutes with<br />
+          <span style={{ color: 'var(--doaide-gold)' }}>30+ Free Tax Tools</span>
         </h1>
         <p style={s.heroSub}>
           Calculate taxes, plan investments, optimize salary — all for free.
         </p>
+        <div style={{ marginBottom: 20, display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <Link to="/income-tax-calculator" style={s.heroCta}>Calculate Your Tax Now</Link>
+          <Link to="/old-vs-new-regime" style={s.heroCtaSecondary}>Compare Old vs New Regime</Link>
+        </div>
         <div style={s.badges}>
           <span style={s.badge}><span style={s.badgeDot} /> 100% Free</span>
           <span style={s.badge}><span style={s.badgeDot} /> No Login Required</span>
@@ -465,6 +498,28 @@ export default function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section style={{ marginTop: 48, padding: '32px 24px', background: 'var(--doaide-surface)', border: '1px solid var(--doaide-gold-dim)', borderRadius: 'var(--doaide-radius-lg)' }}>
+        <h2 style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 22, marginBottom: 8, color: 'var(--doaide-text)', textAlign: 'center' }}>Why 10,000+ Taxpayers Choose TaxFile</h2>
+        <p style={{ textAlign: 'center', color: 'var(--doaide-text-muted)', fontSize: 14, marginBottom: 24 }}>The free alternative to ClearTax for tax calculations and planning</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))', gap: 16 }}>
+          {[
+            { icon: '0', label: '₹0 Forever', desc: 'All 30+ tools are 100% free. No hidden charges, no premium tiers, no upsells.' },
+            { icon: '0', label: 'Zero Login Required', desc: 'No signup, no phone number, no email. Just open and calculate instantly.' },
+            { icon: '30', label: '30+ Calculators', desc: 'More specialized tools than ClearTax — salary optimizer, tax loss harvesting, Form 16 AI analyzer.' },
+            { icon: '5', label: '< 5 Second Results', desc: 'Instant calculations with detailed breakdowns. No loading, no waiting, no ads.' },
+          ].map(item => (
+            <div key={item.label} style={{ padding: 20, background: 'var(--doaide-bg)', border: '1px solid var(--doaide-border)', borderRadius: 'var(--doaide-radius-lg)', textAlign: 'center' }}>
+              <div style={{ fontFamily: 'var(--doaide-font-display)', fontSize: 32, fontWeight: 700, color: 'var(--doaide-gold)', marginBottom: 8 }}>{item.icon === '0' ? item.icon : item.icon + '+'}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--doaide-text)', marginBottom: 6 }}>{item.label}</div>
+              <div style={{ fontSize: 13, color: 'var(--doaide-text-secondary)', lineHeight: 1.5 }}>{item.desc}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ textAlign: 'center', marginTop: 20 }}>
+          <Link to="/compare/cleartax" style={{ color: 'var(--doaide-gold)', fontSize: 14, fontWeight: 600, textDecoration: 'none' }}>See full TaxFile vs ClearTax comparison →</Link>
         </div>
       </section>
 

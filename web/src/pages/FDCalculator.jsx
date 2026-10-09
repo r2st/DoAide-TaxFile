@@ -58,11 +58,12 @@ export default function FDCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="FD Calculator - Fixed Deposit Interest & TDS | DoAide TaxFile"
-        description="Calculate FD maturity amount with different compounding frequencies. See TDS impact on your fixed deposit returns."
-        keywords="FD calculator, fixed deposit calculator, FD interest calculator, FD maturity calculator, TDS on FD"
+        title="FD Calculator 2026 — Fixed Deposit Interest & TDS Free | DoAide TaxFile"
+        description="Free FD calculator for 2026. Calculate fixed deposit maturity with compounding frequencies and TDS impact on returns. Instant results, no login required."
+        keywords="FD calculator 2026, fixed deposit calculator, FD interest calculator online, FD maturity calculator, TDS on FD, fixed deposit returns"
         canonical="https://tax.doaide.com/fd-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'FD Calculator', url: 'https://tax.doaide.com/fd-calculator' }]}
       />
 
       <h1 style={s.title}>FD Calculator</h1>

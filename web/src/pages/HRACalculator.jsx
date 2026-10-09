@@ -55,11 +55,12 @@ export default function HRACalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="HRA Exemption Calculator - Section 10(13A) | DoAide TaxFile"
-        description="Calculate your HRA tax exemption under Section 10(13A). Enter basic salary, HRA received, and rent paid to find your exemption amount."
-        keywords="HRA exemption calculator, HRA calculation, Section 10(13A), house rent allowance"
+        title="HRA Exemption Calculator 2026 — Section 10(13A) Free | DoAide TaxFile"
+        description="Free HRA exemption calculator for FY 2026-27. Calculate your House Rent Allowance tax exemption under Section 10(13A) with metro/non-metro rates. Instant results."
+        keywords="HRA exemption calculator 2026, HRA calculation, Section 10(13A) calculator, house rent allowance exemption, HRA tax benefit"
         canonical="https://tax.doaide.com/hra-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'HRA Exemption Calculator', url: 'https://tax.doaide.com/hra-calculator' }]}
       />
 
       <h1 style={s.title}>HRA Exemption Calculator</h1>

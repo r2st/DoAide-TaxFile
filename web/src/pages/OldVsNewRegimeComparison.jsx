@@ -155,11 +155,12 @@ export default function OldVsNewRegimeComparison() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="Old vs New Tax Regime Comparison Calculator FY 2026-27 | DoAide TaxFile"
-        description="Compare old and new income tax regimes side-by-side for FY 2026-27. Enter your salary and deductions to see which regime saves more tax. Free, instant results."
-        keywords="old vs new tax regime, tax regime comparison, income tax calculator, FY 2026-27, new regime vs old regime"
+        title="Old vs New Tax Regime Calculator 2026 — Free Comparison | DoAide TaxFile"
+        description="Free old vs new tax regime comparison for FY 2026-27. Enter salary and deductions to see which regime saves more. Side-by-side slab breakdown with instant recommendation."
+        keywords="old vs new tax regime 2026, tax regime comparison calculator, new regime vs old regime FY 2026-27, which tax regime is better, income tax regime comparison free"
         canonical="https://tax.doaide.com/old-vs-new-regime"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'Old vs New Regime Comparison', url: 'https://tax.doaide.com/old-vs-new-regime' }]}
       />
 
       <h1 style={s.title}>Old vs New Regime Comparison</h1>

@@ -79,11 +79,12 @@ export default function IncomeTaxCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="Income Tax Calculator FY 2026-27 - Old vs New Regime | DoAide TaxFile"
-        description="Free income tax calculator for India FY 2026-27. Compare old and new tax regime side by side. Calculate tax with HRA, 80C, 80D deductions."
-        keywords="income tax calculator India 2026, old vs new regime calculator, tax calculator FY 2026-27"
+        title="Income Tax Calculator FY 2026-27 — Old vs New Regime Free | DoAide TaxFile"
+        description="Free income tax calculator for India FY 2026-27 (AY 2027-28). Compare old and new tax regime side by side with HRA, 80C, 80D deductions. Instant results, no login required."
+        keywords="income tax calculator India 2026, old vs new regime calculator, tax calculator FY 2026-27, income tax calculator online free, ITR calculator India, ClearTax alternative"
         canonical="https://tax.doaide.com/income-tax-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'Income Tax Calculator', url: 'https://tax.doaide.com/income-tax-calculator' }]}
       />
 
       <h1 style={s.title}>Income Tax Calculator</h1>

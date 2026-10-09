@@ -55,11 +55,12 @@ export default function TakeHomeSalaryCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="Take-Home Salary Calculator - CTC to In-Hand | DoAide TaxFile"
-        description="Calculate your in-hand salary from CTC. Breakup of basic, HRA, PF, gratuity, professional tax and income tax deductions for FY 2026-27."
-        keywords="take home salary calculator, CTC to in-hand salary, salary calculator India, CTC breakup calculator"
+        title="Take-Home Salary Calculator 2026 — CTC to In-Hand Free | DoAide TaxFile"
+        description="Free take-home salary calculator for FY 2026-27. Convert CTC to in-hand salary with PF, gratuity, professional tax, and income tax breakup. Instant results, no login."
+        keywords="take home salary calculator 2026, CTC to in-hand salary calculator, salary calculator India free, CTC breakup calculator, in-hand salary from CTC"
         canonical="https://tax.doaide.com/take-home-salary-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'Take-Home Salary Calculator', url: 'https://tax.doaide.com/take-home-salary-calculator' }]}
       />
 
       <h1 style={s.title}>Take-Home Salary Calculator</h1>

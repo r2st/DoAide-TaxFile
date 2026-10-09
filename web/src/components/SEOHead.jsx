@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export default function SEOHead({ title, description, keywords, canonical, jsonLd, faqs }) {
+export default function SEOHead({ title, description, keywords, canonical, jsonLd, faqs, breadcrumbs }) {
   useEffect(() => {
     document.title = title
     const setMeta = (name, content) => {
@@ -55,14 +55,20 @@ export default function SEOHead({ title, description, keywords, canonical, jsonL
     const schemas = [
       jsonLd || {
         '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        name: 'DoAide TaxFile',
+        '@type': 'WebPage',
+        name: title,
         description: description || 'Free income tax tools for India',
         url: canonical || 'https://tax.doaide.com',
-        applicationCategory: 'FinanceApplication',
-        operatingSystem: 'Any',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
-        aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.8', ratingCount: '5200', bestRating: '5' },
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'DoAide TaxFile',
+          url: 'https://tax.doaide.com',
+        },
+        provider: {
+          '@type': 'Organization',
+          name: 'DoAide',
+          url: 'https://doaide.com',
+        },
       },
     ]
     if (faqs && faqs.length > 0) {
@@ -76,8 +82,23 @@ export default function SEOHead({ title, description, keywords, canonical, jsonL
         })),
       })
     }
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://tax.doaide.com/' },
+          ...breadcrumbs.map((bc, i) => ({
+            '@type': 'ListItem',
+            position: i + 2,
+            name: bc.name,
+            ...(bc.url ? { item: bc.url } : {}),
+          })),
+        ],
+      })
+    }
     ld.textContent = JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)
-  }, [title, description, keywords, canonical, jsonLd, faqs])
+  }, [title, description, keywords, canonical, jsonLd, faqs, breadcrumbs])
 
   return null
 }

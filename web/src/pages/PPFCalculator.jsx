@@ -56,11 +56,12 @@ export default function PPFCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="PPF Calculator - Public Provident Fund Returns | DoAide TaxFile"
-        description="Calculate PPF maturity amount with year-by-year breakdown. Current rate 7.1% p.a. with 15-year lock-in. Tax-free under Section 80C."
-        keywords="PPF calculator, public provident fund calculator, PPF interest rate, PPF maturity calculator, Section 80C PPF"
+        title="PPF Calculator 2026 — Public Provident Fund Returns Free | DoAide TaxFile"
+        description="Free PPF calculator with year-by-year breakdown. Calculate PPF maturity at 7.1% p.a. with 15-year lock-in. Tax-free returns under Section 80C. No login required."
+        keywords="PPF calculator 2026, public provident fund calculator, PPF interest rate 2026, PPF maturity calculator, Section 80C PPF, PPF returns calculator"
         canonical="https://tax.doaide.com/ppf-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'PPF Calculator', url: 'https://tax.doaide.com/ppf-calculator' }]}
       />
 
       <h1 style={s.title}>PPF Calculator</h1>

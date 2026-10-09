@@ -60,11 +60,12 @@ export default function MutualFundCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="Mutual Fund Calculator - SIP & Lumpsum Returns | DoAide TaxFile"
-        description="Calculate mutual fund returns for SIP and lump sum investments. See projected wealth with expected return rates."
-        keywords="mutual fund calculator, mutual fund SIP calculator, lumpsum investment calculator, CAGR calculator mutual fund"
+        title="Mutual Fund Calculator 2026 — SIP & Lumpsum Returns Free | DoAide TaxFile"
+        description="Free mutual fund calculator for SIP and lump sum investments. Calculate projected wealth with expected return rates. Instant results, no login required."
+        keywords="mutual fund calculator 2026, mutual fund SIP calculator, lumpsum investment calculator, CAGR calculator mutual fund, mutual fund returns online"
         canonical="https://tax.doaide.com/mutual-fund-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'Mutual Fund Calculator', url: 'https://tax.doaide.com/mutual-fund-calculator' }]}
       />
 
       <h1 style={s.title}>Mutual Fund Calculator</h1>

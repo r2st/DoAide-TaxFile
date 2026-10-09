@@ -75,11 +75,12 @@ export default function TDSCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="TDS Calculator - Tax Deducted at Source Rates | DoAide TaxFile"
-        description="Calculate TDS on salary, rent, professional fees, interest, and more. Current TDS rates and thresholds for FY 2026-27."
-        keywords="TDS calculator, TDS rates, TDS on salary, TDS on rent, TDS on professional fees"
+        title="TDS Calculator 2026 — Tax Deducted at Source Rates Free | DoAide TaxFile"
+        description="Free TDS calculator for FY 2026-27. Calculate TDS on salary, rent, professional fees, interest, and more with current rates and thresholds. No login required."
+        keywords="TDS calculator 2026, TDS rates FY 2026-27, TDS on salary calculator, TDS on rent, TDS on professional fees, tax deducted at source"
         canonical="https://tax.doaide.com/tds-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'TDS Calculator', url: 'https://tax.doaide.com/tds-calculator' }]}
       />
 
       <h1 style={s.title}>TDS Calculator</h1>

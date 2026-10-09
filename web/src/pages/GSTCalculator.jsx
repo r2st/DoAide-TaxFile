@@ -61,11 +61,12 @@ export default function GSTCalculator() {
   return (
     <div style={s.page}>
       <SEOHead
-        title="GST Calculator Online - Calculate CGST SGST IGST | DoAide TaxFile"
-        description="Free GST calculator to compute GST amount with CGST, SGST, IGST breakup. Calculate GST inclusive and exclusive prices for all GST slabs — 5%, 12%, 18%, 28%."
-        keywords="GST calculator, GST calculator online, CGST SGST calculator, IGST calculator, GST tax calculator India"
+        title="GST Calculator 2026 — Calculate CGST SGST IGST Free | DoAide TaxFile"
+        description="Free GST calculator with CGST, SGST, IGST breakup. Calculate GST inclusive and exclusive prices for all slabs — 5%, 12%, 18%, 28%. Instant results, no login required."
+        keywords="GST calculator 2026, GST calculator online free, CGST SGST calculator, IGST calculator, GST tax calculator India, GST inclusive exclusive"
         canonical="https://tax.doaide.com/gst-calculator"
         faqs={FAQS}
+        breadcrumbs={[{ name: 'GST Calculator', url: 'https://tax.doaide.com/gst-calculator' }]}
       />
 
       <h1 style={s.title}>GST Calculator</h1>

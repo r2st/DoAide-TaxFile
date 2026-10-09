@@ -10,6 +10,7 @@ from app.routers import (
     emi,
     epf,
     fd,
+    feedback,
     gratuity,
     home_loan,
     hra,
@@ -77,6 +78,7 @@ app.include_router(professional_tax.router, prefix="/api/v1", tags=["Professiona
 
 
 app.include_router(seo.router, tags=["SEO"])
+app.include_router(feedback.router, tags=["Feedback"])
 
 
 @app.get("/health")

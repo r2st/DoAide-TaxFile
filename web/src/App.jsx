@@ -77,6 +77,7 @@ import NewVsOldRegimeCalculatorBlog from './pages/blog/NewVsOldRegimeCalculatorB
 import ToolTracker from './components/ToolTracker'
 import SocialProofBar from './components/SocialProofBar'
 import ReferralBanner from './components/ReferralBanner'
+import FeedbackWidget from './components/FeedbackWidget'
 
 export default function App() {
   const { pathname } = useLocation()
@@ -172,6 +173,7 @@ export default function App() {
     </Layout>
     <InstallPrompt />
     <ReferralBanner />
+    <FeedbackWidget />
     </>
   )
 }

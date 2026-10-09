@@ -64,6 +64,8 @@ import RetirementCalculator from './pages/RetirementCalculator'
 import OldVsNewRegimeComparison from './pages/OldVsNewRegimeComparison'
 import Section80GCalculator from './pages/Section80GCalculator'
 import EmbedIncomeTaxCalculator from './pages/EmbedIncomeTaxCalculator'
+import RegimeComparisonTool from './pages/tools/RegimeComparisonTool'
+import HRACalculatorTool from './pages/tools/HRACalculatorTool'
 import BlogLayout, { BlogIndex } from './pages/blog/BlogLayout'
 import IncomeTaxSlabs2026 from './pages/blog/IncomeTaxSlabs2026'
 import HowToFileITR from './pages/blog/HowToFileITR'
@@ -135,6 +137,8 @@ export default function App() {
         <Route path="/retirement-calculator" element={<RetirementCalculator />} />
         <Route path="/old-vs-new-regime" element={<OldVsNewRegimeComparison />} />
         <Route path="/80g-calculator" element={<Section80GCalculator />} />
+        <Route path="/tools/regime-comparison" element={<RegimeComparisonTool />} />
+        <Route path="/tools/hra-calculator" element={<HRACalculatorTool />} />
         <Route path="/guides" element={<GuidesPage />} />
         <Route path="/guides/income-tax-slabs-2026-27" element={<IncomeTaxSlabsGuide />} />
         <Route path="/guides/section-80c-deductions" element={<Section80CGuide />} />

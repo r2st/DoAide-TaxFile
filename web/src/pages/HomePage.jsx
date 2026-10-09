@@ -98,6 +98,7 @@ const CATEGORIES = [
     tools: [
       { path: '/income-tax-calculator', icon: '🧮', title: 'Income Tax Calculator', desc: 'Compare old vs new regime side-by-side. Find which saves you more.' },
       { path: '/old-vs-new-regime', icon: '⚖️', title: 'Old vs New Regime', desc: 'Detailed side-by-side comparison with slab breakdown and recommendation.' },
+      { path: '/tools/regime-comparison', icon: '📊', title: 'Enhanced Regime Comparison', desc: 'Full salary + HRA + deductions comparison with visual bar chart.' },
       { path: '/itr-form-selector', icon: '📋', title: 'ITR Form Selector', desc: 'Answer a few questions to find the right ITR form for your income.' },
       { path: '/advance-tax-calculator', icon: '📅', title: 'Advance Tax Calculator', desc: 'Quarterly advance tax installments with due dates and interest.' },
       { path: '/tds-calculator', icon: '🏦', title: 'TDS Calculator', desc: 'Calculate TDS rates and amounts for salary, rent, professional fees.' },
@@ -117,6 +118,7 @@ const CATEGORIES = [
       { path: '/salary-tax-optimizer', icon: '⚡', title: 'Salary Tax Optimizer', desc: 'Find the optimal CTC structure to maximize your in-hand salary.' },
       { path: '/gratuity-calculator', icon: '🎁', title: 'Gratuity Calculator', desc: 'Calculate gratuity amount and Section 10(10) tax exemption.' },
       { path: '/hra-calculator', icon: '🏠', title: 'HRA Exemption Calculator', desc: 'Calculate your HRA tax exemption under Section 10(13A).' },
+      { path: '/tools/hra-calculator', icon: '🏠', title: 'HRA Calculator (Step-by-Step)', desc: 'Detailed HRA exemption with all 3 limits, minimum badge, and tax impact.' },
       { path: '/epf-calculator', icon: '🏛️', title: 'EPF Calculator', desc: 'Employee + employer PF contribution split with retirement corpus.' },
       { path: '/professional-tax-calculator', icon: '🗺️', title: 'Professional Tax', desc: 'State-wise professional tax rates for all Indian states.' },
     ],

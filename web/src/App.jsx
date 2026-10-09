@@ -61,6 +61,7 @@ import SWPCalculator from './pages/SWPCalculator'
 import CAGRCalculator from './pages/CAGRCalculator'
 import InflationCalculator from './pages/InflationCalculator'
 import RetirementCalculator from './pages/RetirementCalculator'
+import TaxSavingCalculator from './pages/TaxSavingCalculator'
 import OldVsNewRegimeComparison from './pages/OldVsNewRegimeComparison'
 import Section80GCalculator from './pages/Section80GCalculator'
 import EmbedIncomeTaxCalculator from './pages/EmbedIncomeTaxCalculator'
@@ -74,6 +75,9 @@ import NpsVsPpfVsElssBlog from './pages/blog/NpsVsPpfVsElss'
 import SaveIncomeTaxLegally2026 from './pages/blog/SaveIncomeTaxLegally2026'
 import Section80CInvestmentOptions from './pages/blog/Section80CInvestmentOptions'
 import NewVsOldRegimeCalculatorBlog from './pages/blog/NewVsOldRegimeCalculatorBlog'
+import FirstTimeITRGuide from './pages/blog/FirstTimeITRGuide'
+import ITRFilingDeadlines2027 from './pages/blog/ITRFilingDeadlines2027'
+import TaxPlanningFreelancers from './pages/blog/TaxPlanningFreelancers'
 import ToolTracker from './components/ToolTracker'
 import SocialProofBar from './components/SocialProofBar'
 import ReferralBanner from './components/ReferralBanner'
@@ -137,6 +141,7 @@ export default function App() {
         <Route path="/cagr-calculator" element={<CAGRCalculator />} />
         <Route path="/inflation-calculator" element={<InflationCalculator />} />
         <Route path="/retirement-calculator" element={<RetirementCalculator />} />
+        <Route path="/tax-saving-calculator" element={<TaxSavingCalculator />} />
         <Route path="/old-vs-new-regime" element={<OldVsNewRegimeComparison />} />
         <Route path="/80g-calculator" element={<Section80GCalculator />} />
         <Route path="/tools/regime-comparison" element={<RegimeComparisonTool />} />
@@ -169,6 +174,9 @@ export default function App() {
           <Route path="how-to-save-income-tax-legally-india-2026" element={<SaveIncomeTaxLegally2026 />} />
           <Route path="section-80c-investment-options-compared" element={<Section80CInvestmentOptions />} />
           <Route path="new-vs-old-tax-regime-calculator" element={<NewVsOldRegimeCalculatorBlog />} />
+          <Route path="first-time-itr-filing-guide" element={<FirstTimeITRGuide />} />
+          <Route path="itr-filing-deadlines-2027" element={<ITRFilingDeadlines2027 />} />
+          <Route path="tax-planning-freelancers-india" element={<TaxPlanningFreelancers />} />
         </Route>
       </Routes>
     </Layout>

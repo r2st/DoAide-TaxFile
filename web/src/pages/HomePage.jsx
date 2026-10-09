@@ -134,6 +134,7 @@ const CATEGORIES = [
       { path: '/80g-calculator', icon: '🎁', title: '80G Donation Calculator', desc: 'Calculate tax benefit for charitable donations under Section 80G.' },
       { path: '/nps-calculator', icon: '🏛️', title: 'NPS Tax Benefit Calculator', desc: 'NPS deductions under 80CCD(1), 80CCD(1B), and 80CCD(2).' },
       { path: '/home-loan-calculator', icon: '🏡', title: 'Home Loan Tax Benefit', desc: 'Section 24(b), 80C principal, and 80EEA deductions on home loans.' },
+      { path: '/tax-saving-calculator', icon: '🎯', title: 'Tax Saving Calculator', desc: 'Find optimal 80C/80D/NPS deductions to minimize your tax.' },
     ],
   },
   {

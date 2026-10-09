@@ -38,6 +38,21 @@ const ARTICLES = [
     title: 'New vs Old Tax Regime Calculator — Which Saves More Tax in 2026?',
     description: 'Detailed comparison of new and old income tax regimes for FY 2026-27. Slab rates, deductions, worked examples at every income level, and a decision framework.',
   },
+  {
+    slug: 'first-time-itr-filing-guide',
+    title: 'First Time Filing ITR? Complete Beginner\'s Guide 2026',
+    description: 'Step-by-step guide for first-time income tax return filers. Documents needed, choosing ITR form, old vs new regime, filing on the portal, and e-verification.',
+  },
+  {
+    slug: 'itr-filing-deadlines-2027',
+    title: 'ITR Filing Deadlines 2027 — Key Dates, Penalties & Extensions',
+    description: 'All ITR filing deadlines for FY 2026-27 (AY 2027-28). Due dates for every category, advance tax schedule, late filing penalties, and tips to file on time.',
+  },
+  {
+    slug: 'tax-planning-freelancers-india',
+    title: 'Tax Planning for Freelancers & Gig Workers — Complete Guide 2026',
+    description: 'Freelancer tax guide: presumptive taxation (44ADA), ITR forms, advance tax, deductible expenses, TDS rates, and smart tax-saving strategies for FY 2026-27.',
+  },
 ]
 
 export { ARTICLES }

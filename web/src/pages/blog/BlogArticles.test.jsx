@@ -8,11 +8,14 @@ const BLOG_ARTICLES = [
   { slug: 'how-to-save-income-tax-legally-india-2026', file: 'SaveIncomeTaxLegally2026' },
   { slug: 'section-80c-investment-options-compared', file: 'Section80CInvestmentOptions' },
   { slug: 'new-vs-old-tax-regime-calculator', file: 'NewVsOldRegimeCalculatorBlog' },
+  { slug: 'first-time-itr-filing-guide', file: 'FirstTimeITRGuide' },
+  { slug: 'itr-filing-deadlines-2027', file: 'ITRFilingDeadlines2027' },
+  { slug: 'tax-planning-freelancers-india', file: 'TaxPlanningFreelancers' },
 ]
 
 describe('Blog articles data', () => {
-  it('has 7 blog articles', () => {
-    expect(BLOG_ARTICLES.length).toBe(7)
+  it('has 10 blog articles', () => {
+    expect(BLOG_ARTICLES.length).toBe(10)
   })
 
   it('all slugs are unique', () => {

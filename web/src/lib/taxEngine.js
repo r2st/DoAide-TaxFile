@@ -1232,6 +1232,103 @@ export function calculateInflation(currentAmount, inflationRate, years) {
   return { currentAmount, futureAmount, purchasingPower, inflationRate, years, totalInflation }
 }
 
+export function optimizeDeductions(grossIncome, age = 30, existing = {}) {
+  const newResult = calculateNewRegime(grossIncome)
+
+  const s80c = Math.min(existing.section80C || 0, 150000)
+  const s80d = Math.min(existing.section80D || 0, age >= 60 ? 50000 : 25000)
+  const s80dParents = Math.min(existing.section80DParents || 0, existing.parentsSenior ? 50000 : 25000)
+  const nps = Math.min(existing.nps80CCD1B || 0, 50000)
+  const hra = existing.hraExemption || 0
+  const homeLoan = Math.min(existing.homeLoanInterest || 0, 200000)
+  const s80e = existing.section80E || 0
+  const s80g = existing.section80G || 0
+
+  const currentOld = calculateOldRegime(grossIncome, {
+    section80C: s80c, section80D: s80d + s80dParents,
+    nps80CCD1B: nps, hraExemption: hra,
+    homeLoanInterest: homeLoan, other: s80e + s80g,
+  })
+
+  const max80C = 150000
+  const max80D = age >= 60 ? 50000 : 25000
+  const max80DParents = existing.parentsSenior ? 50000 : 25000
+  const maxNPS = 50000
+  const maxHomeLoan = 200000
+
+  const rem80C = Math.max(max80C - s80c, 0)
+  const rem80D = Math.max(max80D - s80d, 0)
+  const rem80DParents = Math.max(max80DParents - s80dParents, 0)
+  const remNPS = Math.max(maxNPS - nps, 0)
+  const remHomeLoan = Math.max(maxHomeLoan - homeLoan, 0)
+
+  const optimizedOld = calculateOldRegime(grossIncome, {
+    section80C: max80C, section80D: max80D + max80DParents,
+    nps80CCD1B: maxNPS, hraExemption: hra,
+    homeLoanInterest: homeLoan, other: s80e + s80g,
+  })
+
+  const suggestions = []
+  const marginalRate = grossIncome > 1000000 ? 0.312 : grossIncome > 500000 ? 0.208 : 0.052
+
+  if (rem80C > 0) suggestions.push({
+    section: 'Section 80C', current: s80c, max: max80C, remaining: rem80C,
+    potentialSaving: Math.round(rem80C * marginalRate),
+    options: ['PPF (7.1%, 15yr lock-in)', 'ELSS Mutual Funds (~12%, 3yr lock-in)', 'Tax Saver FD (6.5-7.5%, 5yr)', 'NSC (7.7%, 5yr)', 'EPF contribution'],
+    priority: 'high',
+  })
+  if (rem80D > 0) suggestions.push({
+    section: 'Section 80D (Self)', current: s80d, max: max80D, remaining: rem80D,
+    potentialSaving: Math.round(rem80D * marginalRate),
+    options: ['Health insurance premium for self/spouse/children', 'Preventive health check-up (₹5,000 within limit)'],
+    priority: 'high',
+  })
+  if (rem80DParents > 0) suggestions.push({
+    section: 'Section 80D (Parents)', current: s80dParents, max: max80DParents, remaining: rem80DParents,
+    potentialSaving: Math.round(rem80DParents * marginalRate),
+    options: ['Health insurance premium for parents'],
+    priority: 'medium',
+  })
+  if (remNPS > 0) suggestions.push({
+    section: 'NPS 80CCD(1B)', current: nps, max: maxNPS, remaining: remNPS,
+    potentialSaving: Math.round(remNPS * marginalRate),
+    options: ['Additional NPS contribution (beyond 80C limit)'],
+    priority: 'medium',
+  })
+  if (homeLoan === 0 && grossIncome > 800000) suggestions.push({
+    section: 'Section 24(b) Home Loan', current: 0, max: maxHomeLoan, remaining: maxHomeLoan,
+    potentialSaving: Math.round(maxHomeLoan * marginalRate),
+    options: ['Home loan interest deduction up to ₹2,00,000'],
+    priority: 'low',
+  })
+
+  suggestions.sort((a, b) => b.potentialSaving - a.potentialSaving)
+  const totalPotentialSaving = suggestions.reduce((sum, s) => sum + s.potentialSaving, 0)
+
+  const betterRegime = optimizedOld.totalTax <= newResult.totalTax ? 'old' : 'new'
+  const regimeSavings = Math.abs(optimizedOld.totalTax - newResult.totalTax)
+
+  return {
+    grossIncome: Math.round(grossIncome),
+    currentTaxOld: currentOld.totalTax,
+    currentTaxNew: newResult.totalTax,
+    optimizedTaxOld: optimizedOld.totalTax,
+    currentBetterRegime: currentOld.totalTax <= newResult.totalTax ? 'old' : 'new',
+    optimizedBetterRegime: betterRegime,
+    regimeSavings,
+    totalPotentialSaving,
+    savingsVsCurrent: Math.max(Math.min(currentOld.totalTax, newResult.totalTax) - Math.min(optimizedOld.totalTax, newResult.totalTax), 0),
+    suggestions,
+    deductionsSummary: {
+      section80C: { current: s80c, max: max80C },
+      section80D: { current: s80d, max: max80D },
+      section80DParents: { current: s80dParents, max: max80DParents },
+      nps80CCD1B: { current: nps, max: maxNPS },
+      homeLoanInterest: { current: homeLoan, max: maxHomeLoan },
+    },
+  }
+}
+
 export function calculateRetirement(currentAge, retirementAge, lifeExpectancy, monthlyExpenses, inflationRate, expectedReturn, currentSavings = 0) {
   const yearsToRetire = retirementAge - currentAge
   const yearsInRetirement = lifeExpectancy - retirementAge

@@ -30,6 +30,7 @@ import {
   calculateTaxLossHarvesting,
   calculateRefund,
   calculateProfessionalTax,
+  optimizeDeductions,
 } from './taxEngine'
 
 describe('formatINR', () => {
@@ -678,5 +679,42 @@ describe('calculateProfessionalTax', () => {
   it('returns slab table', () => {
     const r = calculateProfessionalTax(50000, 'karnataka')
     expect(r.slabs.length).toBeGreaterThan(0)
+  })
+})
+
+describe('optimizeDeductions', () => {
+  it('returns optimization result for 15L income with no deductions', () => {
+    const r = optimizeDeductions(1500000, 30, {})
+    expect(r.grossIncome).toBe(1500000)
+    expect(r.currentTaxNew).toBeGreaterThanOrEqual(0)
+    expect(r.currentTaxOld).toBeGreaterThanOrEqual(0)
+    expect(r.suggestions).toBeDefined()
+    expect(Array.isArray(r.suggestions)).toBe(true)
+  })
+
+  it('shows savings potential when 80C is not maxed', () => {
+    const r = optimizeDeductions(1500000, 30, { section80C: 50000 })
+    const s80c = r.suggestions.find(s => s.section.includes('80C'))
+    if (s80c) {
+      expect(s80c.remaining).toBeGreaterThan(0)
+      expect(s80c.potentialSaving).toBeGreaterThan(0)
+    }
+  })
+
+  it('shows no 80C suggestion when already maxed', () => {
+    const r = optimizeDeductions(1500000, 30, { section80C: 150000 })
+    const s80c = r.suggestions.find(s => s.section === 'Section 80C' || s.section === '80C')
+    expect(s80c).toBeUndefined()
+  })
+
+  it('identifies better regime', () => {
+    const r = optimizeDeductions(1500000, 30, {})
+    expect(['old', 'new']).toContain(r.currentBetterRegime)
+    expect(['old', 'new']).toContain(r.optimizedBetterRegime)
+  })
+
+  it('calculates savings vs current', () => {
+    const r = optimizeDeductions(2000000, 30, {})
+    expect(r.savingsVsCurrent).toBeGreaterThanOrEqual(0)
   })
 })

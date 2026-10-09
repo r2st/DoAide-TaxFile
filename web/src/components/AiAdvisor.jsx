@@ -1,9 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ''
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${API_KEY}`
-const SYSTEM_PROMPT = 'You are an expert Indian income tax advisor. Help with ITR filing (ITR-1 to ITR-7), tax planning, deductions under 80C/80D/80E/80G, HRA exemption, capital gains tax, TDS, advance tax, and tax-saving investments. Explain in simple language for Indian taxpayers.'
-
 const SUGGESTED_QUESTIONS = [
   'Which ITR form should I file?',
   'How to save tax under Section 80C?',
@@ -33,23 +29,14 @@ export default function AiAdvisor() {
     setInput('')
     setLoading(true)
 
-    const contents = [
-      { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
-      { role: 'model', parts: [{ text: 'Understood. I am ready to help with Indian income tax queries.' }] },
-      ...updated.map(m => ({
-        role: m.role === 'user' ? 'user' : 'model',
-        parts: [{ text: m.text }],
-      })),
-    ]
-
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch('/api/advisor/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents }),
+        body: JSON.stringify({ message: userMsg, history: messages }),
       })
       const data = await res.json()
-      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response. Please try again.'
+      const reply = data?.reply || 'Sorry, I could not generate a response. Please try again.'
       setMessages(prev => [...prev, { role: 'assistant', text: reply }])
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', text: 'Network error. Please check your connection and try again.' }])

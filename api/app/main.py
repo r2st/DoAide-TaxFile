@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.routers import (
     advance_tax,
+    advisor,
     capital_gains,
     compound_interest,
     elss_comparison,
@@ -79,6 +80,7 @@ app.include_router(professional_tax.router, prefix="/api/v1", tags=["Professiona
 
 app.include_router(seo.router, tags=["SEO"])
 app.include_router(feedback.router, tags=["Feedback"])
+app.include_router(advisor.router, tags=["AI Advisor"])
 
 
 @app.get("/health")

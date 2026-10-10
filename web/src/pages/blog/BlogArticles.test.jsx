@@ -11,11 +11,14 @@ const BLOG_ARTICLES = [
   { slug: 'first-time-itr-filing-guide', file: 'FirstTimeITRGuide' },
   { slug: 'itr-filing-deadlines-2027', file: 'ITRFilingDeadlines2027' },
   { slug: 'tax-planning-freelancers-india', file: 'TaxPlanningFreelancers' },
+  { slug: 'itr-form-guide-2026-27', file: 'ITRFormGuide2026' },
+  { slug: 'section-80c-investments-2026', file: 'Section80CInvestments2026' },
+  { slug: 'new-vs-old-regime-comparison-2026', file: 'NewVsOldRegime2026' },
 ]
 
 describe('Blog articles data', () => {
-  it('has 10 blog articles', () => {
-    expect(BLOG_ARTICLES.length).toBe(10)
+  it('has 13 blog articles', () => {
+    expect(BLOG_ARTICLES.length).toBe(13)
   })
 
   it('all slugs are unique', () => {

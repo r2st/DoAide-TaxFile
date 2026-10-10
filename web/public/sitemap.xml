@@ -432,6 +432,25 @@
     <priority>0.9</priority>
   </url>
 
+  <url>
+    <loc>https://tax.doaide.com/blog/itr-form-guide-2026-27</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tax.doaide.com/blog/section-80c-investments-2026</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tax.doaide.com/blog/new-vs-old-regime-comparison-2026</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Comparison pages -->
   <url>
     <loc>https://tax.doaide.com/compare/cleartax</loc>

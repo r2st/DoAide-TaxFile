@@ -78,6 +78,9 @@ import NewVsOldRegimeCalculatorBlog from './pages/blog/NewVsOldRegimeCalculatorB
 import FirstTimeITRGuide from './pages/blog/FirstTimeITRGuide'
 import ITRFilingDeadlines2027 from './pages/blog/ITRFilingDeadlines2027'
 import TaxPlanningFreelancers from './pages/blog/TaxPlanningFreelancers'
+import ITRFormGuide2026 from './pages/blog/ITRFormGuide2026'
+import Section80CInvestments2026 from './pages/blog/Section80CInvestments2026'
+import NewVsOldRegime2026 from './pages/blog/NewVsOldRegime2026'
 import ToolTracker from './components/ToolTracker'
 import SocialProofBar from './components/SocialProofBar'
 import ReferralBanner from './components/ReferralBanner'
@@ -177,6 +180,9 @@ export default function App() {
           <Route path="first-time-itr-filing-guide" element={<FirstTimeITRGuide />} />
           <Route path="itr-filing-deadlines-2027" element={<ITRFilingDeadlines2027 />} />
           <Route path="tax-planning-freelancers-india" element={<TaxPlanningFreelancers />} />
+          <Route path="itr-form-guide-2026-27" element={<ITRFormGuide2026 />} />
+          <Route path="section-80c-investments-2026" element={<Section80CInvestments2026 />} />
+          <Route path="new-vs-old-regime-comparison-2026" element={<NewVsOldRegime2026 />} />
         </Route>
       </Routes>
     </Layout>

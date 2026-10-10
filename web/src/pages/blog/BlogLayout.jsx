@@ -53,6 +53,21 @@ const ARTICLES = [
     title: 'Tax Planning for Freelancers & Gig Workers — Complete Guide 2026',
     description: 'Freelancer tax guide: presumptive taxation (44ADA), ITR forms, advance tax, deductible expenses, TDS rates, and smart tax-saving strategies for FY 2026-27.',
   },
+  {
+    slug: 'itr-form-guide-2026-27',
+    title: 'ITR Filing 2026-27: Which ITR Form Should You Choose?',
+    description: 'Complete guide to choosing the right ITR form. Compare ITR-1, ITR-2, ITR-3, ITR-4 eligibility, income types, and find which form fits your profile for FY 2026-27.',
+  },
+  {
+    slug: 'section-80c-investments-2026',
+    title: 'Section 80C Deductions 2026: Complete List of Tax-Saving Investments',
+    description: 'Every Section 80C investment compared — ELSS, PPF, NPS, SSY, NSC, FD, LIC. Returns, lock-in, risk, tax treatment, and which suits your age and goals.',
+  },
+  {
+    slug: 'new-vs-old-regime-comparison-2026',
+    title: 'New Tax Regime vs Old Tax Regime 2026: Which Saves More?',
+    description: 'Slab-by-slab comparison with worked examples at ₹8L to ₹30L income. Break-even deduction table and a clear decision framework for FY 2026-27.',
+  },
 ]
 
 export { ARTICLES }

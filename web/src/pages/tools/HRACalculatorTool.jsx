@@ -58,7 +58,7 @@ const s = {
   },
   cta: {
     marginTop: 32, padding: 24, borderRadius: 'var(--doaide-radius-lg)',
-    background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.05))',
+    background: 'linear-gradient(135deg, rgba(13,148,136,0.1), rgba(13,148,136,0.05))',
     border: '1px solid var(--doaide-gold-dim)', textAlign: 'center',
   },
 }

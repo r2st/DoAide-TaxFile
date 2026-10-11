@@ -21,7 +21,7 @@ const s = {
     borderRadius: 6, color: '#111827', fontSize: 14, outline: 'none', marginBottom: 12,
   },
   btn: {
-    width: '100%', padding: '10px', background: '#946B0C', color: '#fff',
+    width: '100%', padding: '10px', background: '#0D9488', color: '#fff',
     border: 'none', borderRadius: 6, fontSize: 14, fontWeight: 600, cursor: 'pointer',
   },
   resultBox: {
@@ -92,7 +92,7 @@ export default function EmbedIncomeTaxCalculator() {
             </div>
             <div style={s.row}><span>New Regime Tax</span><strong>{formatINR(result.newRegime.totalTax)}</strong></div>
             <div style={s.row}><span>Old Regime Tax</span><strong>{formatINR(result.oldRegime.totalTax)}</strong></div>
-            <div style={{ ...s.row, borderBottom: 'none', fontWeight: 700, color: '#946B0C' }}>
+            <div style={{ ...s.row, borderBottom: 'none', fontWeight: 700, color: '#0D9488' }}>
               <span>Recommended</span><strong>{result.recommended === 'new' ? 'New Regime' : 'Old Regime'}</strong>
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function EmbedIncomeTaxCalculator() {
         )}
       </div>
       <a style={s.powered} href="https://tax.doaide.com?ref=widget" target="_blank" rel="noopener noreferrer">
-        Powered by <strong style={{ color: '#946B0C' }}>DoAide TaxFile</strong>
+        Powered by <strong style={{ color: '#0D9488' }}>DoAide TaxFile</strong>
       </a>
     </div>
   )

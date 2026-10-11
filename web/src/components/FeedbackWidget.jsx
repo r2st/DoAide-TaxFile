@@ -46,10 +46,10 @@ export default function FeedbackWidget() {
           height: 52,
           borderRadius: '50%',
           border: 'none',
-          background: '#D4AF37',
-          color: '#1A1A1D',
+          background: 'var(--doaide-gold, #0D9488)',
+          color: 'var(--doaide-text-on-gold, #fff)',
           cursor: 'pointer',
-          boxShadow: '0 4px 14px rgba(0,0,0,0.4)',
+          boxShadow: '0 4px 14px rgba(13,148,136,0.3)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -74,22 +74,23 @@ export default function FeedbackWidget() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(0,0,0,0.6)',
+            background: 'rgba(0,0,0,0.5)',
           }}
           onClick={e => { if (e.target === e.currentTarget) setOpen(false) }}
         >
           <div
             style={{
-              background: '#1A1A1D',
+              background: 'var(--doaide-surface, #F8FFFE)',
               borderRadius: 12,
               padding: 28,
               width: '90%',
               maxWidth: 380,
-              color: '#fff',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+              color: 'var(--doaide-text, #1E293B)',
+              border: '1px solid var(--doaide-border, #E2E8F0)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
             }}
           >
-            <h3 style={{ margin: '0 0 16px', fontSize: 18, color: '#D4AF37' }}>
+            <h3 style={{ margin: '0 0 16px', fontSize: 18, color: 'var(--doaide-gold, #0D9488)' }}>
               How's your experience?
             </h3>
 
@@ -102,9 +103,9 @@ export default function FeedbackWidget() {
                   flex: 1,
                   padding: '12px 0',
                   fontSize: 28,
-                  border: rating === 'up' ? '2px solid #D4AF37' : '2px solid #333',
+                  border: rating === 'up' ? '2px solid var(--doaide-gold, #0D9488)' : '2px solid var(--doaide-border, #E2E8F0)',
                   borderRadius: 8,
-                  background: rating === 'up' ? 'rgba(212,175,55,0.15)' : '#252528',
+                  background: rating === 'up' ? 'var(--doaide-gold-bg, rgba(13,148,136,0.08))' : 'var(--doaide-bg-alt, #F1F5F9)',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                 }}
@@ -119,9 +120,9 @@ export default function FeedbackWidget() {
                   flex: 1,
                   padding: '12px 0',
                   fontSize: 28,
-                  border: rating === 'down' ? '2px solid #D4AF37' : '2px solid #333',
+                  border: rating === 'down' ? '2px solid var(--doaide-gold, #0D9488)' : '2px solid var(--doaide-border, #E2E8F0)',
                   borderRadius: 8,
-                  background: rating === 'down' ? 'rgba(212,175,55,0.15)' : '#252528',
+                  background: rating === 'down' ? 'var(--doaide-gold-bg, rgba(13,148,136,0.08))' : 'var(--doaide-bg-alt, #F1F5F9)',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                 }}
@@ -140,9 +141,9 @@ export default function FeedbackWidget() {
                 width: '100%',
                 padding: 10,
                 borderRadius: 8,
-                border: '1px solid #333',
-                background: '#252528',
-                color: '#fff',
+                border: '1px solid var(--doaide-border, #E2E8F0)',
+                background: 'var(--doaide-bg-alt, #F1F5F9)',
+                color: 'var(--doaide-text, #1E293B)',
                 resize: 'vertical',
                 fontFamily: 'inherit',
                 fontSize: 14,
@@ -157,9 +158,9 @@ export default function FeedbackWidget() {
                   flex: 1,
                   padding: '10px 0',
                   borderRadius: 8,
-                  border: '1px solid #333',
+                  border: '1px solid var(--doaide-border, #E2E8F0)',
                   background: 'transparent',
-                  color: '#aaa',
+                  color: 'var(--doaide-text-muted, #94A3B8)',
                   cursor: 'pointer',
                   fontSize: 14,
                 }}
@@ -175,8 +176,8 @@ export default function FeedbackWidget() {
                   padding: '10px 0',
                   borderRadius: 8,
                   border: 'none',
-                  background: rating === null ? '#555' : '#D4AF37',
-                  color: rating === null ? '#999' : '#1A1A1D',
+                  background: rating === null ? 'var(--doaide-border, #E2E8F0)' : 'var(--doaide-gold, #0D9488)',
+                  color: rating === null ? 'var(--doaide-text-muted, #94A3B8)' : 'var(--doaide-text-on-gold, #fff)',
                   cursor: rating === null ? 'not-allowed' : 'pointer',
                   fontWeight: 600,
                   fontSize: 14,
@@ -198,12 +199,12 @@ export default function FeedbackWidget() {
             bottom: 90,
             right: 24,
             zIndex: 10000,
-            background: '#D4AF37',
-            color: '#1A1A1D',
+            background: 'var(--doaide-gold, #0D9488)',
+            color: 'var(--doaide-text-on-gold, #fff)',
             padding: '10px 20px',
             borderRadius: 8,
             fontWeight: 600,
-            boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
+            boxShadow: '0 4px 14px rgba(13,148,136,0.3)',
             animation: 'fadeIn 0.3s ease',
           }}
         >

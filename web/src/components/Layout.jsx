@@ -24,7 +24,7 @@ const s = {
     position: 'sticky',
     top: 0,
     zIndex: 50,
-    background: 'rgba(10, 10, 11, 0.85)',
+    background: 'rgba(var(--c-canvas), 0.85)',
     backdropFilter: 'blur(12px)',
     borderBottom: '1px solid var(--doaide-border)',
   },
@@ -40,15 +40,21 @@ const s = {
   logo: {
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
     textDecoration: 'none',
     color: 'var(--doaide-text)',
-    fontFamily: 'var(--doaide-font-display)',
-    fontSize: 22,
-    fontWeight: 400,
+    fontFamily: 'var(--doaide-font)',
+    fontSize: 20,
+    fontWeight: 700,
   },
-  logoGold: {
+  logoPipe: {
+    color: 'var(--doaide-text-muted)',
+    fontWeight: 400,
+    margin: '0 2px',
+  },
+  logoProduct: {
     color: 'var(--doaide-gold)',
+    fontWeight: 600,
   },
   nav: {
     display: 'flex',
@@ -118,6 +124,18 @@ const s = {
     color: 'var(--doaide-text-muted)',
     fontSize: 13,
   },
+  doaideBadge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 6,
+    padding: '4px 12px',
+    background: 'var(--doaide-gold-bg)',
+    borderRadius: 20,
+    fontSize: 12,
+    fontWeight: 600,
+    color: 'var(--doaide-gold)',
+    marginTop: 8,
+  },
 }
 
 export default function Layout({ children }) {
@@ -129,7 +147,7 @@ export default function Layout({ children }) {
       <header style={s.header} className="no-print">
         <div style={s.headerInner}>
           <Link to="/" style={s.logo}>
-            DoAide <span style={s.logoGold}>TaxFile</span>
+            DoAide <span style={s.logoPipe}>|</span> <span style={s.logoProduct}>TaxFile</span>
           </Link>
           <nav style={s.nav} className="desktop-nav">
             {NAV_LINKS.map(l => (
@@ -174,7 +192,7 @@ export default function Layout({ children }) {
 
       <main style={s.main}>{children}</main>
 
-      <section style={{ borderTop: '1px solid var(--doaide-border)', background: 'var(--doaide-bg, #f8f9fa)', padding: '2rem 1rem' }} aria-label="More free tools from DoAide" className="no-print">
+      <section style={{ borderTop: '1px solid var(--doaide-border)', background: 'var(--doaide-surface)', padding: '2rem 1rem' }} aria-label="More free tools from DoAide" className="no-print">
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <p style={{ fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--doaide-text-muted)', margin: '0 0 1rem' }}>More free tools from DoAide</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem' }}>
@@ -189,7 +207,7 @@ export default function Layout({ children }) {
               { icon: '📝', name: 'Contracts', url: 'https://contracts.doaide.com', desc: 'Business contracts' },
               { icon: '🏠', name: 'HomeNex', url: 'https://homenex.aiknol.com', desc: 'AI CRM for real estate' },
             ].map(t => (
-              <a key={t.url} href={t.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', padding: '0.75rem', background: 'var(--doaide-card-bg, #fff)', border: '1px solid var(--doaide-border)', borderRadius: '0.5rem', textDecoration: 'none', color: 'var(--doaide-text)' }}>
+              <a key={t.url} href={t.url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', padding: '0.75rem', background: 'var(--doaide-bg)', border: '1px solid var(--doaide-border)', borderRadius: '0.5rem', textDecoration: 'none', color: 'var(--doaide-text)' }}>
                 <span style={{ fontSize: '1.25rem', lineHeight: 1, flexShrink: 0 }}>{t.icon}</span>
                 <span>
                   <strong style={{ display: 'block', fontSize: '0.85rem' }}>{t.name}</strong>
@@ -205,8 +223,12 @@ export default function Layout({ children }) {
       </section>
 
       <footer style={s.footer}>
-        <p>DoAide TaxFile — Free tax & financial tools for India</p>
-        <p style={{ marginTop: 4 }}>FY 2026-27 (AY 2027-28) • All calculations are indicative</p>
+        <p>DoAide | TaxFile — Free tax & financial tools for India</p>
+        <p style={{ marginTop: 4 }}>FY 2026-27 (AY 2027-28) &bull; All calculations are indicative</p>
+        <span style={s.doaideBadge}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          A DoAide Product
+        </span>
       </footer>
 
       <style>{`

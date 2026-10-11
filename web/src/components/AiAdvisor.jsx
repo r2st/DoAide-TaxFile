@@ -65,10 +65,10 @@ export default function AiAdvisor() {
           height: 52,
           borderRadius: '50%',
           border: 'none',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: '#fff',
+          background: 'var(--doaide-gold, #0D9488)',
+          color: 'var(--doaide-text-on-gold, #fff)',
           cursor: 'pointer',
-          boxShadow: '0 4px 14px rgba(102,126,234,0.4)',
+          boxShadow: '0 4px 14px rgba(13,148,136,0.3)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -96,28 +96,28 @@ export default function AiAdvisor() {
             maxWidth: 'calc(100vw - 32px)',
             height: 520,
             maxHeight: 'calc(100vh - 120px)',
-            background: '#1A1A1D',
+            background: 'var(--doaide-surface, #F8FFFE)',
             borderRadius: 16,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden',
-            border: '1px solid #333',
+            border: '1px solid var(--doaide-border, #E2E8F0)',
           }}
         >
           <div style={{
             padding: '14px 16px',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'var(--doaide-gold, #0D9488)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--doaide-text-on-gold, #fff)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="3" />
                 <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
               </svg>
-              <span style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>Tax AI Advisor</span>
+              <span style={{ color: 'var(--doaide-text-on-gold, #fff)', fontWeight: 600, fontSize: 15 }}>Tax AI Advisor</span>
             </div>
             <button
               onClick={() => setOpen(false)}
@@ -126,7 +126,7 @@ export default function AiAdvisor() {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#fff',
+                color: 'var(--doaide-text-on-gold, #fff)',
                 cursor: 'pointer',
                 fontSize: 20,
                 padding: 4,
@@ -147,7 +147,7 @@ export default function AiAdvisor() {
           }}>
             {messages.length === 0 && (
               <div>
-                <p style={{ color: '#aaa', fontSize: 13, margin: '0 0 12px', lineHeight: 1.5 }}>
+                <p style={{ color: 'var(--doaide-text-muted, #94A3B8)', fontSize: 13, margin: '0 0 12px', lineHeight: 1.5 }}>
                   Ask me anything about Indian income tax, ITR filing, deductions, or tax-saving investments.
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -157,18 +157,18 @@ export default function AiAdvisor() {
                       onClick={() => sendMessage(q)}
                       data-testid="suggested-question"
                       style={{
-                        background: '#252528',
-                        border: '1px solid #333',
+                        background: 'var(--doaide-bg-alt, #F1F5F9)',
+                        border: '1px solid var(--doaide-border, #E2E8F0)',
                         borderRadius: 8,
                         padding: '10px 12px',
-                        color: '#ccc',
+                        color: 'var(--doaide-text-secondary, #475569)',
                         cursor: 'pointer',
                         textAlign: 'left',
                         fontSize: 13,
                         transition: 'border-color 0.15s',
                       }}
-                      onMouseEnter={e => (e.currentTarget.style.borderColor = '#667eea')}
-                      onMouseLeave={e => (e.currentTarget.style.borderColor = '#333')}
+                      onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--doaide-gold, #0D9488)')}
+                      onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--doaide-border, #E2E8F0)')}
                     >
                       {q}
                     </button>
@@ -183,8 +183,8 @@ export default function AiAdvisor() {
                 data-testid={msg.role === 'user' ? 'user-message' : 'assistant-message'}
                 style={{
                   alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                  background: msg.role === 'user' ? '#667eea' : '#252528',
-                  color: '#fff',
+                  background: msg.role === 'user' ? 'var(--doaide-gold, #0D9488)' : 'var(--doaide-bg-alt, #F1F5F9)',
+                  color: msg.role === 'user' ? 'var(--doaide-text-on-gold, #fff)' : 'var(--doaide-text, #1E293B)',
                   padding: '10px 14px',
                   borderRadius: msg.role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
                   maxWidth: '85%',
@@ -201,8 +201,8 @@ export default function AiAdvisor() {
             {loading && (
               <div data-testid="loading-indicator" style={{
                 alignSelf: 'flex-start',
-                background: '#252528',
-                color: '#aaa',
+                background: 'var(--doaide-bg-alt, #F1F5F9)',
+                color: 'var(--doaide-text-muted, #94A3B8)',
                 padding: '10px 14px',
                 borderRadius: '14px 14px 14px 4px',
                 fontSize: 13,
@@ -214,7 +214,7 @@ export default function AiAdvisor() {
 
           <form onSubmit={handleSubmit} style={{
             padding: '12px 16px',
-            borderTop: '1px solid #333',
+            borderTop: '1px solid var(--doaide-border, #E2E8F0)',
             display: 'flex',
             gap: 8,
           }}>
@@ -229,9 +229,9 @@ export default function AiAdvisor() {
                 flex: 1,
                 padding: '10px 12px',
                 borderRadius: 8,
-                border: '1px solid #333',
-                background: '#252528',
-                color: '#fff',
+                border: '1px solid var(--doaide-border, #E2E8F0)',
+                background: 'var(--doaide-bg-alt, #F1F5F9)',
+                color: 'var(--doaide-text, #1E293B)',
                 fontSize: 14,
                 fontFamily: 'inherit',
                 outline: 'none',
@@ -245,8 +245,8 @@ export default function AiAdvisor() {
                 padding: '10px 16px',
                 borderRadius: 8,
                 border: 'none',
-                background: loading || !input.trim() ? '#555' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: loading || !input.trim() ? '#999' : '#fff',
+                background: loading || !input.trim() ? 'var(--doaide-border, #E2E8F0)' : 'var(--doaide-gold, #0D9488)',
+                color: loading || !input.trim() ? 'var(--doaide-text-muted, #94A3B8)' : 'var(--doaide-text-on-gold, #fff)',
                 cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
                 fontWeight: 600,
                 fontSize: 14,

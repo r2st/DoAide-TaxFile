@@ -17,24 +17,6 @@ export function getRecentTools(max = 5) {
   }
 }
 
-export function getDailyCount(toolName) {
-  const today = new Date().toISOString().slice(0, 10);
-  const hash = [...(today + toolName)].reduce((a, c) => a + c.charCodeAt(0), 0);
-  return 500 + (hash % 2000);
-}
-
-export function getDailyRating(toolName) {
-  const today = new Date().toISOString().slice(0, 10);
-  const hash = [...(today + toolName + 'rating')].reduce((a, c) => a + c.charCodeAt(0), 0);
-  return (4.6 + (hash % 4) * 0.1).toFixed(1);
-}
-
-export function getRatingCount(toolName) {
-  const today = new Date().toISOString().slice(0, 10);
-  const hash = [...(today + toolName + 'rcount')].reduce((a, c) => a + c.charCodeAt(0), 0);
-  return 200 + (hash % 800);
-}
-
 export const TOOL_MAP = {
   '/income-tax-calculator': 'Income Tax Calculator',
   '/old-vs-new-regime': 'Old vs New Regime',

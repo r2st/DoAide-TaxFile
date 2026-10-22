@@ -66,27 +66,11 @@ describe('HomePage trust signals data', () => {
   })
 })
 
-describe('HomePage testimonials', () => {
-  const TESTIMONIALS = [
-    { name: 'Kavita Sharma', stars: 5 },
-    { name: 'Arjun Reddy', stars: 5 },
-    { name: 'Meera Iyer', stars: 5 },
-    { name: 'Vikram Singh', stars: 4 },
-  ]
-
-  it('has at least 4 testimonials', () => {
-    expect(TESTIMONIALS.length).toBeGreaterThanOrEqual(4)
-  })
-
-  it('all testimonials have valid star ratings', () => {
-    TESTIMONIALS.forEach(t => {
-      expect(t.stars).toBeGreaterThanOrEqual(1)
-      expect(t.stars).toBeLessThanOrEqual(5)
-    })
-  })
-
-  it('average rating is above 4.5', () => {
-    const avg = TESTIMONIALS.reduce((sum, t) => sum + t.stars, 0) / TESTIMONIALS.length
-    expect(avg).toBeGreaterThanOrEqual(4.5)
+describe('HomePage honesty', () => {
+  it('contains no fabricated testimonials or usage counters', async () => {
+    const raw = (await import('./HomePage.jsx?raw')).default
+    expect(raw).not.toContain('TESTIMONIALS')
+    expect(raw).not.toContain('Trusted by Professionals')
+    expect(raw).not.toContain('10,000+ Taxpayers')
   })
 })

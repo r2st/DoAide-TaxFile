@@ -1,7 +1,22 @@
 import { useEffect } from 'react'
 
-export default function SEOHead({ title, description, keywords, canonical, jsonLd, faqs, breadcrumbs }) {
+export const SITE_URL = 'https://tax.doaide.com'
+const CONTENT_SECTION = /^\/(guides|blog|compare)(\/|$)/
+
+export function canonicalFor(pathname) {
+  const clean = (pathname || '/').replace(/\/+$/, '')
+  return clean ? SITE_URL + clean : SITE_URL + '/'
+}
+
+// Calculator/tool pages get WebApplication markup; guides, blog and comparisons don't.
+export function isToolPath(pathname) {
+  return pathname !== '/' && !CONTENT_SECTION.test(pathname) && pathname !== '/best-income-tax-calculator'
+}
+
+export default function SEOHead({ title, description, keywords, canonical: canonicalProp, jsonLd, faqs, breadcrumbs }) {
   useEffect(() => {
+    const pathname = window.location.pathname
+    const canonical = canonicalProp || canonicalFor(pathname)
     document.title = title
     const setMeta = (name, content) => {
       let el = document.querySelector(`meta[name="${name}"]`)
@@ -71,6 +86,20 @@ export default function SEOHead({ title, description, keywords, canonical, jsonL
         },
       },
     ]
+    if (!jsonLd && isToolPath(pathname)) {
+      schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: title.split(/ [—|] /)[0],
+        description: description || title,
+        url: canonical,
+        applicationCategory: 'FinanceApplication',
+        operatingSystem: 'Any',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+        publisher: { '@type': 'Organization', name: 'DoAide', url: 'https://doaide.com' },
+      })
+    }
     if (faqs && faqs.length > 0) {
       schemas.push({
         '@context': 'https://schema.org',
@@ -98,7 +127,7 @@ export default function SEOHead({ title, description, keywords, canonical, jsonL
       })
     }
     ld.textContent = JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)
-  }, [title, description, keywords, canonical, jsonLd, faqs, breadcrumbs])
+  }, [title, description, keywords, canonicalProp, jsonLd, faqs, breadcrumbs])
 
   return null
 }

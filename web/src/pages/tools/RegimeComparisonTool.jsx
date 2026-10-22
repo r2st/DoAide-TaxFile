@@ -230,7 +230,7 @@ export default function RegimeComparisonTool() {
         title="Old vs New Tax Regime Comparison Calculator FY 2026-27 | DoAide TaxFile"
         description="Free old vs new income tax regime comparison calculator for FY 2026-27 (AY 2027-28). Enter salary, HRA, rent, 80C, 80D, home loan & NPS to compare tax under both regimes with slab-wise breakdown and visual chart."
         keywords="old vs new tax regime calculator, tax regime comparison 2026-27, income tax calculator India, new regime vs old regime, which tax regime is better, tax slab comparison, 80C 80D HRA tax saving"
-        canonical="https://tax.doaide.com/tools/regime-comparison"
+        canonical="https://tax.doaide.com/old-vs-new-regime"
         faqs={FAQS}
       />
 

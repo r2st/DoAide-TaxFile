@@ -1,4 +1,6 @@
+import json
 from datetime import date
+from pathlib import Path
 
 from fastapi import APIRouter
 from fastapi.responses import Response
@@ -7,86 +9,9 @@ router = APIRouter()
 
 BASE_URL = "https://tax.doaide.com"
 
-PAGES = [
-    "/",
-    "/income-tax-calculator",
-    "/itr-form-selector",
-    "/hra-calculator",
-    "/80c-planner",
-    "/capital-gains-calculator",
-    "/tds-calculator",
-    "/advance-tax-calculator",
-    "/rent-receipt-generator",
-    "/form-16-analyzer",
-    "/tax-refund-status",
-    "/standard-deduction-calculator",
-    "/nps-calculator",
-    "/home-loan-calculator",
-    "/senior-citizen-calculator",
-    "/take-home-salary-calculator",
-    "/gratuity-calculator",
-    "/ppf-calculator",
-    "/sip-calculator",
-    "/fd-calculator",
-    "/mutual-fund-calculator",
-    "/emi-calculator",
-    "/compound-interest-calculator",
-    "/80d-calculator",
-    "/salary-tax-optimizer",
-    "/ssy-calculator",
-    "/epf-calculator",
-    "/elss-vs-ppf-vs-fd",
-    "/tax-loss-harvesting",
-    "/form-16-decoder",
-    "/refund-calculator",
-    "/professional-tax-calculator",
-    "/calculators/stamp-duty",
-    "/calculators/rental-income",
-    "/guides",
-    "/guides/income-tax-slabs-2026-27",
-    "/guides/section-80c-deductions",
-    "/guides/how-to-file-itr-online",
-    "/guides/best-tax-saving-salaried",
-    "/guides/save-tax-new-regime",
-    "/guides/nps-vs-ppf-vs-elss",
-    "/guides/advance-tax",
-    "/guides/tax-on-salary",
-    "/guides/old-vs-new-regime",
-    "/guides/tax-saving-tips",
-    "/guides/home-loan-tax",
-    "/guides/hra-exemption-calculation",
-    "/guides/capital-gains-mutual-funds",
-    "/guides/section-80c-complete-list",
-    "/compare/cleartax",
-    "/compare/tax2win",
-    "/best-income-tax-calculator",
-    "/gst-calculator",
-    "/lumpsum-calculator",
-    "/rd-calculator",
-    "/swp-calculator",
-    "/cagr-calculator",
-    "/inflation-calculator",
-    "/retirement-calculator",
-    "/old-vs-new-regime",
-    "/80g-calculator",
-    "/tax-saving-calculator",
-    "/tools/regime-comparison",
-    "/tools/hra-calculator",
-    "/blog",
-    "/blog/income-tax-slabs-2026-27",
-    "/blog/how-to-file-itr-online-free",
-    "/blog/section-80c-deductions-complete-guide",
-    "/blog/nps-vs-ppf-vs-elss-comparison",
-    "/blog/first-time-itr-filing-guide",
-    "/blog/itr-filing-deadlines-2027",
-    "/blog/tax-planning-freelancers-india",
-    "/blog/itr-form-guide-2026-27",
-    "/blog/section-80c-investments-2026",
-    "/blog/new-vs-old-regime-comparison-2026",
-    "/blog/how-to-save-income-tax-legally-india-2026",
-    "/blog/section-80c-investment-options-compared",
-    "/blog/new-vs-old-tax-regime-calculator",
-]
+# Single source of truth shared with the web build (prerender) — see web/src/seo/routes.json.
+ROUTES_FILE = Path(__file__).resolve().parents[3] / "web" / "src" / "seo" / "routes.json"
+PAGES = json.loads(ROUTES_FILE.read_text())
 
 
 @router.get("/sitemap.xml")

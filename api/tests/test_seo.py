@@ -88,3 +88,28 @@ class TestSitemapRoute:
         body = response.text
         assert "User-agent: *" in body
         assert "Sitemap: https://tax.doaide.com/sitemap.xml" in body
+
+
+class TestSitemapSource:
+    def test_loads_shared_routes_file(self):
+        from app.routers.seo import ROUTES_FILE
+
+        assert ROUTES_FILE.name == "routes.json"
+        assert ROUTES_FILE.exists()
+
+    def test_duplicate_tool_pages_consolidated(self):
+        # /tools/* duplicated /hra-calculator and /old-vs-new-regime and now canonicalise to them.
+        assert not [p for p in PAGES if p.startswith("/tools/")]
+        assert "/compare/best-itr-tools" in PAGES
+
+    def test_sitemap_response_is_valid_xml(self):
+        import xml.etree.ElementTree as ET
+
+        from app.routers.seo import sitemap
+
+        root = ET.fromstring(sitemap().body)
+        ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        locs = [e.text for e in root.findall("s:url/s:loc", ns)]
+        assert locs[0] == BASE_URL + "/"
+        assert len(locs) == len(PAGES)
+        assert all("?" not in loc for loc in locs)

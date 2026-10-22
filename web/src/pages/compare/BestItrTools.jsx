@@ -49,31 +49,26 @@ const TOOLS = [
     rank: 1, name: 'DoAide TaxFile', pricing: '100% Free', free: true,
     features: '25+ calculators including income tax, HRA, capital gains, NPS, PPF, SIP, EMI, salary optimizer, Form 16 analyzer',
     verdict: 'Best free tax calculation and planning toolkit. No login required. All calculators work instantly with FY 2026-27 rates.',
-    rating: '4.8',
   },
   {
     rank: 2, name: 'Income Tax Portal (incometax.gov.in)', pricing: 'Free', free: true,
     features: 'Official ITR filing, tax payment, refund status, Form 26AS, AIS',
     verdict: 'The official government portal for filing ITR. Free but complex interface. Required for actual ITR submission.',
-    rating: '3.8',
   },
   {
     rank: 3, name: 'ClearTax', pricing: 'Free / Rs 1,499+', free: false,
     features: 'ITR filing, CA assistance, tax calculator, TDS filing, GST filing',
     verdict: 'Popular filing platform. Free for simple ITR-1. Paid plans for CA assistance and complex returns.',
-    rating: '4.5',
   },
   {
     rank: 4, name: 'Tax2Win', pricing: 'Free / Rs 999+', free: false,
     features: 'ITR filing, CA review, refund tracking, basic calculator',
     verdict: 'Good for assisted filing. Free basic filing with paid CA review options.',
-    rating: '4.3',
   },
   {
     rank: 5, name: 'myITreturn', pricing: 'Rs 499+', free: false,
     features: 'ITR filing, tax planning, CPC response management',
     verdict: 'Budget filing option. No free tier for calculators — everything requires payment.',
-    rating: '4.0',
   },
 ]
 
@@ -112,7 +107,7 @@ export default function BestItrTools() {
     <div style={s.page}>
       <SEOHead
         title="Free ITR Filing India 2026: Best Tax Calculators & Filing Tools Compared"
-        description="Compare the best free ITR filing and tax calculation tools in India for 2026. DoAide TaxFile, ClearTax, Tax2Win, IT Portal — features, pricing, and ratings compared."
+        description="Compare the best free ITR filing and tax calculation tools in India for 2026. DoAide TaxFile, ClearTax, Tax2Win, IT Portal — features and pricing compared."
         keywords="free ITR filing India 2026, best tax calculator India, income tax calculator free, ClearTax alternative, ITR filing online free"
         canonical="https://tax.doaide.com/compare/best-itr-tools"
         faqs={FAQS}
@@ -143,8 +138,7 @@ export default function BestItrTools() {
           <div style={{ color: 'var(--doaide-gold)', fontSize: 14, fontWeight: 600, marginBottom: 6 }}>{tool.pricing}</div>
           <p style={{ fontSize: 13, color: 'var(--doaide-text-secondary)', marginBottom: 6, lineHeight: 1.6 }}>{tool.verdict}</p>
           <p style={{ fontSize: 12, color: 'var(--doaide-text-muted)' }}>Features: {tool.features}</p>
-          <div style={{ fontSize: 12, color: 'var(--doaide-text-muted)', marginTop: 4 }}>⭐ {tool.rating}/5</div>
-        </div>
+                  </div>
       ))}
 
       <h2 style={s.h2}>Feature Comparison Table</h2>

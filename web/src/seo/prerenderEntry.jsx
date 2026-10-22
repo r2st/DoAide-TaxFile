@@ -14,7 +14,13 @@ export async function renderRoute(pathname, container) {
       </MemoryRouter>,
     )
   })
-  // Let passive effects (SEOHead's useEffect) run.
+  // Routes are lazy-loaded: wait until the chunk resolves and real content
+  // replaces the Suspense fallback, then let passive effects (SEOHead) run.
+  for (let i = 0; i < 400; i++) {
+    await new Promise(r => setTimeout(r, 0))
+    const loading = container.querySelector('[data-route-loading]')
+    if (!loading && container.textContent) break
+  }
   for (let i = 0; i < 5; i++) await new Promise(r => setTimeout(r, 0))
   return root
 }

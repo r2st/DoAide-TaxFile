@@ -83,6 +83,11 @@ const ARTICLES = [
     title: 'ITR Refund Delayed? 8 Reasons and How to Fix Each One',
     description: 'Why income tax refunds get stuck — e-verification, bank validation, inoperative PAN, AIS mismatch, Section 245 adjustment — and how to fix each one.',
   },
+  {
+    slug: 'tax-saving-tips-salaried-employees-2026',
+    title: 'Tax Saving Tips for Salaried Employees India 2026 — 12 Ways to Pay Less',
+    description: '12 practical tips for FY 2026-27: regime choice first, then 80C, 80D, HRA, NPS, employer NPS in the new regime, salary restructuring and the proofs calendar.',
+  },
 ]
 
 export { ARTICLES }

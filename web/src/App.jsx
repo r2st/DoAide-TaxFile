@@ -69,6 +69,9 @@ const Section80GCalculator = lazy(() => import('./pages/Section80GCalculator'))
 const EmbedIncomeTaxCalculator = lazy(() => import('./pages/EmbedIncomeTaxCalculator'))
 const RegimeComparisonTool = lazy(() => import('./pages/tools/RegimeComparisonTool'))
 const HRACalculatorTool = lazy(() => import('./pages/tools/HRACalculatorTool'))
+const ITRFormsIndex = lazy(() => import('./pages/itr/ITRFormsIndex'))
+const ITRFormPage = lazy(() => import('./pages/itr/ITRFormPage'))
+const Section80C80DCalculator = lazy(() => import('./pages/Section80C80DCalculator'))
 const BlogLayout = lazy(() => import('./pages/blog/BlogLayout'))
 const BlogIndex = lazy(() => import('./pages/blog/BlogLayout').then((m) => ({ default: m.BlogIndex })))
 const IncomeTaxSlabs2026 = lazy(() => import('./pages/blog/IncomeTaxSlabs2026'))
@@ -87,6 +90,7 @@ const NewVsOldRegime2026 = lazy(() => import('./pages/blog/NewVsOldRegime2026'))
 const BelatedITRFiling2026 = lazy(() => import('./pages/blog/BelatedITRFiling2026'))
 const MarginalRelief12Lakh = lazy(() => import('./pages/blog/MarginalRelief12Lakh'))
 const ITRRefundDelayed = lazy(() => import('./pages/blog/ITRRefundDelayed'))
+const TaxSavingTipsSalaried2026 = lazy(() => import('./pages/blog/TaxSavingTipsSalaried2026'))
 import ToolTracker from './components/ToolTracker'
 import ReferralBanner from './components/ReferralBanner'
 import FeedbackWidget from './components/FeedbackWidget'
@@ -167,6 +171,15 @@ export default function App() {
         <Route path="/80g-calculator" element={<Section80GCalculator />} />
         <Route path="/tools/regime-comparison" element={<RegimeComparisonTool />} />
         <Route path="/tools/hra-calculator" element={<HRACalculatorTool />} />
+        <Route path="/80c-80d-calculator" element={<Section80C80DCalculator />} />
+        <Route path="/itr-forms" element={<ITRFormsIndex />} />
+        <Route path="/itr-forms/itr-1" element={<ITRFormPage slug="itr-1" />} />
+        <Route path="/itr-forms/itr-2" element={<ITRFormPage slug="itr-2" />} />
+        <Route path="/itr-forms/itr-3" element={<ITRFormPage slug="itr-3" />} />
+        <Route path="/itr-forms/itr-4" element={<ITRFormPage slug="itr-4" />} />
+        <Route path="/itr-forms/itr-5" element={<ITRFormPage slug="itr-5" />} />
+        <Route path="/itr-forms/itr-6" element={<ITRFormPage slug="itr-6" />} />
+        <Route path="/itr-forms/itr-7" element={<ITRFormPage slug="itr-7" />} />
         <Route path="/guides" element={<GuidesPage />} />
         <Route path="/guides/income-tax-slabs-2026-27" element={<IncomeTaxSlabsGuide />} />
         <Route path="/guides/section-80c-deductions" element={<Section80CGuide />} />
@@ -204,6 +217,7 @@ export default function App() {
           <Route path="belated-itr-filing-after-due-date-2026" element={<BelatedITRFiling2026 />} />
           <Route path="marginal-relief-income-above-12-lakh-new-regime" element={<MarginalRelief12Lakh />} />
           <Route path="itr-refund-delayed-reasons-how-to-fix" element={<ITRRefundDelayed />} />
+          <Route path="tax-saving-tips-salaried-employees-2026" element={<TaxSavingTipsSalaried2026 />} />
         </Route>
       </Routes>
       </Suspense>

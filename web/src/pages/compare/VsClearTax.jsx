@@ -53,6 +53,9 @@ const FEATURES = [
   ['Form 16 Analyzer (AI)', true, false],
   ['Tax Loss Harvesting', true, false],
   ['Section 80D Calculator', true, false],
+  ['Combined 80C + 80D Calculator', true, false],
+  ['ITR Form Guides (ITR-1 to ITR-7)', true, true],
+  ['ITR Form Selector Tool', true, false],
   ['Advance Tax Calculator', true, true],
   ['Rent Receipt Generator', true, true],
   ['Gratuity Calculator', true, false],
@@ -76,6 +79,8 @@ const FAQS = [
   { q: 'Can I file my ITR on DoAide TaxFile?', a: 'DoAide TaxFile focuses on tax calculation and planning tools. For ITR filing, you can use the income tax portal (incometax.gov.in) directly. Our Form 16 Analyzer and ITR Form Selector help you prepare everything you need before filing.' },
   { q: 'Which is more accurate — DoAide TaxFile or ClearTax?', a: 'Both use the same tax rules published by the Income Tax Department. DoAide TaxFile is updated for FY 2026-27 (AY 2027-28) and includes the latest slabs, rebate limits, and surcharge rules. Our open calculations let you verify every step.' },
   { q: 'Do I need to create an account on DoAide TaxFile?', a: 'No. Unlike ClearTax which requires sign-up for most features, DoAide TaxFile works instantly with no registration, no phone number, and no email required. Just open and calculate.' },
+  { q: 'Can DoAide TaxFile help me choose my ITR form like ClearTax does?', a: 'Yes. The ITR Form Selector asks a few questions and names your form, and the ITR Forms section explains every form from ITR-1 to ITR-7 — who can file, who cannot, documents and due dates — all free without an account.' },
+  { q: 'Is my data safe on DoAide TaxFile?', a: 'Everything you type stays in your browser — calculations run locally and no financial data is uploaded or stored on any server. ClearTax, as a filing platform, necessarily stores your PAN, income and return data on its servers.' },
 ]
 
 export default function VsClearTax() {
@@ -171,6 +176,21 @@ export default function VsClearTax() {
       <p style={s.p}>
         Choose ClearTax if you need help filing your ITR, want CA assistance, or need end-to-end tax filing services. ClearTax
         is a good choice for those who prefer a guided filing experience and don't mind paying for the convenience.
+      </p>
+
+      <h2 style={s.h2}>The Free Filing Workflow (₹0 vs ₹599+)</h2>
+      <p style={s.p}>
+        Most people pay ClearTax for confidence, not capability. You can get the same confidence free:
+      </p>
+      <ol style={{ paddingLeft: 20, marginBottom: 16, fontSize: 15, lineHeight: 1.9, color: 'var(--doaide-text-secondary)' }}>
+        <li>Find your form with the <Link to="/itr-form-selector" style={s.link}>ITR Form Selector</Link>, and read exactly who can file it in the <Link to="/itr-forms" style={s.link}>ITR form guides</Link>.</li>
+        <li>Verify your Form 16 and regime choice with the <Link to="/form-16-analyzer" style={s.link}>Form 16 Analyzer</Link> and <Link to="/old-vs-new-regime" style={s.link}>regime comparison</Link>.</li>
+        <li>Check deductions with the <Link to="/80c-80d-calculator" style={s.link}>80C + 80D Calculator</Link> and your final tax with the <Link to="/income-tax-calculator" style={s.link}>Income Tax Calculator</Link>.</li>
+        <li>File on <strong>incometax.gov.in</strong> — the government portal is free and pre-fills most of the return — then e-verify with Aadhaar OTP.</li>
+      </ol>
+      <p style={s.p}>
+        Total cost: ₹0. The step-by-step walkthrough is in our{' '}
+        <Link to="/blog/how-to-file-itr-online-free" style={s.link}>free ITR filing guide</Link>.
       </p>
 
       <div style={s.verdict}>

@@ -2,6 +2,15 @@
   "/",
   "/income-tax-calculator",
   "/itr-form-selector",
+  "/itr-forms",
+  "/itr-forms/itr-1",
+  "/itr-forms/itr-2",
+  "/itr-forms/itr-3",
+  "/itr-forms/itr-4",
+  "/itr-forms/itr-5",
+  "/itr-forms/itr-6",
+  "/itr-forms/itr-7",
+  "/80c-80d-calculator",
   "/hra-calculator",
   "/80c-planner",
   "/capital-gains-calculator",
@@ -78,5 +87,6 @@
   "/blog/itr-refund-delayed-reasons-how-to-fix",
   "/blog/how-to-save-income-tax-legally-india-2026",
   "/blog/section-80c-investment-options-compared",
-  "/blog/new-vs-old-tax-regime-calculator"
+  "/blog/new-vs-old-tax-regime-calculator",
+  "/blog/tax-saving-tips-salaried-employees-2026"
 ]

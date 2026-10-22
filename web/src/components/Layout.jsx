@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
   { path: '/income-tax-calculator', label: 'Tax Calculator' },
+  { path: '/old-vs-new-regime', label: 'Old vs New' },
+  { path: '/capital-gains-calculator', label: 'Capital Gains' },
   { path: '/take-home-salary-calculator', label: 'Salary' },
   { path: '/sip-calculator', label: 'SIP' },
   { path: '/emi-calculator', label: 'EMI' },

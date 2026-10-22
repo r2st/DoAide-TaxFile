@@ -99,12 +99,11 @@ const CATEGORIES = [
     name: 'Income Tax',
     tools: [
       { path: '/income-tax-calculator', icon: '🧮', title: 'Income Tax Calculator', desc: 'Compare old vs new regime side-by-side. Find which saves you more.' },
-      { path: '/old-vs-new-regime', icon: '⚖️', title: 'Old vs New Regime', desc: 'Detailed side-by-side comparison with slab breakdown and recommendation.' },
-      { path: '/tools/regime-comparison', icon: '📊', title: 'Enhanced Regime Comparison', desc: 'Full salary + HRA + deductions comparison with visual bar chart.' },
+      { path: '/old-vs-new-regime', icon: '⚖️', title: 'Old vs New Regime', desc: 'Which regime saves more for FY 2026-27, plus the break-even deductions for the old regime.' },
       { path: '/itr-form-selector', icon: '📋', title: 'ITR Form Selector', desc: 'Answer a few questions to find the right ITR form for your income.' },
       { path: '/advance-tax-calculator', icon: '📅', title: 'Advance Tax Calculator', desc: 'Quarterly advance tax installments with due dates and interest.' },
       { path: '/tds-calculator', icon: '🏦', title: 'TDS Calculator', desc: 'Calculate TDS rates and amounts for salary, rent, professional fees.' },
-      { path: '/capital-gains-calculator', icon: '📈', title: 'Capital Gains Calculator', desc: 'STCG and LTCG tax on equity, debt, real estate, gold, and crypto.' },
+      { path: '/capital-gains-calculator', icon: '📈', title: 'Capital Gains Calculator', desc: 'Shares, mutual funds, property with indexation option, gold, bonds and 30% crypto tax.' },
       { path: '/senior-citizen-calculator', icon: '👴', title: 'Senior Citizen Calculator', desc: 'Special tax slabs, 80TTB, higher 80D limits for seniors (60+/80+).' },
       { path: '/form-16-analyzer', icon: '📄', title: 'Form 16 Analyzer', desc: 'Enter Form 16 data to verify tax, compare regimes, check refund.' },
       { path: '/form-16-decoder', icon: '🔓', title: 'Form 16 Decoder', desc: 'Paste your Form 16 text and get a plain-English breakdown.' },
@@ -119,8 +118,7 @@ const CATEGORIES = [
       { path: '/take-home-salary-calculator', icon: '💰', title: 'Take-Home Salary Calculator', desc: 'CTC to in-hand salary with PF, gratuity, professional tax breakup.' },
       { path: '/salary-tax-optimizer', icon: '⚡', title: 'Salary Tax Optimizer', desc: 'Find the optimal CTC structure to maximize your in-hand salary.' },
       { path: '/gratuity-calculator', icon: '🎁', title: 'Gratuity Calculator', desc: 'Calculate gratuity amount and Section 10(10) tax exemption.' },
-      { path: '/hra-calculator', icon: '🏠', title: 'HRA Exemption Calculator', desc: 'Calculate your HRA tax exemption under Section 10(13A).' },
-      { path: '/tools/hra-calculator', icon: '🏠', title: 'HRA Calculator (Step-by-Step)', desc: 'Detailed HRA exemption with all 3 limits, minimum badge, and tax impact.' },
+      { path: '/hra-calculator', icon: '🏠', title: 'HRA Exemption Calculator', desc: 'Monthly HRA exemption with the binding limit, tax saved and optimal rent.' },
       { path: '/epf-calculator', icon: '🏛️', title: 'EPF Calculator', desc: 'Employee + employer PF contribution split with retirement corpus.' },
       { path: '/professional-tax-calculator', icon: '🗺️', title: 'Professional Tax', desc: 'State-wise professional tax rates for all Indian states.' },
     ],
@@ -393,7 +391,7 @@ export default function HomePage() {
         title="DoAide TaxFile — File ITR in Minutes | 30+ Free Tax Calculators India FY 2026-27"
         description="File ITR in minutes with 30+ free tax calculators for India FY 2026-27. Income tax calculator, old vs new regime comparison, HRA, 80C planner, SIP, EMI — no login, no signup, 100% free. Better than ClearTax for tax planning."
         keywords="income tax calculator India 2026, ITR filing calculator, file ITR online free, old vs new tax regime 2026-27, ClearTax alternative, SIP calculator, EMI calculator, take home salary calculator, HRA exemption calculator, 80C planner, 80D calculator, capital gains calculator India, NPS calculator, PPF calculator, FD calculator"
-        canonical="https://tax.doaide.com"
+        canonical="https://tax.doaide.com/"
         faqs={HOME_FAQS}
         jsonLd={{
           '@context': 'https://schema.org',

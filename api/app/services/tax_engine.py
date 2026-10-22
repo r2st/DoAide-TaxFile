@@ -87,11 +87,15 @@ def calculate_new_regime(gross_income: float) -> dict:
     tax, slab_breakdown = _apply_slabs(taxable, NEW_REGIME_SLABS)
 
     rebate_87a = 0
+    marginal_relief = 0
     if taxable <= 1_200_000:
         rebate_87a = min(tax, 60_000)
-    tax_after_rebate = max(tax - rebate_87a, 0)
+    elif tax > taxable - 1_200_000:
+        # Marginal relief: tax cannot exceed the income earned above Rs 12 lakh.
+        marginal_relief = tax - (taxable - 1_200_000)
+    tax_after_rebate = max(tax - rebate_87a - marginal_relief, 0)
 
-    surcharge = _surcharge(tax_after_rebate, gross_income)
+    surcharge = min(_surcharge(tax_after_rebate, gross_income), round(tax_after_rebate * 0.25))
     tax_plus_surcharge = tax_after_rebate + surcharge
     cess = round(tax_plus_surcharge * CESS_RATE)
     total = tax_plus_surcharge + cess
@@ -105,6 +109,7 @@ def calculate_new_regime(gross_income: float) -> dict:
         "tax_on_income": tax,
         "slab_breakdown": slab_breakdown,
         "rebate_87a": rebate_87a,
+        "marginal_relief": marginal_relief,
         "tax_after_rebate": tax_after_rebate,
         "surcharge": surcharge,
         "cess": cess,
@@ -302,7 +307,7 @@ LTCG_RATES = {
     "debt": None,
     "real_estate": 0.125,
     "gold": 0.125,
-    "crypto": 0.125,
+    "crypto": 0.30,
 }
 
 STCG_RATES = {
@@ -310,7 +315,7 @@ STCG_RATES = {
     "debt": None,
     "real_estate": None,
     "gold": None,
-    "crypto": 0.20,
+    "crypto": 0.30,  # flat 30% under Sec 115BBH whatever the holding period
 }
 
 

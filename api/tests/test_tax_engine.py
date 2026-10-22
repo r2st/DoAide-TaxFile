@@ -556,3 +556,21 @@ class TestProfessionalTax:
     def test_slab_table(self):
         result = calculate_professional_tax(50_000, "karnataka")
         assert len(result["slabs"]) > 0
+
+
+class TestRateFixes2026:
+    def test_new_regime_marginal_relief_just_above_12_lakh(self):
+        r = calculate_new_regime(1_285_000)
+        assert r["taxable_income"] == 1_210_000
+        assert r["marginal_relief"] == 51_500
+        assert r["total_tax"] == 10_400
+
+    def test_new_regime_no_marginal_relief_when_slab_tax_is_lower(self):
+        r = calculate_new_regime(1_475_000)
+        assert r["marginal_relief"] == 0
+        assert r["total_tax"] == 93_600
+
+    def test_crypto_is_flat_30_percent_regardless_of_holding(self):
+        short = calculate_capital_gains("crypto", 100_000, 180_000, 3)
+        long = calculate_capital_gains("crypto", 100_000, 180_000, 36)
+        assert short["tax"] == long["tax"] == 24_000

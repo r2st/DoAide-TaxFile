@@ -59,21 +59,48 @@ function applySlabs(taxable, slabs) {
   return { tax: Math.round(tax), breakdown }
 }
 
-function calcSurcharge(tax, totalIncome) {
+function calcSurcharge(tax, totalIncome, maxRate = 0.37) {
   for (const [limit, rate] of SURCHARGE_SLABS) {
-    if (totalIncome <= limit) return Math.round(tax * rate)
+    if (totalIncome <= limit) return Math.round(tax * Math.min(rate, maxRate))
   }
-  return Math.round(tax * 0.37)
+  return Math.round(tax * maxRate)
 }
 
-export function calculateNewRegime(grossIncome) {
+// Surcharge with marginal relief: crossing a surcharge threshold can never cost
+// more extra tax than the extra income above that threshold.
+function surchargeWithRelief(taxable, slabs, maxRate) {
+  const { tax } = applySlabs(taxable, slabs)
+  const raw = calcSurcharge(tax, taxable, maxRate)
+  if (raw === 0) return 0
+  let prevLimit = 0
+  for (const [limit] of SURCHARGE_SLABS) {
+    if (taxable <= limit) break
+    prevLimit = limit
+  }
+  const atThreshold = applySlabs(prevLimit, slabs).tax
+  const thresholdSurcharge = calcSurcharge(atThreshold, prevLimit, maxRate)
+  const cap = atThreshold + thresholdSurcharge + (taxable - prevLimit) - tax
+  return Math.max(Math.min(raw, Math.round(cap)), 0)
+}
+
+export const NEW_REGIME_REBATE_LIMIT = 1200000
+
+// options.employerNps80CCD2 is the only Chapter VI-A deduction the new regime allows.
+export function calculateNewRegime(grossIncome, options = {}) {
   const stdDeduction = Math.min(75000, grossIncome)
-  const taxable = Math.max(grossIncome - stdDeduction, 0)
+  const employerNps = Math.max(options.employerNps80CCD2 || 0, 0)
+  const taxable = Math.max(grossIncome - stdDeduction - employerNps, 0)
   const { tax, breakdown } = applySlabs(taxable, NEW_REGIME_SLABS)
   let rebate87A = 0
-  if (taxable <= 1200000) rebate87A = Math.min(tax, 60000)
-  const afterRebate = Math.max(tax - rebate87A, 0)
-  const surcharge = calcSurcharge(afterRebate, grossIncome)
+  let marginalRelief = 0
+  if (taxable <= NEW_REGIME_REBATE_LIMIT) {
+    rebate87A = Math.min(tax, 60000)
+  } else if (tax > taxable - NEW_REGIME_REBATE_LIMIT) {
+    // Marginal relief: tax cannot exceed the income earned above ₹12 lakh.
+    marginalRelief = tax - (taxable - NEW_REGIME_REBATE_LIMIT)
+  }
+  const afterRebate = Math.max(tax - rebate87A - marginalRelief, 0)
+  const surcharge = surchargeWithRelief(taxable, NEW_REGIME_SLABS, 0.25)
   const cess = Math.round((afterRebate + surcharge) * 0.04)
   const total = afterRebate + surcharge + cess
 
@@ -81,16 +108,24 @@ export function calculateNewRegime(grossIncome) {
     regime: 'new',
     grossIncome: Math.round(grossIncome),
     standardDeduction: stdDeduction,
-    deductionsTotal: stdDeduction,
+    employerNps80CCD2: Math.round(employerNps),
+    deductionsTotal: Math.round(stdDeduction + employerNps),
     taxableIncome: Math.round(taxable),
     taxOnIncome: tax,
     slabBreakdown: breakdown,
     rebate87A,
+    marginalRelief,
     taxAfterRebate: afterRebate,
     surcharge,
     cess,
     totalTax: total,
   }
+}
+
+function oldRegimeSlabsForAge(age) {
+  if (age >= 80) return SUPER_SENIOR_SLABS_OLD
+  if (age >= 60) return SENIOR_SLABS_OLD
+  return OLD_REGIME_SLABS
 }
 
 export function calculateOldRegime(grossIncome, deductions = {}) {
@@ -100,14 +135,17 @@ export function calculateOldRegime(grossIncome, deductions = {}) {
   const s80d = deductions.section80D || 0
   const homeLoan = Math.min(deductions.homeLoanInterest || 0, 200000)
   const nps = Math.min(deductions.nps80CCD1B || 0, 50000)
+  const employerNps = Math.max(deductions.employerNps80CCD2 || 0, 0)
+  const professionalTax = Math.min(deductions.professionalTax || 0, 2500)
   const other = deductions.other || 0
-  const totalDed = stdDeduction + hra + s80c + s80d + homeLoan + nps + other
+  const totalDed = stdDeduction + hra + s80c + s80d + homeLoan + nps + employerNps + professionalTax + other
   const taxable = Math.max(grossIncome - totalDed, 0)
-  const { tax, breakdown } = applySlabs(taxable, OLD_REGIME_SLABS)
+  const slabs = oldRegimeSlabsForAge(deductions.age || 0)
+  const { tax, breakdown } = applySlabs(taxable, slabs)
   let rebate87A = 0
   if (taxable <= 500000) rebate87A = Math.min(tax, 12500)
   const afterRebate = Math.max(tax - rebate87A, 0)
-  const surcharge = calcSurcharge(afterRebate, grossIncome)
+  const surcharge = surchargeWithRelief(taxable, slabs, 0.37)
   const cess = Math.round((afterRebate + surcharge) * 0.04)
   const total = afterRebate + surcharge + cess
 
@@ -120,6 +158,8 @@ export function calculateOldRegime(grossIncome, deductions = {}) {
     section80D: Math.round(s80d),
     homeLoanInterest: homeLoan,
     nps80CCD1B: nps,
+    employerNps80CCD2: Math.round(employerNps),
+    professionalTax,
     otherDeductions: Math.round(other),
     deductionsTotal: Math.round(totalDed),
     taxableIncome: Math.round(taxable),
@@ -130,6 +170,39 @@ export function calculateOldRegime(grossIncome, deductions = {}) {
     surcharge,
     cess,
     totalTax: total,
+  }
+}
+
+// Extra old-regime deductions (beyond what is already claimed) needed for the
+// old regime to cost no more than the new one. 0 when old already wins;
+// null when no amount of deductions can make old win.
+export function oldRegimeBreakEven(grossIncome, deductions = {}) {
+  const newTax = calculateNewRegime(grossIncome, deductions).totalTax
+  const oldTaxWith = extra => calculateOldRegime(grossIncome, { ...deductions, other: (deductions.other || 0) + extra }).totalTax
+  if (oldTaxWith(0) <= newTax) return 0
+  if (oldTaxWith(grossIncome) > newTax) return null
+  let lo = 0
+  let hi = grossIncome
+  while (hi - lo > 100) {
+    const mid = Math.floor((lo + hi) / 2)
+    if (oldTaxWith(mid) <= newTax) hi = mid
+    else lo = mid
+  }
+  return Math.ceil(hi / 1000) * 1000
+}
+
+export function compareRegimes(grossIncome, deductions = {}) {
+  const newR = calculateNewRegime(grossIncome, { employerNps80CCD2: deductions.employerNps80CCD2 })
+  const oldR = calculateOldRegime(grossIncome, deductions)
+  const better = newR.totalTax <= oldR.totalTax ? 'new' : 'old'
+  return {
+    newR,
+    oldR,
+    better,
+    saving: Math.abs(newR.totalTax - oldR.totalTax),
+    breakEvenExtraDeductions: oldRegimeBreakEven(grossIncome, deductions),
+    effectiveRateNew: grossIncome > 0 ? newR.totalTax / grossIncome : 0,
+    effectiveRateOld: grossIncome > 0 ? oldR.totalTax / grossIncome : 0,
   }
 }
 
@@ -146,6 +219,29 @@ export function calculateHRA(basicSalary, da, hraReceived, rentPaid, isMetro) {
     rentMinus10Pct: c3,
     exemption,
     taxableHRA: Math.round(Math.max(hraReceived - exemption, 0)),
+  }
+}
+
+export const HRA_METRO_CITIES = ['Delhi', 'Mumbai', 'Kolkata', 'Chennai']
+
+// Monthly inputs -> annual HRA exemption with planning insights.
+export function calculateHRADetailed({ basicMonthly, daMonthly = 0, hraMonthly, rentMonthly, isMetro, months = 12, slabRate = 0 }) {
+  const base = calculateHRA(basicMonthly * months, daMonthly * months, hraMonthly * months, rentMonthly * months, isMetro)
+  const salary = (basicMonthly + daMonthly) * months
+  const annualRent = rentMonthly * months
+  // Rent at which the rent-minus-10% limb stops being the binding one.
+  const optimalRentAnnual = Math.round(0.10 * salary + Math.min(hraMonthly * months, (isMetro ? 0.5 : 0.4) * salary))
+  const binding = base.exemption === base.actualHRA ? 'actualHRA'
+    : base.exemption === base.percentOfSalary ? 'percentOfSalary' : 'rentMinus10Pct'
+  return {
+    ...base,
+    months,
+    monthlyExemption: Math.round(base.exemption / months),
+    annualRent,
+    binding,
+    optimalRentAnnual,
+    landlordPANRequired: annualRent > 100000,
+    taxSaved: Math.round(base.exemption * slabRate * 1.04),
   }
 }
 
@@ -205,8 +301,9 @@ export function plan80C(investments) {
 }
 
 const HOLDING_PERIODS = { equity: 12, debt: 24, real_estate: 24, gold: 24, crypto: 12 }
-const LTCG_RATES = { equity: 0.125, debt: null, real_estate: 0.125, gold: 0.125, crypto: 0.125 }
-const STCG_RATES = { equity: 0.20, debt: null, real_estate: null, gold: null, crypto: 0.20 }
+const LTCG_RATES = { equity: 0.125, debt: null, real_estate: 0.125, gold: 0.125, crypto: 0.30 }
+// Crypto/VDA is a flat 30% under Sec 115BBH whatever the holding period.
+const STCG_RATES = { equity: 0.20, debt: null, real_estate: null, gold: null, crypto: 0.30 }
 
 export function calculateCapitalGains(assetType, purchasePrice, salePrice, holdingMonths) {
   const gain = salePrice - purchasePrice

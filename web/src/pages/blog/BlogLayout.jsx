@@ -68,6 +68,21 @@ const ARTICLES = [
     title: 'New Tax Regime vs Old Tax Regime 2026: Which Saves More?',
     description: 'Slab-by-slab comparison with worked examples at ₹8L to ₹30L income. Break-even deduction table and a clear decision framework for FY 2026-27.',
   },
+  {
+    slug: 'belated-itr-filing-after-due-date-2026',
+    title: 'Missed the ITR Deadline? How to File a Belated Return by 31 December 2026',
+    description: 'File a belated ITR for FY 2025-26 under Section 139(4) — late fee, interest, the new-regime restriction, losses, refunds, and ITR-U if you miss December too.',
+  },
+  {
+    slug: 'marginal-relief-income-above-12-lakh-new-regime',
+    title: 'Income Just Above ₹12 Lakh? How Marginal Relief Works in the New Tax Regime',
+    description: 'How the ₹60,000 rebate and marginal relief work for FY 2026-27, with worked examples for salaries from ₹12.75L to ₹13.5L and what the rebate does not cover.',
+  },
+  {
+    slug: 'itr-refund-delayed-reasons-how-to-fix',
+    title: 'ITR Refund Delayed? 8 Reasons and How to Fix Each One',
+    description: 'Why income tax refunds get stuck — e-verification, bank validation, inoperative PAN, AIS mismatch, Section 245 adjustment — and how to fix each one.',
+  },
 ]
 
 export { ARTICLES }

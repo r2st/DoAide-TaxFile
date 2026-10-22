@@ -81,6 +81,9 @@ import TaxPlanningFreelancers from './pages/blog/TaxPlanningFreelancers'
 import ITRFormGuide2026 from './pages/blog/ITRFormGuide2026'
 import Section80CInvestments2026 from './pages/blog/Section80CInvestments2026'
 import NewVsOldRegime2026 from './pages/blog/NewVsOldRegime2026'
+import BelatedITRFiling2026 from './pages/blog/BelatedITRFiling2026'
+import MarginalRelief12Lakh from './pages/blog/MarginalRelief12Lakh'
+import ITRRefundDelayed from './pages/blog/ITRRefundDelayed'
 import ToolTracker from './components/ToolTracker'
 import SocialProofBar from './components/SocialProofBar'
 import ReferralBanner from './components/ReferralBanner'
@@ -183,6 +186,9 @@ export default function App() {
           <Route path="itr-form-guide-2026-27" element={<ITRFormGuide2026 />} />
           <Route path="section-80c-investments-2026" element={<Section80CInvestments2026 />} />
           <Route path="new-vs-old-regime-comparison-2026" element={<NewVsOldRegime2026 />} />
+          <Route path="belated-itr-filing-after-due-date-2026" element={<BelatedITRFiling2026 />} />
+          <Route path="marginal-relief-income-above-12-lakh-new-regime" element={<MarginalRelief12Lakh />} />
+          <Route path="itr-refund-delayed-reasons-how-to-fix" element={<ITRRefundDelayed />} />
         </Route>
       </Routes>
     </Layout>

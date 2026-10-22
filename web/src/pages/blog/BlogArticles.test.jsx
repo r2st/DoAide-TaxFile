@@ -14,11 +14,14 @@ const BLOG_ARTICLES = [
   { slug: 'itr-form-guide-2026-27', file: 'ITRFormGuide2026' },
   { slug: 'section-80c-investments-2026', file: 'Section80CInvestments2026' },
   { slug: 'new-vs-old-regime-comparison-2026', file: 'NewVsOldRegime2026' },
+  { slug: 'belated-itr-filing-after-due-date-2026', file: 'BelatedITRFiling2026' },
+  { slug: 'marginal-relief-income-above-12-lakh-new-regime', file: 'MarginalRelief12Lakh' },
+  { slug: 'itr-refund-delayed-reasons-how-to-fix', file: 'ITRRefundDelayed' },
 ]
 
 describe('Blog articles data', () => {
-  it('has 13 blog articles', () => {
-    expect(BLOG_ARTICLES.length).toBe(13)
+  it('has 16 blog articles', () => {
+    expect(BLOG_ARTICLES.length).toBe(16)
   })
 
   it('all slugs are unique', () => {

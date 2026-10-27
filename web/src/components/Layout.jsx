@@ -201,7 +201,7 @@ export default function Layout({ children }) {
             {[
               { icon: '📄', name: 'Docs', url: 'https://docs.doaide.com', desc: 'Free document generators' },
               { icon: '📝', name: 'Resume', url: 'https://resume.doaide.com', desc: 'AI resume builder' },
-              { icon: '📊', name: '409A', url: 'https://409a.doaide.com', desc: 'Startup valuations' },
+              { icon: '📊', name: '409A', url: 'https://409.doaide.com', desc: 'Startup valuations' },
               { icon: '🏷️', name: 'GST Bot', url: 'https://gst.doaide.com', desc: 'GST filing & compliance' },
               { icon: '🛡️', name: 'InsureKit', url: 'https://insure.doaide.com', desc: 'Insurance calculators' },
               { icon: '📈', name: 'Pulse', url: 'https://pulse.doaide.com', desc: 'Newsletter growth tools' },

@@ -98,12 +98,12 @@ export function dismissReferralBanner() {
 
 export const TRENDING_TOOLS = [
   { name: 'GST Calculator', url: 'https://gst.doaide.com/calculator', product: 'GSTBot', icon: '🧮' },
-  { name: 'Premium Calculator', url: 'https://insurekit.doaide.com/premium-calculator', product: 'InsureKit', icon: '₹' },
+  { name: 'Premium Calculator', url: 'https://insure.doaide.com/premium-calculator', product: 'InsureKit', icon: '₹' },
   { name: 'Resume Builder', url: 'https://resume.doaide.com', product: 'Resume', icon: '📝' },
   { name: 'Rent Receipt', url: 'https://docs.doaide.com/rent-receipt-generator', product: 'Docs', icon: '🏠' },
   { name: 'GSTIN Lookup', url: 'https://gst.doaide.com/lookup', product: 'GSTBot', icon: '🔍' },
   { name: 'Salary Slip', url: 'https://docs.doaide.com/salary-slip-generator', product: 'Docs', icon: '💰' },
-  { name: 'Plan Comparison', url: 'https://insurekit.doaide.com/compare-plans', product: 'InsureKit', icon: '⚖️' },
+  { name: 'Plan Comparison', url: 'https://insure.doaide.com/compare-plans', product: 'InsureKit', icon: '⚖️' },
   { name: 'Cover Letter', url: 'https://resume.doaide.com/cover-letter-generator', product: 'Resume', icon: '✉️' },
   { name: 'Invoice Generator', url: 'https://docs.doaide.com/invoice-generator', product: 'Docs', icon: '🧾' },
   { name: 'HSN Code Finder', url: 'https://gst.doaide.com/hsn', product: 'GSTBot', icon: '📋' },

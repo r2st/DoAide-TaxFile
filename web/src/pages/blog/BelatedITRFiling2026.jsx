@@ -179,7 +179,7 @@ export default function BelatedITRFiling2026() {
       <p style={s.p}>
         The due date for FY 2026-27 returns is 31 July 2027 for most individuals. See every date in our{' '}
         <Link to="/blog/itr-filing-deadlines-2027" style={s.link}>ITR deadlines guide</Link>, decide your regime early with the{' '}
-        <Link to="/tools/regime-comparison" style={s.link}>regime comparison tool</Link>, and pay advance tax on time with the{' '}
+        <Link to="/old-vs-new-regime" style={s.link}>regime comparison tool</Link>, and pay advance tax on time with the{' '}
         <Link to="/advance-tax-calculator" style={s.link}>Advance Tax Calculator</Link>. First-time filers can follow our{' '}
         <Link to="/blog/first-time-itr-filing-guide" style={s.link}>beginner&apos;s guide</Link>.
       </p>

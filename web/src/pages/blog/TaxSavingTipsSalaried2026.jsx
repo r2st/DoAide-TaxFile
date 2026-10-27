@@ -67,7 +67,7 @@ export default function TaxSavingTipsSalaried2026() {
       <p style={s.p}>
         The old regime is now the opt-in choice. It wins only when your deductions are heavy: as a rule of thumb,
         HRA + 80C + 80D + home loan interest + NPS should together cross roughly ₹4 lakh before the old regime beats
-        the new slabs at mid-to-high salaries. The <Link to="/tools/regime-comparison" style={s.link}>regime comparison tool</Link> does
+        the new slabs at mid-to-high salaries. The <Link to="/old-vs-new-regime" style={s.link}>regime comparison tool</Link> does
         this with your exact numbers — and remember, salaried employees can switch regimes every year.
       </p>
 

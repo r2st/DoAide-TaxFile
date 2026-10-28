@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateHomeLoanBenefit, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -56,6 +57,7 @@ export default function HomeLoanCalculator() {
       Number(form.propertyValue) || 0,
     )
     setResult(r)
+    trackCalculation('home-loan')
   }
 
   const shareText = result

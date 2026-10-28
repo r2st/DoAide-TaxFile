@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateEMI, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -55,6 +56,7 @@ export default function EMICalculator() {
       Number(form.tenure) || 20,
     )
     setResult(r)
+    trackCalculation('emi')
   }
 
   const shareText = result ? `EMI: ${formatINR(result.emi)}/month\nLoan: ${formatINR(result.loanAmount)} at ${result.annualRate}% for ${result.tenureYears} years\nTotal Interest: ${formatINR(result.totalInterest)}\n\ntax.doaide.com/emi-calculator` : ''

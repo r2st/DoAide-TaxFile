@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculatePPF, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -49,6 +50,7 @@ export default function PPFCalculator() {
       Number(form.interestRate) || 7.1,
     )
     setResult(r)
+    trackCalculation('ppf')
   }
 
   const shareText = result ? `PPF Maturity: ${formatINR(result.maturityAmount)}\nInvested: ${formatINR(result.totalInvested)}\nInterest Earned: ${formatINR(result.totalInterest)}\n\ntax.doaide.com/ppf-calculator` : ''

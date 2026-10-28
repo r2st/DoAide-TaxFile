@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateGratuity, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 700, margin: '0 auto' },
@@ -52,6 +53,7 @@ export default function GratuityCalculator() {
       form.employeeType === 'government',
     )
     setResult(r)
+    trackCalculation('gratuity')
   }
 
   const shareText = result ? `Gratuity Amount: ${formatINR(result.gratuityAmount)}\nTax-Free: ${formatINR(result.exemptAmount)}\nTaxable: ${formatINR(result.taxableAmount)}\n\ntax.doaide.com/gratuity-calculator` : ''

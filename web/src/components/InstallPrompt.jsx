@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { trackCTA } from "../lib/analytics";
 
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -19,13 +20,16 @@ export default function InstallPrompt() {
 
   const install = async () => {
     if (!deferredPrompt) return;
+    trackCTA("install-pwa");
     deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
+    const choice = await deferredPrompt.userChoice;
+    trackCTA("install-pwa-result", { outcome: choice.outcome });
     setDeferredPrompt(null);
     setVisible(false);
   };
 
   const dismiss = () => {
+    trackCTA("install-pwa-dismiss");
     setVisible(false);
     sessionStorage.setItem("pwa-dismissed", "1");
   };

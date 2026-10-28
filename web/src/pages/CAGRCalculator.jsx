@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -43,6 +44,7 @@ export default function CAGRCalculator() {
   const calculate = () => {
     const r = calculateCAGR(Number(form.beginValue) || 0, Number(form.endValue) || 0, Number(form.years) || 1)
     setResult(r)
+    trackCalculation('cagr')
   }
 
   const shareText = result ? `CAGR Calculation\nBeginning: ${formatINR(result.beginningValue)}\nEnding: ${formatINR(result.endingValue)}\nPeriod: ${result.years} years\nCAGR: ${result.cagr}%\n\ntax.doaide.com/cagr-calculator` : ''

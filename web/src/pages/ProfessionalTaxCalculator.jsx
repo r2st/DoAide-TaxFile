@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import HowItWorks from '../components/HowItWorks'
 import { calculateProfessionalTax, PROFESSIONAL_TAX_STATES, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -62,6 +63,7 @@ export default function ProfessionalTaxCalculator() {
       form.state,
     )
     setResult(r)
+    trackCalculation('professional-tax')
   }
 
   const shareText = result ? `Professional Tax (${result.stateLabel})\nMonthly Salary: ${formatINR(result.monthlySalary)}\nMonthly Tax: ${formatINR(result.monthlyTax)}\nAnnual Tax: ${formatINR(result.annualTax)}\n\ntax.doaide.com/professional-tax-calculator` : ''

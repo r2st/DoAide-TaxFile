@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -83,6 +84,7 @@ export default function Form16Analyzer() {
     const due = Math.max(bestTax - tds, 0)
 
     setResult({ newRegime: newR, oldRegime: oldR, recommended, savings, tdsDeducted: tds, refund, due, bestTax })
+    trackCalculation('form-16-analyzer')
   }
 
   const shareText = result

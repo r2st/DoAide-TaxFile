@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { trackError } from '../lib/analytics'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export default class ErrorBoundary extends Component {
 
   componentDidCatch(error, info) {
     if (import.meta.env.DEV) console.error('Route error:', error, info)
+    trackError('boundary', error?.message || 'Unknown error')
   }
 
   handleRetry = () => {

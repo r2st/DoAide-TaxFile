@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateMutualFund, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 700, margin: '0 auto' },
@@ -52,6 +53,7 @@ export default function MutualFundCalculator() {
       Number(form.years) || 10,
     )
     setResult(r)
+    trackCalculation('mutual-fund')
   }
 
   const shareText = result ? `Mutual Fund ${investmentType === 'sip' ? 'SIP' : 'Lumpsum'}\nInvested: ${formatINR(result.totalInvested)}\nValue: ${formatINR(result.futureValue)}\nGains: ${formatINR(result.wealthGained)}\n\ntax.doaide.com/mutual-fund-calculator` : ''

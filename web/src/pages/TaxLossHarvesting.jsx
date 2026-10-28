@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import HowItWorks from '../components/HowItWorks'
 import { calculateTaxLossHarvesting, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -67,6 +68,7 @@ export default function TaxLossHarvesting() {
       form.gainType,
     )
     setResult(r)
+    trackCalculation('tax-loss-harvesting')
   }
 
   const shareText = result ? `Tax Loss Harvesting\nGains: ${formatINR(result.totalGains)}\nLosses Used: ${formatINR(result.lossUtilized)}\nTax Saved: ${formatINR(result.taxSaved)}\n\ntax.doaide.com/tax-loss-harvesting` : ''

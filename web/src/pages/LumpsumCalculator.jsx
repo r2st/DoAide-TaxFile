@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -45,6 +46,7 @@ export default function LumpsumCalculator() {
   const calculate = () => {
     const r = calculateLumpsum(Number(form.principal) || 0, Number(form.returnRate) || 12, Number(form.years) || 10)
     setResult(r)
+    trackCalculation('lumpsum')
   }
 
   const shareText = result ? `Lumpsum Returns\nInvested: ${formatINR(result.principal)}\nValue after ${result.years}yr: ${formatINR(result.futureValue)}\nGains: ${formatINR(result.totalGains)}\n\ntax.doaide.com/lumpsum-calculator` : ''

@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateSIP, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 700, margin: '0 auto' },
@@ -50,6 +51,7 @@ export default function SIPCalculator() {
       Number(form.stepUp) || 0,
     )
     setResult(r)
+    trackCalculation('sip')
   }
 
   const shareText = result ? `SIP Returns\nMonthly SIP: ${formatINR(result.monthlyAmount)}\nInvested: ${formatINR(result.totalInvested)}\nValue: ${formatINR(result.futureValue)}\nGains: ${formatINR(result.wealthGained)}\n\ntax.doaide.com/sip-calculator` : ''

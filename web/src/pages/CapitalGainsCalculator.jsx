@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
@@ -8,6 +8,7 @@ import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { formatINR } from '../lib/taxEngine'
 import { ASSET_TYPES, computeCapitalGains } from '../lib/capitalGains'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 760, margin: '0 auto' },
@@ -91,6 +92,8 @@ export default function CapitalGainsCalculator() {
       return { result: null, error: e.message }
     }
   }, [form])
+
+  useEffect(() => { if (result) trackCalculation('capital-gains') }, [result])
 
   const shareText = result
     ? `${result.assetLabel}: ${formatINR(result.gain)} ${result.gainType} gain, tax ${formatINR(result.totalTax)}. Calculate yours free:`

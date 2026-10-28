@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -45,6 +46,7 @@ export default function RDCalculator() {
   const calculate = () => {
     const r = calculateRD(Number(form.monthlyDeposit) || 0, Number(form.annualRate) || 7, Number(form.years) || 5)
     setResult(r)
+    trackCalculation('rd')
   }
 
   const shareText = result ? `RD Maturity\nMonthly: ${formatINR(result.monthlyDeposit)}\nInvested: ${formatINR(result.totalInvested)}\nInterest: ${formatINR(result.totalInterest)}\nMaturity: ${formatINR(result.maturityValue)}\n\ntax.doaide.com/rd-calculator` : ''

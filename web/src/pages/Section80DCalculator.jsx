@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateSection80D, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 700, margin: '0 auto' },
@@ -62,6 +63,7 @@ export default function Section80DCalculator() {
       Number(form.preventiveCheckup) || 0,
     )
     setResult(r)
+    trackCalculation('section-80d')
   }
 
   const shareText = result ? `Section 80D Deduction: ${formatINR(result.totalDeduction)}\nTax Saving (30%): ${formatINR(result.taxSavingHighSlab)}\n\ntax.doaide.com/80d-calculator` : ''

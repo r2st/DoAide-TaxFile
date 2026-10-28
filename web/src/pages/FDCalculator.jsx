@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateFD, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 700, margin: '0 auto' },
@@ -51,6 +52,7 @@ export default function FDCalculator() {
       form.isSenior,
     )
     setResult(r)
+    trackCalculation('fd')
   }
 
   const shareText = result ? `FD Returns\nPrincipal: ${formatINR(result.principal)}\nMaturity: ${formatINR(result.maturityAmount)}\nInterest: ${formatINR(result.totalInterest)}\n\ntax.doaide.com/fd-calculator` : ''

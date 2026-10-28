@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateCompoundInterest, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -53,6 +54,7 @@ export default function CompoundInterestCalculator() {
       Number(form.compounding) || 1,
     )
     setResult(r)
+    trackCalculation('compound-interest')
   }
 
   const shareText = result ? `Compound Interest\nPrincipal: ${formatINR(result.principal)}\nTotal Amount: ${formatINR(result.totalAmount)}\nInterest Earned: ${formatINR(result.totalInterest)}\n\ntax.doaide.com/compound-interest-calculator` : ''

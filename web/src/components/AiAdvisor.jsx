@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { trackAdvisor } from '../lib/analytics'
 
 const SUGGESTED_QUESTIONS = [
   'Which ITR form should I file?',
@@ -28,6 +29,7 @@ export default function AiAdvisor() {
     setMessages(updated)
     setInput('')
     setLoading(true)
+    trackAdvisor('ask', { questionLength: userMsg.length, isFirstMessage: messages.length === 0 })
 
     try {
       const res = await fetch('/api/advisor/ask', {
@@ -53,7 +55,7 @@ export default function AiAdvisor() {
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => { setOpen(true); trackAdvisor('open') }}
         aria-label="Open Tax AI Advisor"
         data-testid="ai-advisor-button"
         style={{

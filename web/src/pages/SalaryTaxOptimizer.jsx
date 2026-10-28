@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateSalaryOptimizer, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 900, margin: '0 auto' },
@@ -55,6 +56,7 @@ export default function SalaryTaxOptimizer() {
     const ctc = Number(form.ctc) || 0
     if (ctc <= 0) return
     setResult(calculateSalaryOptimizer(ctc))
+    trackCalculation('salary-tax-optimizer')
   }
 
   const shareText = result ? `Salary Optimizer for ${formatINR(result.ctc)} CTC\nBest Structure: ${result.recommended}\nBest Monthly In-Hand: ${formatINR(result.bestMonthlyInHand)}\n\ntax.doaide.com/salary-tax-optimizer` : ''

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
@@ -97,6 +98,7 @@ export default function RentalIncomeCalculator() {
       taxAt30,
       isLoss: taxableRentalIncome < 0,
     })
+    trackCalculation('rental-income')
   }
 
   return (

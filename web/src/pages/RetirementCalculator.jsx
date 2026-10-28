@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -51,6 +52,7 @@ export default function RetirementCalculator() {
       Number(form.currentSavings) || 0,
     )
     setResult(r)
+    trackCalculation('retirement')
   }
 
   const shareText = result ? `Retirement Plan\nRetire at: ${result.retirementAge}\nMonthly expenses at retirement: ${formatINR(result.monthlyExpenseAtRetirement)}\nCorpus needed: ${formatINR(result.corpusNeeded)}\nMonthly SIP needed: ${formatINR(result.monthlySIPNeeded)}\n\ntax.doaide.com/retirement-calculator` : ''

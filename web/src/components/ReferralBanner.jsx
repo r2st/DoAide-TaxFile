@@ -6,6 +6,7 @@ import {
   trackReferral,
   TOOL_MAP,
 } from "../lib/doaideViral";
+import { trackCTA } from "../lib/analytics";
 
 const SITE_URL = "https://tax.doaide.com";
 const PRODUCT_NAME = "TaxFile";
@@ -147,6 +148,7 @@ export default function ReferralBanner() {
   }, []);
 
   const handleDismiss = () => {
+    trackCTA("referral-dismiss");
     setVisible(false);
     dismissReferralBanner();
   };
@@ -204,11 +206,13 @@ export default function ReferralBanner() {
               target="_blank"
               rel="noopener noreferrer"
               style={{ ...styles.btnBase, ...styles.whatsapp }}
+              onClick={() => trackCTA("referral-share", { medium: "whatsapp" })}
             >
               {WHATSAPP_SVG} WhatsApp
             </a>
             <a
               href={emailUrl}
+              onClick={() => trackCTA("referral-share", { medium: "email" })}
               style={{ ...styles.btnBase, ...styles.email }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>

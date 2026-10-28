@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateNewRegime, calculateOldRegime, calculateHRA, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 900, margin: '0 auto' },
@@ -70,6 +71,7 @@ export default function IncomeTaxCalculator() {
     const recommended = newR.totalTax <= oldR.totalTax ? 'new' : 'old'
     const savings = Math.abs(newR.totalTax - oldR.totalTax)
     setResult({ newRegime: newR, oldRegime: oldR, recommended, savings })
+    trackCalculation('income-tax', { regime: recommended, grossIncome: gross > 1500000 ? '15L+' : gross > 750000 ? '7.5-15L' : 'under-7.5L' })
   }
 
   const shareText = result

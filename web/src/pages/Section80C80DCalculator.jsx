@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
@@ -7,6 +7,7 @@ import ShareButtons from '../components/ShareButtons'
 import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import { calculateSection80D, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -69,6 +70,8 @@ export default function Section80C80DCalculator() {
     const extraTaxPossible = Math.round(unusedCapacity * slab)
     return { c80, c80Raw, nps, d, totalDeduction, taxSaved, maxPossible, unusedCapacity, extraTaxPossible }
   }, [form])
+
+  useEffect(() => { if (result && result.totalDeduction > 0) trackCalculation('section-80c-80d') }, [result])
 
   const hasInput = result.totalDeduction > 0
 

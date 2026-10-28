@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import HowItWorks from '../components/HowItWorks'
 import { compareELSSvsPPFvsFD, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 900, margin: '0 auto' },
@@ -77,6 +78,7 @@ export default function ELSSComparison() {
       Number(form.ppfRate) || 7.1,
     )
     setResult(r)
+    trackCalculation('elss')
   }
 
   const shareText = result ? `Tax Saving Investment Comparison (${result.years} years)\nBest Option: ${result.bestOption}\n${result.investments.map(i => `${i.name}: ${formatINR(i.afterTaxReturn)} (${i.effectiveReturn}% CAGR)`).join('\n')}\n\ntax.doaide.com/elss-vs-ppf-vs-fd` : ''

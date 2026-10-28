@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { plan80C, INVESTMENT_OPTIONS, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -56,6 +57,8 @@ export default function Section80CPlanner() {
     for (const [k, v] of Object.entries(inv)) mapped[k] = Number(v) || 0
     return plan80C(mapped)
   }, [inv])
+
+  useEffect(() => { if (result) trackCalculation('section-80c') }, [result])
 
   const pct = Math.min((result.totalInvested / 150000) * 100, 100)
 

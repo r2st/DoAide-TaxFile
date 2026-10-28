@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -42,6 +43,7 @@ export default function InflationCalculator() {
   const calculate = () => {
     const r = calculateInflation(Number(form.amount) || 0, Number(form.inflationRate) || 6, Number(form.years) || 10)
     setResult(r)
+    trackCalculation('inflation')
   }
 
   const shareText = result ? `Inflation Impact\n₹${result.currentAmount.toLocaleString('en-IN')} today\nWorth ₹${result.purchasingPower.toLocaleString('en-IN')} in ${result.years} years\nYou'll need ₹${result.futureAmount.toLocaleString('en-IN')}\n\ntax.doaide.com/inflation-calculator` : ''

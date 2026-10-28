@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateNPSBenefit, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -53,6 +54,7 @@ export default function NPSCalculator() {
       Number(form.age) || 30,
     )
     setResult(r)
+    trackCalculation('nps')
   }
 
   const shareText = result

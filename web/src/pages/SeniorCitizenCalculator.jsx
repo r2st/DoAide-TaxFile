@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateSeniorCitizenTax, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 900, margin: '0 auto' },
@@ -67,6 +68,7 @@ export default function SeniorCitizenCalculator() {
       other: Number(form.otherDeductions) || 0,
     })
     setResult(r)
+    trackCalculation('senior-citizen')
   }
 
   const shareText = result

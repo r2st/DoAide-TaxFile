@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import HowItWorks from '../components/HowItWorks'
 import { calculateRefund, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -68,6 +69,7 @@ export default function RefundCalculator() {
       form.regime,
     )
     setResult(r)
+    trackCalculation('refund')
   }
 
   const shareText = result ? `Income Tax Refund Estimate\nIncome: ${formatINR(result.totalIncome)}\nTax Liability: ${formatINR(result.taxLiability)}\nTotal Paid: ${formatINR(result.totalTaxPaid)}\n${result.refundAmount > 0 ? `Refund: ${formatINR(result.refundAmount)}` : `Due: ${formatINR(result.taxDue)}`}\n\ntax.doaide.com/refund-calculator` : ''

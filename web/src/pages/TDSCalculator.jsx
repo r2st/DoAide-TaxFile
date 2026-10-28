@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateTDS, formatINR, formatPct } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 700, margin: '0 auto' },
@@ -70,6 +71,7 @@ export default function TDSCalculator() {
   const calculate = () => {
     const r = calculateTDS(form.incomeType, Number(form.amount) || 0, form.hasPAN)
     setResult(r)
+    trackCalculation('tds')
   }
 
   return (

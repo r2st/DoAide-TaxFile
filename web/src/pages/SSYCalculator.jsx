@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import HowItWorks from '../components/HowItWorks'
 import { calculateSSY, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -60,6 +61,7 @@ export default function SSYCalculator() {
       Number(form.interestRate) || 8.2,
     )
     setResult(r)
+    trackCalculation('ssy')
   }
 
   const shareText = result ? `SSY Maturity: ${formatINR(result.maturityAmount)}\nInvested: ${formatINR(result.totalInvested)}\nInterest: ${formatINR(result.totalInterest)}\nTax Benefit: EEE (fully tax-free)\n\ntax.doaide.com/ssy-calculator` : ''

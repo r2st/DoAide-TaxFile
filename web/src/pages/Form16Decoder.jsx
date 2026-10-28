@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import HowItWorks from '../components/HowItWorks'
 import { calculateNewRegime, calculateOldRegime, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 900, margin: '0 auto' },
@@ -147,6 +148,7 @@ export default function Form16Decoder() {
       section80D: Number(form.section80D) || 0,
       otherDeductions: Number(form.otherDeductions) || 0,
     })
+    trackCalculation('form-16-decoder')
   }
 
   const shareText = result ? `Form 16 Decoded\nGross Salary: ${formatINR(result.gross)}\nBest Regime: ${result.recommended === 'new' ? 'New' : 'Old'}\nTax: ${formatINR(result.bestTax)}\n${result.refund > 0 ? `Refund: ${formatINR(result.refund)}` : `Due: ${formatINR(result.due)}`}\n\ntax.doaide.com/form-16-decoder` : ''

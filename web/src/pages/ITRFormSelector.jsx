@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import ResultCard from '../components/ResultCard'
 import ShareButtons from '../components/ShareButtons'
@@ -176,6 +177,7 @@ export default function ITRFormSelector() {
         isPresumptiveTax: businessType === 'presumptive',
       })
       setResult(r)
+      trackCalculation('itr-form-selector')
     } else {
       setStep(step + 1)
     }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackFeedback } from '../lib/analytics'
 
 export default function FeedbackWidget() {
   const [open, setOpen] = useState(false)
@@ -21,6 +22,7 @@ export default function FeedbackWidget() {
           timestamp: new Date().toISOString(),
         }),
       })
+      trackFeedback('submit', { rating, hasComment: !!comment.trim() })
     } catch {
       // silently ignore network errors
     }
@@ -35,7 +37,7 @@ export default function FeedbackWidget() {
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => { setOpen(true); trackFeedback('open') }}
         aria-label="Send feedback"
         style={{
           position: 'fixed',

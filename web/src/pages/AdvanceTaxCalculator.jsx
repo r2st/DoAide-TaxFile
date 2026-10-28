@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateAdvanceTax, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 700, margin: '0 auto' },
@@ -51,6 +52,7 @@ export default function AdvanceTaxCalculator() {
   const calculate = () => {
     const r = calculateAdvanceTax(Number(form.totalTax) || 0, Number(form.tdsDeducted) || 0)
     setResult(r)
+    trackCalculation('advance-tax')
   }
 
   return (

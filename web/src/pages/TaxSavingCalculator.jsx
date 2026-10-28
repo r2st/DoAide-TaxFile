@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -65,6 +66,7 @@ export default function TaxSavingCalculator() {
       section80G: Number(form.section80G) || 0,
     })
     setResult(r)
+    trackCalculation('tax-saving')
   }
 
   const priorityColor = (p) => p === 'high' ? 'var(--doaide-error)' : p === 'medium' ? 'var(--doaide-warning)' : 'var(--doaide-info)'

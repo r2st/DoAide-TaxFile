@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -152,6 +153,8 @@ export default function Section80GCalculator() {
       taxSaving20,
     }
   }, [grossIncome, donations])
+
+  useEffect(() => { if (result) trackCalculation('section-80g') }, [result])
 
   const shareText = result ? `Section 80G Deduction: ${formatINR(result.totalDeduction)} on donations of ${formatINR(result.totalDonation)}\nTax Saving: ${formatINR(result.taxSaving30)} (30% slab)\n\ntax.doaide.com/80g-calculator` : ''
 

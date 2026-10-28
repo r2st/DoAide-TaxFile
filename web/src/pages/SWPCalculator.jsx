@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -41,6 +42,7 @@ export default function SWPCalculator() {
   const calculate = () => {
     const r = calculateSWP(Number(form.corpus) || 0, Number(form.withdrawal) || 0, Number(form.returnRate) || 10, Number(form.years) || 20)
     setResult(r)
+    trackCalculation('swp')
   }
 
   const shareText = result ? `SWP Plan\nCorpus: ${formatINR(result.initialCorpus)}\nMonthly Withdrawal: ${formatINR(result.monthlyWithdrawal)}\nTotal Withdrawn: ${formatINR(result.totalWithdrawn)}\nRemaining: ${formatINR(result.finalBalance)}\n\ntax.doaide.com/swp-calculator` : ''

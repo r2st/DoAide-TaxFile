@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
@@ -7,6 +7,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { compareRegimes, formatINR, formatPct } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 1000, margin: '0 auto' },
@@ -135,6 +136,8 @@ export default function OldVsNewRegimeComparison() {
       other: num('otherDeductions'),
     })
   }, [form])
+
+  useEffect(() => { if (result) trackCalculation('old-vs-new-regime') }, [result])
 
   const shareText = result
     ? `Old vs new regime: the ${result.better} regime saves me ${formatINR(result.saving)} in FY 2026-27. Check yours free:`

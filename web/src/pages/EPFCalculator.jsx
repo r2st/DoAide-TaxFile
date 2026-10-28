@@ -8,6 +8,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import HowItWorks from '../components/HowItWorks'
 import { calculateEPF, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -65,6 +66,7 @@ export default function EPFCalculator() {
       Number(form.interestRate) || 8.25,
     )
     setResult(r)
+    trackCalculation('epf')
   }
 
   const shareText = result ? `EPF Retirement Corpus: ${formatINR(result.maturityAmount)}\nMonthly Contribution: ${formatINR(result.totalMonthlyContribution)}\nInterest Earned: ${formatINR(result.totalInterest)}\n\ntax.doaide.com/epf-calculator` : ''

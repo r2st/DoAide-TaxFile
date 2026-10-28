@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -54,6 +55,7 @@ export default function GSTCalculator() {
   const calculate = () => {
     const r = calculateGST(Number(form.amount) || 0, Number(form.gstRate) || 18, isInclusive)
     setResult(r)
+    trackCalculation('gst')
   }
 
   const shareText = result ? `GST Calculation\nBase: ${formatINR(result.baseAmount)}\nGST (${result.gstRate}%): ${formatINR(result.gstAmount)}\nTotal: ${formatINR(result.totalAmount)}\n\ntax.doaide.com/gst-calculator` : ''

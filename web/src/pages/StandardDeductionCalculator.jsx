@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateStandardDeductions, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 900, margin: '0 auto' },
@@ -61,6 +62,7 @@ export default function StandardDeductionCalculator() {
       mapped[k] = typeof v === 'boolean' ? v : (Number(v) || 0)
     }
     setResult(calculateStandardDeductions(mapped))
+    trackCalculation('standard-deduction')
   }
 
   const shareText = result

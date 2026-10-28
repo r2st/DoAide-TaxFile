@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateTakeHomeSalary, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 800, margin: '0 auto' },
@@ -48,6 +49,7 @@ export default function TakeHomeSalaryCalculator() {
     const ctc = Number(form.ctc) || 0
     if (ctc <= 0) return
     setResult(calculateTakeHomeSalary(ctc, form.cityType === 'metro'))
+    trackCalculation('take-home-salary')
   }
 
   const shareText = result ? `Take-Home Salary from ${formatINR(result.ctc)} CTC\nMonthly In-Hand: ${formatINR(result.monthlyInHand)}\nAnnual Take-Home: ${formatINR(result.annualTakeHome)}\n\ntax.doaide.com/take-home-salary-calculator` : ''

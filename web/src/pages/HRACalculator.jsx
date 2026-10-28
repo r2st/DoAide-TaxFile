@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
@@ -7,6 +7,7 @@ import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
 import FAQSection from '../components/FAQSection'
 import { calculateHRADetailed, HRA_METRO_CITIES, formatINR } from '../lib/taxEngine'
+import { trackCalculation } from '../lib/analytics'
 
 const s = {
   page: { maxWidth: 760, margin: '0 auto' },
@@ -77,6 +78,8 @@ export default function HRACalculator() {
       slabRate: Number(form.slabRate) || 0,
     })
   }, [form])
+
+  useEffect(() => { if (result) trackCalculation('hra') }, [result])
 
   const shareText = result
     ? `My HRA exemption: ${formatINR(result.exemption)} a year (old regime). Calculate yours free:`

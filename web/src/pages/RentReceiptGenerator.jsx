@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { trackCalculation } from '../lib/analytics'
 import SEOHead from '../components/SEOHead'
 import InputField from '../components/InputField'
 import ResultCard from '../components/ResultCard'
@@ -65,6 +66,7 @@ export default function RentReceiptGenerator() {
       year: 2026,
     })
     setResult(r)
+    trackCalculation('rent-receipt')
   }
 
   return (

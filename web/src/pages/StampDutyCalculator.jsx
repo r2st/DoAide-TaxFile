@@ -4,6 +4,7 @@ import FAQSection from '../components/FAQSection'
 import Breadcrumb from '../components/Breadcrumb'
 import ShareButtons from '../components/ShareButtons'
 import PrintButton from '../components/PrintButton'
+import { trackCalculation } from '../lib/analytics'
 
 const formatINR = n => '₹' + n.toLocaleString('en-IN')
 
@@ -122,6 +123,7 @@ export default function StampDutyCalculator() {
     const total = stampDuty + registration
 
     setResult({ stampDuty, registration, total, dutyRate, regRate, propertyValue: v })
+    trackCalculation('stamp-duty')
   }
 
   return (
